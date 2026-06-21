@@ -186,12 +186,12 @@
             .day-number { font-size: 20px; }
             .expanded-panel { padding: 12px; }
 
-            /* Адаптация счетчиков для мобильных экранов */
-            .day-number-tl { font-size: 11px; top: 4px; left: 5px; }
-            .psy-counters { margin-top: 10px; gap: 4px; }
-            .counter-icon { font-size: 11px; margin-bottom: 2px; }
-            .counter-num { font-size: 15px; }
-            .counter-slash { font-size: 15px; }
+/* Адаптация счетчиков для мобильных экранов (ультра-компактно) */
+            .day-number-tl { font-size: 10px; top: 3px; left: 5px; }
+            .psy-counters { margin-top: 14px; gap: 2px; }
+            .counter-icon { font-size: 9px; margin-bottom: 1px; }
+            .counter-num { font-size: 12px; }
+            .counter-slash { font-size: 12px; color: rgba(44, 62, 80, 0.3); }
         }
     </style>
 </head>
@@ -200,7 +200,7 @@
 <div id="toast" class="toast"></div>
 
 <div class="container">
-    <h2>Расписание смен на июль 2026</h2>
+    <h2>Расписание на июль 2026</h2>
     
     <div class="form-group">
         <span class="input-title">Введите ваш код:</span>
@@ -369,7 +369,7 @@
             allGridElements.push(emptyCell);
         }
         
-        for (let day = 1; day <= totalDays; day++) {
+for (let day = 1; day <= totalDays; day++) {
             const dayStr = (day < 10 ? '0' + day : day) + '.07';
             
             const cell = document.createElement('div');
@@ -395,10 +395,18 @@
                         </div>
                     </div>
                 `;
+                // ВОЗВРАЩАЕМ ЗАЛИВКУ: Окрашиваем ячейку в цвет личной смены сотрудника
+                updateCellVisuals(cell, pendingShifts[dayStr] || "");
             } else {
                 cell.innerHTML = `<div class="day-number">${day}</div>`;
                 updateCellVisuals(cell, pendingShifts[dayStr] || "");
             }
+            
+            cell.addEventListener('click', () => handleDayClick(cell, dayStr));
+            
+            calendarGrid.appendChild(cell);
+            allGridElements.push(cell);
+        }
             
             cell.addEventListener('click', () => handleDayClick(cell, dayStr));
             
