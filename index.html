@@ -87,6 +87,45 @@
         .calendar-day.shift-evening { background-color: var(--pastel-blue); border-color: var(--border-blue); }
         .calendar-day.shift-custom { background-color: var(--pastel-pink); border-color: var(--border-pink); }
 
+        /* Стили для счетчиков психологов в общем расписании */
+        .day-number-tl {
+            position: absolute;
+            top: 6px;
+            left: 8px;
+            font-weight: 800;
+            font-size: 13px;
+            color: #718096;
+            line-height: 1;
+        }
+        .psy-counters {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .counter-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+        }
+        .counter-icon {
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+        .counter-num {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-color);
+        }
+        .counter-slash {
+            font-size: 20px;
+            color: #cbd5e1;
+            font-weight: 400;
+            line-height: 1;
+        }
+
         /* ВЫДВИЖНАЯ ПАНЕЛЬ (КОМПАКТНАЯ, БЕЗ ТОЛСТЫХ РАМОК) */
         .expanded-panel {
             grid-column: 1 / -1;
@@ -146,6 +185,13 @@
             .calendar-day { min-height: 55px; border-width: 1px; border-radius: 10px; }
             .day-number { font-size: 20px; }
             .expanded-panel { padding: 12px; }
+
+            /* Адаптация счетчиков для мобильных экранов */
+            .day-number-tl { font-size: 11px; top: 4px; left: 5px; }
+            .psy-counters { margin-top: 10px; gap: 4px; }
+            .counter-icon { font-size: 11px; margin-bottom: 2px; }
+            .counter-num { font-size: 15px; }
+            .counter-slash { font-size: 15px; }
         }
     </style>
 </head>
@@ -329,9 +375,31 @@
             const cell = document.createElement('div');
             cell.className = 'calendar-day';
             cell.id = `cell-${dayStr}`;
-            cell.innerHTML = `<div class="day-number">${day}</div>`;
             
-            updateCellVisuals(cell, pendingShifts[dayStr] || "");
+            if (currentViewMode === "general") {
+                const info = globalGeneralData[dayStr] || { dayPsychologists: [], eveningPsychologists: [] };
+                const dayCount = info.dayPsychologists ? info.dayPsychologists.length : 0;
+                const eveningCount = info.eveningPsychologists ? info.eveningPsychologists.length : 0;
+                
+                cell.innerHTML = `
+                    <div class="day-number-tl">${day}</div>
+                    <div class="psy-counters">
+                        <div class="counter-column">
+                            <span class="counter-icon">☀️</span>
+                            <span class="counter-num">${dayCount}</span>
+                        </div>
+                        <span class="counter-slash">/</span>
+                        <div class="counter-column">
+                            <span class="counter-icon">🌙</span>
+                            <span class="counter-num">${eveningCount}</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                cell.innerHTML = `<div class="day-number">${day}</div>`;
+                updateCellVisuals(cell, pendingShifts[dayStr] || "");
+            }
+            
             cell.addEventListener('click', () => handleDayClick(cell, dayStr));
             
             calendarGrid.appendChild(cell);
@@ -478,12 +546,12 @@
             <div class="general-details-list">
                 <div class="details-section">
                     <div class="section-title">☀️ День</div>
-                    <div class="role-group"><span class="role-label">Администраторы:</span><ul class="role-list">${buildList(info.dayAdmins)}</ul></div>
+                    <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildList(info.dayAdmins)}</ul></div>
                     <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildList(info.dayPsychologists)}</ul></div>
                 </div>
                 <div class="details-section">
                     <div class="section-title">🌙 Вечер</div>
-                    <div class="role-group"><span class="role-label">Администраторы:</span><ul class="role-list">${buildList(info.eveningAdmins)}</ul></div>
+                    <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildList(info.eveningAdmins)}</ul></div>
                     <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildList(info.eveningPsychologists)}</ul></div>
                 </div>
             </div>
