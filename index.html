@@ -18,323 +18,115 @@
             --text-color: #2c3e50;
             --border-color: #ced4da;
             
-            /* Пастельная палитра для личных смен */
-            --pastel-orange: #ffe0b2; /* Дневная */
+            --pastel-orange: #ffe0b2; 
             --border-orange: #ffb74d;
-            --pastel-blue: #e3f2fd;   /* Вечерняя */
+            --pastel-blue: #e3f2fd;   
             --border-blue: #90caf9;
-            --pastel-pink: #f8bbd0;   /* Свой вариант */
+            --pastel-pink: #f8bbd0;   
             --border-pink: #f06292;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding: 15px; display: flex; justify-content: center; }
 
         .toast {
-            position: fixed;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 14px 28px;
-            border-radius: 50px;
-            color: white;
-            font-weight: 700;
-            font-size: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-            transition: top 0.4s cubic-bezier(0.68, -0.55, 0.26, 1.55);
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 14px 28px;
+            border-radius: 50px; color: white; font-weight: 700; font-size: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); transition: top 0.4s cubic-bezier(0.68, -0.55, 0.26, 1.55);
             z-index: 9999;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-align: center;
         }
-        .toast.show {
-            top: 25px;
-        }
+        .toast.show { top: 25px; }
         .toast.success { background-color: #2ecc71; }
         .toast.error { background-color: #e74c3c; }
 
-        .container {
-            width: 100%;
-            max-width: 1000px;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-        }
-
-        h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--text-color);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .input-title {
-            font-weight: 700;
-            margin-bottom: 8px;
-            display: block;
-            font-size: 16px;
-        }
-
-        .code-input-container {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            max-width: 340px;
-        }
-
-        select, input {
-            padding: 12px;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
+        .container { width: 100%; max-width: 1000px; background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+        h2 { margin-bottom: 20px; font-size: 24px; font-weight: 800; }
+        
+        .form-group { margin-bottom: 15px; }
+        .input-title { font-weight: 700; margin-bottom: 8px; display: block; font-size: 16px; }
+        .code-input-container { display: flex; gap: 10px; align-items: center; max-width: 340px; }
+        select, input { padding: 12px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 16px; font-weight: 600; outline: none; }
         select:focus, input:focus { border-color: var(--primary-color); }
-        .prefix-select { width: 85px; background-color: #fff; cursor: pointer; }
+        .prefix-select { width: 85px; cursor: pointer; }
         .digits-input { flex: 1; }
         .digits-input.invalid { border-color: var(--danger-color); background-color: #fff5f5; }
         .error-message { color: var(--danger-color); font-size: 14px; margin-top: 8px; display: none; font-weight: 700; }
 
-        .main-buttons {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-        }
+        .main-buttons { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+        button { padding: 14px 18px; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; flex: 1; min-width: 200px; }
+        button:disabled { background-color: #e0e0e0 !important; color: #9e9e9e !important; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+        button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-info { background-color: var(--info-color); color: white; }
+        .btn-success { background-color: var(--success-color); color: white; width: 100%; margin-top: 20px; font-size: 18px; padding: 16px; display: none; }
 
-        button {
-            padding: 14px 18px;
-            border: none;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        button:disabled {
-            background-color: #e0e0e0 !important;
-            color: #9e9e9e !important;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
-        }
-
-        button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-        }
-
-        .btn-primary { background-color: var(--primary-color); color: white; flex: 1; }
-        .btn-info { background-color: var(--info-color); color: white; flex: 1; }
-        .btn-secondary { background-color: #6c757d; color: white; flex: 1; }
+        #calendar-section { display: none; margin-top: 20px; border-top: 2px solid #edf2f7; padding-top: 20px; }
+        .calendar-header { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 800; margin-bottom: 10px; background-color: #edf2f7; padding: 10px 0; border-radius: 12px; font-size: 14px; color: #4a5568; }
         
-        .btn-success {
-            background-color: var(--success-color);
-            color: white;
-            width: 100%;
-            margin-top: 30px;
-            padding: 16px;
-            font-size: 18px;
-            font-weight: 800;
+        /* Сетка календаря */
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; position: relative; }
+        .calendar-day { 
+            border: 2px solid #e2e8f0; border-radius: 14px; min-height: 80px; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            background-color: #fff; transition: all 0.2s ease; cursor: pointer; position: relative;
         }
-
-        #calendar-section {
-            display: none;
-            margin-top: 30px;
-            border-top: 2px solid #edf2f7;
-            padding-top: 25px;
-        }
-
-        .calendar-header {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            text-align: center;
-            font-weight: 800;
-            margin-bottom: 12px;
-            background-color: #edf2f7;
-            padding: 12px 0;
-            border-radius: 12px;
-            font-size: 15px;
-            color: #4a5568;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 12px;
-        }
-
-        .calendar-day {
-            border: 2px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 12px;
-            min-height: 135px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background-color: #fff;
-            transition: all 0.25s ease-in-out;
-        }
-
-        .calendar-day.empty { background-color: #f8f9fa; border: none; }
-
-        /* Цветовая подсветка личных смен психолога */
+        .calendar-day.empty { background-color: transparent; border: none; cursor: default; }
+        
+        /* Цвета смен */
         .calendar-day.shift-day { background-color: var(--pastel-orange); border-color: var(--border-orange); }
         .calendar-day.shift-evening { background-color: var(--pastel-blue); border-color: var(--border-blue); }
         .calendar-day.shift-custom { background-color: var(--pastel-pink); border-color: var(--border-pink); }
-
-        /* Курсор-указатель для интерактивных плиток */
-        .calendar-grid .calendar-day:not(.empty) {
-            cursor: pointer;
-        }
-        .calendar-grid .calendar-day:not(.empty):hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .day-number {
-            font-weight: 800;
-            font-size: 42px;
-            line-height: 0.85;
-            color: var(--text-color);
-            margin-bottom: 10px;
-            letter-spacing: -1.5px;
-        }
-
-        .day-controls {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .shift-select {
-            width: 100%;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 8px 6px;
-            border-radius: 8px;
-            border: 2px solid var(--border-color);
-            margin-top: 5px;
-            background-color: #fff;
-            color: var(--text-color);
-            cursor: pointer;
-        }
-
-        .custom-time-container { margin-top: 8px; }
-        .custom-time-inputs { display: flex; align-items: center; gap: 3px; justify-content: start; }
         
-        .time-part {
-            width: 36px;
-            padding: 4px 2px;
-            font-size: 12px;
-            font-weight: 700;
-            text-align: center;
-            border: 2px solid var(--border-color);
-            border-radius: 6px;
-        }
+        /* Активный день */
+        .calendar-day.selected { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,123,255,0.3); transform: scale(1.05); z-index: 2; }
+        .day-number { font-weight: 800; font-size: 24px; color: var(--text-color); }
 
-        .time-divider { font-size: 14px; font-weight: 800; color: #718096; }
-
-        /* Блок общего расписания */
-        .general-details-box {
+        /* ВЫПАДАЮЩАЯ ПАНЕЛЬ МЕЖДУ НЕДЕЛЯМИ */
+        .expanded-panel {
+            grid-column: 1 / -1; /* Растягиваем на всю ширину сетки (все 7 колонок) */
+            background: #ffffff;
+            border: 2px solid var(--primary-color);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 5px 0 15px 0;
             display: none;
-            width: 100%;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 2px dashed rgba(0, 0, 0, 0.08);
-            animation: fadeIn 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,123,255,0.15);
+            animation: slideDown 0.3s ease-out;
         }
+        .expanded-panel.active { display: block; }
+        
+        .panel-title { font-size: 18px; font-weight: 800; margin-bottom: 15px; color: var(--primary-color); border-bottom: 2px dashed #edf2f7; padding-bottom: 10px; }
 
-        .calendar-day.expanded {
-            background-color: #ffffff !important;
-            border-color: var(--primary-color) !important;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
+        /* Внутренности панели - Личный режим */
+        .panel-controls { display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: 0 auto; }
+        .panel-controls select { width: 100%; cursor: pointer; }
+        .custom-time-inputs { display: flex; align-items: center; justify-content: center; gap: 8px; background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .time-part { width: 50px; text-align: center; font-weight: 700; }
+        .time-divider { font-weight: 800; color: #718096; }
 
-        .calendar-day.expanded .general-details-box { display: block; }
-
-        .details-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .column-title { font-size: 13px; font-weight: 800; text-transform: uppercase; color: #718096; margin-bottom: 6px; border-bottom: 2px solid #edf2f7; padding-bottom: 2px; }
-        .role-group { margin-bottom: 6px; font-size: 13px; }
-        .role-label { font-weight: 700; color: #4a5568; }
-        .role-list { list-style: none; padding-left: 5px; font-weight: 600; }
-        .role-list li { margin-top: 2px; color: #2d3748; }
+        /* Внутренности панели - Общий режим */
+        .general-details-box { display: flex; gap: 20px; }
+        .details-col { flex: 1; background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px solid #edf2f7; }
+        .column-title { font-size: 16px; font-weight: 800; text-transform: uppercase; color: #2c3e50; margin-bottom: 12px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+        .role-group { margin-bottom: 12px; }
+        .role-label { font-weight: 800; color: #718096; font-size: 12px; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .role-list { list-style: none; }
+        .role-list li { padding: 6px 0; border-bottom: 1px solid #edf2f7; font-weight: 700; font-size: 14px; color: #2d3748; }
+        .role-list li:last-child { border-bottom: none; }
 
         .loader { display: none; text-align: center; font-size: 18px; font-weight: 800; color: var(--primary-color); margin: 25px 0; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* МОБИЛЬНАЯ АДАПТАЦИЯ ДЛЯ ОБОИХ РЕЖИМОВ */
+        /* МОБИЛЬНАЯ АДАПТАЦИЯ */
         @media (max-width: 768px) {
-            .calendar-header { display: none; }
-            .calendar-grid { grid-template-columns: 1fr; gap: 10px; }
-            
-            .calendar-day {
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: flex-start;
-                min-height: auto;
-                padding: 14px 16px;
-                border-radius: 14px;
-            }
-            .calendar-day.empty { display: none; }
-            
-            .day-number {
-                font-size: 22px;
-                letter-spacing: normal;
-                margin-bottom: 4px;
-            }
-            .day-number::after {
-                content: " " attr(data-weekday);
-                font-weight: 600;
-                color: #718096;
-                font-size: 14px;
-                margin-left: 4px;
-            }
-
-            /* ВАЖНО: Прячем селекторы личных смен до тех пор, пока на плитку не кликнули */
-            .mode-personal .day-controls {
-                display: none;
-                width: 100%;
-                margin-top: 10px;
-                padding-top: 10px;
-                border-top: 2px dashed rgba(0, 0, 0, 0.08);
-                animation: fadeIn 0.3s ease;
-            }
-
-            /* Показываем элементы управления в развернутом состоянии */
-            .calendar-day.expanded .day-controls {
-                display: flex;
-            }
-
-            .calendar-day.expanded {
-                grid-column: 1 / -1; 
-            }
-            .details-columns { grid-template-columns: 1fr; gap: 16px; }
+            .container { padding: 15px; }
+            .calendar-header { font-size: 12px; padding: 8px 0; }
+            .calendar-grid { gap: 6px; }
+            .calendar-day { min-height: 55px; border-width: 1px; border-radius: 10px; }
+            .day-number { font-size: 18px; }
+            .expanded-panel { padding: 15px; }
+            .general-details-box { flex-direction: column; gap: 15px; }
         }
     </style>
 </head>
@@ -360,83 +152,79 @@
     <div class="main-buttons">
         <button id="btn-july" class="btn-primary" disabled>Смены в июле</button>
         <button id="btn-general" class="btn-info" disabled>Общее расписание</button>
-        <button id="btn-booking" class="btn-secondary" disabled>Абоненты по записи</button>
     </div>
 
-    <div id="loader" class="loader">Загрузка календаря... Пожалуйста, подождите ⏳</div>
+    <div id="loader" class="loader">Загрузка календаря... Подождите, пожалуйста. ⏳</div>
 
     <div id="calendar-section">
         <div class="calendar-header">
             <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div>
         </div>
-        <div id="calendar-grid" class="calendar-grid"></div>
+        <div id="calendar-grid" class="calendar-grid">
+            </div>
         <button id="btn-save" class="btn-success">Сохранить</button>
     </div>
 </div>
 
+<div id="expanded-panel" class="expanded-panel">
+    <div id="panel-content"></div>
+</div>
+
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzPTujjJfHkRNuE-_chKl0kYxxE-usLak1KzTmTRtaRC2llT6bIu-fkUVdhXlddbys5/exec";
+    const WEB_APP_URL = "ЗАМЕНИ_НА_СВОЙ_URL_ПОСЛЕ_ПЕРЕРАЗВЕРТЫВАНИЯ";
 
     const digitsInput = document.getElementById('digits-input');
     const prefixSelect = document.getElementById('prefix-select');
-    const errorMessage = document.getElementById('error-message');
     const btnJuly = document.getElementById('btn-july');
     const btnGeneral = document.getElementById('btn-general');
-    const btnBooking = document.getElementById('btn-booking');
     const calendarSection = document.getElementById('calendar-section');
     const calendarGrid = document.getElementById('calendar-grid');
     const loader = document.getElementById('loader');
     const btnSave = document.getElementById('btn-save');
-    const toast = document.getElementById('toast');
+    const expandedPanel = document.getElementById('expanded-panel');
+    const panelContent = document.getElementById('panel-content');
 
     let currentFullCode = "";
-    let toastTimeout;
     let currentViewMode = "personal"; 
+    
+    // Глобальные хранилища данных
+    let globalSchedule = {};      // Оригинальное расписание из БД
+    let pendingShifts = {};       // Изменения, которые пользователь внес, но еще не сохранил
+    let globalGeneralData = {};   // Данные общего расписания
+    let allGridElements = [];     // Массив DOM-узлов ячеек (нужен для вычисления, куда вставлять панель)
 
     function showToast(message, type = 'success') {
-        clearTimeout(toastTimeout);
-        toast.className = `toast ${type}`;
+        const toast = document.getElementById('toast');
+        toast.className = `toast ${type} show`;
         toast.innerHTML = message;
-        toast.classList.add('show');
-        toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3500);
+        setTimeout(() => { toast.classList.remove('show'); }, 3000);
     }
 
     digitsInput.addEventListener('input', () => {
         const val = digitsInput.value.trim();
-        if (/^\d{3}$/.test(val)) {
-            digitsInput.classList.remove('invalid');
-            errorMessage.style.display = 'none';
-            btnJuly.disabled = false;
-            btnGeneral.disabled = false;
-            btnBooking.disabled = false;
-            updateFullCode();
-        } else {
-            digitsInput.classList.add('invalid');
-            errorMessage.style.display = 'block';
-            btnJuly.disabled = true;
-            btnGeneral.disabled = true;
-            btnBooking.disabled = true;
-        }
+        const isValid = /^\d{3}$/.test(val);
+        document.getElementById('error-message').style.display = isValid ? 'none' : 'block';
+        digitsInput.classList.toggle('invalid', !isValid);
+        btnJuly.disabled = btnGeneral.disabled = !isValid;
+        if(isValid) currentFullCode = prefixSelect.value + "-" + val;
     });
-
-    prefixSelect.addEventListener('change', updateFullCode);
-    function updateFullCode() { currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim(); }
+    prefixSelect.addEventListener('change', () => { currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim(); });
 
     btnJuly.addEventListener('click', () => {
         currentViewMode = "personal";
-        calendarGrid.className = "calendar-grid mode-personal";
         btnSave.style.display = 'block';
-        loadCalendarData(`${WEB_APP_URL}?action=getData&code=${encodeURIComponent(currentFullCode)}`);
+        expandedPanel.classList.remove('active');
+        loadData(`${WEB_APP_URL}?action=getData&code=${encodeURIComponent(currentFullCode)}`);
     });
 
     btnGeneral.addEventListener('click', () => {
         currentViewMode = "general";
-        calendarGrid.className = "calendar-grid mode-general";
         btnSave.style.display = 'none'; 
-        loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
+        expandedPanel.classList.remove('active');
+        loadData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
     });
 
-    function loadCalendarData(url) {
+    function loadData(url) {
         loader.style.display = 'block';
         calendarSection.style.display = 'none';
         
@@ -444,204 +232,211 @@
             .then(res => res.json())
             .then(data => {
                 loader.style.display = 'none';
-                if(data.error) {
-                    showToast('Ошибка сервера: ' + data.error, 'error');
-                    return;
-                }
-                renderJuly2026(data.schedule || {}, data.generalData || {});
+                if(data.error) return showToast('Ошибка: ' + data.error, 'error');
+                
+                globalSchedule = data.schedule || {};
+                pendingShifts = { ...globalSchedule }; // Копируем в рабочую область
+                globalGeneralData = data.generalData || {};
+                
+                renderGrid();
                 calendarSection.style.display = 'block';
-                calendarSection.scrollIntoView({ behavior: 'smooth' });
             })
             .catch(err => {
                 loader.style.display = 'none';
-                showToast('Не удалось связаться с Google Таблицей 🔌', 'error');
-                console.error(err);
+                showToast('Ошибка сети', 'error');
             });
     }
 
-    function updateCellVisuals(cellElement, savedValue) {
+    function updateCellVisuals(cellElement, shiftValue) {
         cellElement.classList.remove('shift-day', 'shift-evening', 'shift-custom');
-        if (!savedValue) return;
-        
-        if (savedValue === "14:00 — 18:00") {
-            cellElement.classList.add('shift-day');
-        } else if (savedValue === "18:00 — 22:00" || savedValue === "18:00 -- 22:00") {
-            cellElement.classList.add('shift-evening');
-        } else {
-            cellElement.classList.add('shift-custom');
-        }
+        if (!shiftValue) return;
+        if (shiftValue === "14:00 — 18:00") cellElement.classList.add('shift-day');
+        else if (shiftValue === "18:00 — 22:00" || shiftValue === "18:00 -- 22:00") cellElement.classList.add('shift-evening');
+        else cellElement.classList.add('shift-custom');
     }
 
-    function renderJuly2026(schedule, generalData) {
+    function renderGrid() {
         calendarGrid.innerHTML = '';
-        
-        const totalDays = 31;
+        allGridElements = [];
+        document.body.appendChild(expandedPanel); // Убираем панель из сетки на время перерисовки
+
         const firstDayIndex = new Date(2026, 6, 1).getDay(); 
         const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1; 
-        const weekdays = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"];
         
+        // Пустые ячейки (до 1 июля)
         for (let i = 0; i < startOffset; i++) {
             const emptyCell = document.createElement('div');
             emptyCell.className = 'calendar-day empty';
             calendarGrid.appendChild(emptyCell);
+            allGridElements.push(emptyCell);
         }
         
-        for (let day = 1; day <= totalDays; day++) {
+        // Дни месяца
+        for (let day = 1; day <= 31; day++) {
             const dayStr = (day < 10 ? '0' + day : day) + '.07';
-            const weekdayName = weekdays[(startOffset + day - 1) % 7];
+            const cell = document.createElement('div');
+            cell.className = 'calendar-day';
+            cell.id = `cell-${dayStr}`;
+            cell.innerHTML = `<div class="day-number">${day}</div>`;
             
-            const dayCell = document.createElement('div');
-            dayCell.className = 'calendar-day';
-            dayCell.id = `cell-${dayStr}`;
+            // Раскрашиваем на основе pendingShifts (чтобы сохранялись изменения)
+            updateCellVisuals(cell, currentViewMode === 'personal' ? pendingShifts[dayStr] : globalSchedule[dayStr]);
             
-            const savedValue = schedule[dayStr] || "";
-            updateCellVisuals(dayCell, savedValue);
+            cell.addEventListener('click', () => handleDayClick(cell, dayStr));
             
-            if (currentViewMode === "personal") {
-                const isDayPreset = savedValue === "14:00 — 18:00";
-                const isEveningPreset = savedValue === "18:00 — 22:00" || savedValue === "18:00 -- 22:00";
-                const isCustom = savedValue !== "" && !isDayPreset && !isEveningPreset;
-                
-                let h1="", m1="", h2="", m2="";
-                if (isCustom) {
-                    const pieces = savedValue.split(/[-—]/);
-                    if (pieces.length === 2) {
-                        const t1 = pieces[0].trim().split(':');
-                        const t2 = pieces[1].trim().split(':');
-                        if (t1.length === 2) { h1 = t1[0]; m1 = t1[1]; }
-                        if (t2.length === 2) { h2 = t2[0]; m2 = t2[1]; }
-                    }
-                }
-                
-                dayCell.innerHTML = `
-                    <div class="day-number" data-weekday="(${weekdayName})">${day}</div>
-                    <div class="day-controls">
-                        <select class="shift-select" data-date="${dayStr}" onchange="onShiftSelectChange(this)">
-                            <option value="">-- Выбрать --</option>
-                            <option value="14:00 — 18:00" ${isDayPreset ? 'selected' : ''}>Дневная (14:00 — 18:00)</option>
-                            <option value="18:00 — 22:00" ${isEveningPreset ? 'selected' : ''}>Вечерняя (18:00 — 22:00)</option>
-                            <option value="custom" ${isCustom ? 'selected' : ''}>Свой вариант</option>
-                        </select>
-                        <div class="custom-time-container" id="custom-wrap-${dayStr}" style="display: ${isCustom ? 'block' : 'none'};">
-                            <div class="custom-time-inputs">
-                                <input type="text" class="time-part" id="h1-${dayStr}" maxlength="2" placeholder="ЧЧ" value="${h1}">:
-                                <input type="text" class="time-part" id="m1-${dayStr}" maxlength="2" placeholder="ММ" value="${m1}">
-                                <span class="time-divider">—</span>
-                                <input type="text" class="time-part" id="h2-${dayStr}" maxlength="2" placeholder="ЧЧ" value="${h2}">:
-                                <input type="text" class="time-part" id="m2-${dayStr}" maxlength="2" placeholder="ММ" value="${m2}">
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } else {
-                const dayInfo = generalData[dayStr] || { dayAdmin: "", eveningAdmin: "", dayPsychologists: [], eveningPsychologists: [] };
-                const dayPsychsLi = dayInfo.dayPsychologists.map(p => `<li>${p.name} (${p.time})</li>`).join('') || "<li>—</li>";
-                const evePsychsLi = dayInfo.eveningPsychologists.map(p => `<li>${p.name} (${p.time})</li>`).join('') || "<li>—</li>";
-
-                dayCell.innerHTML = `
-                    <div class="day-number" data-weekday="(${weekdayName})">${day}</div>
-                    <div class="general-details-box">
-                        <div class="details-columns">
-                            <div class="details-col">
-                                <div class="column-title">День</div>
-                                <div class="role-group"><span class="role-label">Админ:</span> ${dayInfo.dayAdmin || '—'}</div>
-                                <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${dayPsychsLi}</ul></div>
-                            </div>
-                            <div class="details-col">
-                                <div class="column-title">Вечер</div>
-                                <div class="role-group"><span class="role-label">Админ:</span> ${dayInfo.eveningAdmin || '—'}</div>
-                                <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${evePsychsLi}</ul></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            // ЕДИНЫЙ УНИВЕРСАЛЬНЫЙ АККОРДЕОН ДЛЯ ОБОИХ РЕЖИМОВ
-            dayCell.addEventListener('click', (e) => {
-                // Если кликнули по селекторам или инпутам, то не закрываем карточку
-                if (e.target.closest('.general-details-box') || e.target.closest('.day-controls')) return;
-
-                const isExpanded = dayCell.classList.contains('expanded');
-                
-                // Закрываем все остальные открытые дни
-                document.querySelectorAll('.calendar-day.expanded').forEach(el => {
-                    el.classList.remove('expanded');
-                });
-
-                // Если текущий день был закрыт — открываем его
-                if (!isExpanded) {
-                    dayCell.classList.add('expanded');
-                }
-            });
-            
-            calendarGrid.appendChild(dayCell);
+            calendarGrid.appendChild(cell);
+            allGridElements.push(cell);
         }
     }
 
-    window.onShiftSelectChange = function(select) {
-        const dateStr = select.getAttribute('data-date');
-        const customContainer = document.getElementById(`custom-wrap-${dateStr}`);
-        const cell = document.getElementById(`cell-${dateStr}`);
+    function handleDayClick(clickedCell, dayStr) {
+        // Убираем выделение со всех, ставим на текущий
+        document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
+        clickedCell.classList.add('selected');
+
+        // Находим, куда вставить панель (после последнего дня этой недели)
+        const cellIndex = allGridElements.indexOf(clickedCell);
+        const colIndex = cellIndex % 7; // 0 = ПН, 6 = ВС
+        const daysToSunday = 6 - colIndex;
+        let insertAfterIndex = cellIndex + daysToSunday;
         
-        if (select.value === 'custom') {
-            customContainer.style.display = 'block';
-        } else {
-            customContainer.style.display = 'none';
+        // Если неделя обрывается в конце месяца, вставляем после последнего дня месяца
+        if (insertAfterIndex >= allGridElements.length) {
+            insertAfterIndex = allGridElements.length - 1;
         }
-        updateCellVisuals(cell, select.value);
-    };
 
-    btnSave.addEventListener('click', () => {
-        loader.style.display = 'block';
-        btnSave.disabled = true;
+        const insertNode = allGridElements[insertAfterIndex];
+        insertNode.after(expandedPanel); // Перемещаем панель в DOM
+
+        // Рендерим содержимое панели в зависимости от режима
+        if (currentViewMode === 'personal') {
+            renderPersonalPanel(dayStr);
+        } else {
+            renderGeneralPanel(dayStr);
+        }
         
-        const shiftsPackage = {};
-        const allSelects = document.querySelectorAll('.shift-select');
+        expandedPanel.classList.add('active');
         
-        allSelects.forEach(select => {
-            const dateStr = select.getAttribute('data-date');
-            const mode = select.value;
-            
-            if (mode === "") {
-                shiftsPackage[dateStr] = ""; 
-            } else if (mode === "14:00 — 18:00" || mode === "18:00 — 22:00") {
-                shiftsPackage[dateStr] = mode;
-            } else if (mode === "custom") {
-                const h1 = document.getElementById(`h1-${dateStr}`).value.trim();
-                const m1 = document.getElementById(`m1-${dateStr}`).value.trim();
-                const h2 = document.getElementById(`h2-${dateStr}`).value.trim();
-                const m2 = document.getElementById(`m2-${dateStr}`).value.trim();
-                
-                if (!h1 && !m1 && !h2 && !m2) {
-                    shiftsPackage[dateStr] = "";
-                } else {
-                    shiftsPackage[dateStr] = `${h1.padStart(2, '0')}:${m1.padStart(2, '0')} — ${h2.padStart(2, '0')}:${m2.padStart(2, '0')}`;
-                }
+        // Плавный скролл к панели, если она за экраном
+        setTimeout(() => {
+            const rect = expandedPanel.getBoundingClientRect();
+            if(rect.bottom > window.innerHeight) {
+                expandedPanel.scrollIntoView({ behavior: 'smooth', block: 'end' });
             }
-        });
+        }, 50);
+    }
 
+    // --- ЛОГИКА ЛИЧНОЙ ПАНЕЛИ ---
+    function renderPersonalPanel(dayStr) {
+        const currentVal = pendingShifts[dayStr] || "";
+        const isDay = currentVal === "14:00 — 18:00";
+        const isEve = currentVal === "18:00 — 22:00" || currentVal === "18:00 -- 22:00";
+        const isCustom = currentVal !== "" && !isDay && !isEve;
+        
+        let h1="", m1="", h2="", m2="";
+        if (isCustom) {
+            const pieces = currentVal.split(/[-—]/);
+            if(pieces.length === 2) {
+                const t1 = pieces[0].trim().split(':'); const t2 = pieces[1].trim().split(':');
+                if(t1.length === 2) { h1 = t1[0]; m1 = t1[1]; }
+                if(t2.length === 2) { h2 = t2[0]; m2 = t2[1]; }
+            }
+        }
+
+        panelContent.innerHTML = `
+            <div class="panel-title">Управление сменой: ${dayStr}</div>
+            <div class="panel-controls">
+                <select id="panel-select">
+                    <option value="">-- Выходной / Сбросить --</option>
+                    <option value="14:00 — 18:00" ${isDay ? 'selected' : ''}>☀️ Дневная (14:00 — 18:00)</option>
+                    <option value="18:00 — 22:00" ${isEve ? 'selected' : ''}>🌙 Вечерняя (18:00 — 22:00)</option>
+                    <option value="custom" ${isCustom ? 'selected' : ''}>⚙️ Ввести своё время...</option>
+                </select>
+                <div id="panel-custom-box" class="custom-time-inputs" style="display: ${isCustom ? 'flex' : 'none'};">
+                    <input type="text" class="time-part" id="p-h1" maxlength="2" placeholder="ЧЧ" value="${h1}">:
+                    <input type="text" class="time-part" id="p-m1" maxlength="2" placeholder="ММ" value="${m1}">
+                    <span class="time-divider">—</span>
+                    <input type="text" class="time-part" id="p-h2" maxlength="2" placeholder="ЧЧ" value="${h2}">:
+                    <input type="text" class="time-part" id="p-m2" maxlength="2" placeholder="ММ" value="${m2}">
+                </div>
+            </div>
+        `;
+
+        const selectEl = document.getElementById('panel-select');
+        const customBox = document.getElementById('panel-custom-box');
+        const inputs = ['p-h1', 'p-m1', 'p-h2', 'p-m2'].map(id => document.getElementById(id));
+
+        const updateData = () => {
+            let newVal = selectEl.value;
+            if (newVal === 'custom') {
+                const vals = inputs.map(i => i.value.trim().padStart(2, '0'));
+                if (vals[0] !== "00" || vals[1] !== "00") {
+                    newVal = `${vals[0]}:${vals[1]} — ${vals[2]}:${vals[3]}`;
+                } else { newVal = ""; }
+            }
+            pendingShifts[dayStr] = newVal;
+            updateCellVisuals(document.getElementById(`cell-${dayStr}`), newVal);
+        };
+
+        selectEl.addEventListener('change', () => {
+            customBox.style.display = selectEl.value === 'custom' ? 'flex' : 'none';
+            if (selectEl.value !== 'custom') {
+                inputs.forEach(i => i.value = ""); // Очищаем кастом при переключении
+            }
+            updateData();
+        });
+        
+        inputs.forEach(input => input.addEventListener('input', updateData));
+    }
+
+    // --- ЛОГИКА ОБЩЕЙ ПАНЕЛИ ---
+    function renderGeneralPanel(dayStr) {
+        const info = globalGeneralData[dayStr] || { dayAdmins: [], eveningAdmins: [], dayPsychologists: [], eveningPsychologists: [] };
+        
+        const buildList = (arr) => arr.length ? arr.map(p => `<li>${p.name} <span style="color:#718096; font-size:12px;">(${p.time})</span></li>`).join('') : "<li>—</li>";
+
+        panelContent.innerHTML = `
+            <div class="panel-title">Расписание персонала на ${dayStr}</div>
+            <div class="general-details-box">
+                <div class="details-col">
+                    <div class="column-title">☀️ Дневная смена</div>
+                    <div class="role-group"><span class="role-label">Администраторы:</span><ul class="role-list">${buildList(info.dayAdmins)}</ul></div>
+                    <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildList(info.dayPsychologists)}</ul></div>
+                </div>
+                <div class="details-col">
+                    <div class="column-title">🌙 Вечерняя смена</div>
+                    <div class="role-group"><span class="role-label">Администраторы:</span><ul class="role-list">${buildList(info.eveningAdmins)}</ul></div>
+                    <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildList(info.eveningPsychologists)}</ul></div>
+                </div>
+            </div>
+        `;
+    }
+
+    // --- СОХРАНЕНИЕ ---
+    btnSave.addEventListener('click', () => {
+        btnSave.disabled = true;
+        btnSave.innerText = "Сохранение...";
+        
         fetch(WEB_APP_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify({ code: currentFullCode, shifts: shiftsPackage })
+            body: JSON.stringify({ code: currentFullCode, shifts: pendingShifts })
         })
         .then(res => res.json())
         .then(data => {
-            loader.style.display = 'none';
             btnSave.disabled = false;
+            btnSave.innerText = "Сохранить";
             if (data.success) {
-                showToast('Данные успешно сохранены, ауф!', 'success');
-                btnJuly.click(); 
+                showToast('Изменения успешно сохранены, ауф!');
+                globalSchedule = { ...pendingShifts }; // Фиксируем изменения
             } else {
-                showToast('Ошибка: Сотрудник не найден.', 'error');
+                showToast('Ошибка при сохранении.', 'error');
             }
         })
         .catch(err => {
-            loader.style.display = 'none';
             btnSave.disabled = false;
-            showToast('Сбой при сохранении данных ❌', 'error');
-            console.error(err);
+            btnSave.innerText = "Сохранить все изменения в Таблицу";
+            showToast('Сбой сети ❌', 'error');
         });
     });
 </script>
