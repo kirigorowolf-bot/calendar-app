@@ -4,23 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Расписание смен на июль 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #007bff;
             --success-color: #28a745;
             --danger-color: #dc3545;
-            --pastel-blue: #e3f2fd;
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
-            --text-color: #333333;
+            --text-color: #2c3e50;
             --border-color: #ced4da;
+            
+            /* Пастельная палитра для смен */
+            --pastel-blue: #e3f2fd;   /* Вечерняя */
+            --border-blue: #90caf9;
+            --pastel-orange: #ffe0b2; /* Дневная */
+            --border-orange: #ffb74d;
+            --pastel-pink: #f8bbd0;   /* Свой вариант */
+            --border-pink: #f06292;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
@@ -31,19 +41,49 @@
             justify-content: center;
         }
 
+        /* Стили для всплывающего уведомления (Toast) */
+        .toast {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 14px 28px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            transition: top 0.4s cubic-bezier(0.68, -0.55, 0.26, 1.55);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+        }
+        .toast.show {
+            top: 25px;
+        }
+        .toast.success {
+            background-color: #2ecc71;
+        }
+        .toast.error {
+            background-color: #e74c3c;
+        }
+
         .container {
             width: 100%;
-            max-width: 950px;
+            max-width: 1000px;
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
         }
 
         h2 {
             margin-bottom: 20px;
-            font-size: 22px;
-            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-color);
         }
 
         .form-group {
@@ -51,9 +91,10 @@
         }
 
         .input-title {
-            font-weight: 600;
-            margin-bottom: 6px;
+            font-weight: 700;
+            margin-bottom: 8px;
             display: block;
+            font-size: 16px;
         }
 
         .code-input-container {
@@ -64,16 +105,23 @@
         }
 
         select, input {
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
             font-size: 16px;
+            font-weight: 600;
             outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--primary-color);
         }
 
         .prefix-select {
-            width: 75px;
+            width: 85px;
             background-color: #fff;
+            cursor: pointer;
         }
 
         .digits-input {
@@ -88,9 +136,9 @@
         .error-message {
             color: var(--danger-color);
             font-size: 14px;
-            margin-top: 6px;
+            margin-top: 8px;
             display: none;
-            font-weight: 500;
+            font-weight: 700;
         }
 
         .main-buttons {
@@ -100,19 +148,30 @@
         }
 
         button {
-            padding: 12px 20px;
+            padding: 14px 22px;
             border: none;
-            border-radius: 6px;
-            font-size: 15px;
-            font-weight: 600;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            transition: opacity 0.2s, background-color 0.2s;
+            transition: all 0.2s ease;
         }
 
         button:disabled {
-            background-color: #e0e0e0;
-            color: #9e9e9e;
+            background-color: #e0e0e0 !important;
+            color: #9e9e9e !important;
             cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
         }
 
         .btn-primary {
@@ -131,46 +190,48 @@
             background-color: var(--success-color);
             color: white;
             width: 100%;
-            margin-top: 25px;
-            padding: 15px;
-            font-size: 17px;
+            margin-top: 30px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 800;
         }
 
         #calendar-section {
             display: none;
-            margin-top: 25px;
-            border-top: 2px solid #e9ecef;
-            padding-top: 20px;
+            margin-top: 30px;
+            border-top: 2px solid #edf2f7;
+            padding-top: 25px;
         }
 
         .calendar-header {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             text-align: center;
-            font-weight: bold;
-            margin-bottom: 10px;
-            background-color: #e9ecef;
-            padding: 10px 0;
-            border-radius: 6px;
-            font-size: 14px;
-            color: #495057;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background-color: #edf2f7;
+            padding: 12px 0;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #4a5568;
         }
 
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
+            gap: 12px;
         }
 
         .calendar-day {
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 8px;
-            min-height: 105px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 12px;
+            min-height: 135px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             background-color: #fff;
+            transition: all 0.3s ease;
         }
 
         .calendar-day.empty {
@@ -178,14 +239,30 @@
             border: none;
         }
 
-        .calendar-day.has-shift {
-            background-color: var(--pastel-blue);
-            border-color: #90caf9;
+        /* Цвета фонов в зависимости от типа смены */
+        .calendar-day.shift-day {
+            background-color: var(--pastel-orange);
+            border-color: var(--border-orange);
         }
 
+        .calendar-day.shift-evening {
+            background-color: var(--pastel-blue);
+            border-color: var(--border-blue);
+        }
+
+        .calendar-day.shift-custom {
+            background-color: var(--pastel-pink);
+            border-color: var(--border-pink);
+        }
+
+        /* Огромные скругленные числа для десктопа */
         .day-number {
-            font-weight: bold;
-            font-size: 15px;
+            font-weight: 800;
+            font-size: 42px;
+            line-height: 0.85;
+            color: var(--text-color);
+            margin-bottom: 10px;
+            letter-spacing: -1.5px;
         }
 
         .day-controls {
@@ -196,90 +273,105 @@
 
         .shift-select {
             width: 100%;
-            font-size: 12px;
-            padding: 5px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
+            font-size: 13px;
+            font-weight: 700;
+            padding: 8px 6px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
             margin-top: 5px;
             background-color: #fff;
+            color: var(--text-color);
+            cursor: pointer;
         }
 
         .custom-time-container {
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         .custom-time-inputs {
             display: flex;
             align-items: center;
-            gap: 2px;
+            gap: 3px;
             justify-content: start;
         }
 
         .time-part {
-            width: 32px;
-            padding: 3px 2px;
-            font-size: 11px;
+            width: 36px;
+            padding: 4px 2px;
+            font-size: 12px;
+            font-weight: 700;
             text-align: center;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
         }
 
         .time-divider {
-            font-size: 12px;
-            font-weight: bold;
-            color: #6c757d;
+            font-size: 14px;
+            font-weight: 800;
+            color: #718096;
         }
 
         .loader {
             display: none;
             text-align: center;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 18px;
+            font-weight: 800;
             color: var(--primary-color);
-            margin: 15px 0;
+            margin: 25px 0;
         }
 
         /* Мобильная адаптация */
-        @media (max-width: 650px) {
+        @media (max-width: 768px) {
             .calendar-header {
                 display: none;
             }
             .calendar-grid {
                 grid-template-columns: 1fr;
-                gap: 8px;
+                gap: 10px;
             }
             .calendar-day {
                 flex-direction: row;
                 align-items: center;
                 justify-content: space-between;
                 min-height: auto;
-                padding: 12px;
+                padding: 14px 16px;
+                border-radius: 14px;
             }
             .calendar-day.empty {
                 display: none;
             }
+            /* Возвращаем адекватный размер шрифта для телефона */
+            .day-number {
+                font-size: 22px;
+                letter-spacing: normal;
+                margin-bottom: 0;
+            }
             .day-number::after {
                 content: " " attr(data-weekday);
-                font-weight: normal;
-                color: #6c757d;
-                font-size: 13px;
+                font-weight: 600;
+                color: #718096;
+                font-size: 14px;
+                margin-left: 4px;
             }
             .day-controls {
                 width: auto;
                 align-items: flex-end;
-                max-width: 210px;
+                max-width: 220px;
             }
             .shift-select {
                 margin-top: 0;
-                font-size: 13px;
+                font-size: 14px;
+                padding: 8px 10px;
             }
             .custom-time-container {
-                margin-top: 5px;
+                margin-top: 8px;
             }
         }
     </style>
 </head>
 <body>
+
+<div id="toast" class="toast"></div>
 
 <div class="container">
     <h2>Расписание смен на июль 2026</h2>
@@ -301,7 +393,7 @@
         <button id="btn-booking" class="btn-secondary" disabled>Абоненты по записи</button>
     </div>
 
-    <div id="loader" class="loader">Связь с базой данных... Пожалуйста, подождите.</div>
+    <div id="loader" class="loader">Загрузка календаря... Пожалуйста, подождите ⏳</div>
 
     <div id="calendar-section">
         <div class="calendar-header">
@@ -313,7 +405,6 @@
 </div>
 
 <script>
-    // ВСТАВЬТЕ СЮДА ССЫЛКУ ИЗ GOOGLE APPS SCRIPT
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzPTujjJfHkRNuE-_chKl0kYxxE-usLak1KzTmTRtaRC2llT6bIu-fkUVdhXlddbys5/exec";
 
     const digitsInput = document.getElementById('digits-input');
@@ -325,8 +416,22 @@
     const calendarGrid = document.getElementById('calendar-grid');
     const loader = document.getElementById('loader');
     const btnSave = document.getElementById('btn-save');
+    const toast = document.getElementById('toast');
 
     let currentFullCode = "";
+    let toastTimeout;
+
+    // Функция показа красивых уведомлений
+    function showToast(message, type = 'success') {
+        clearTimeout(toastTimeout);
+        toast.className = `toast ${type}`;
+        toast.innerHTML = message;
+        toast.classList.add('show');
+        
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3500);
+    }
 
     // Интерактивная валидация ввода
     digitsInput.addEventListener('input', () => {
@@ -355,13 +460,12 @@
         loader.style.display = 'block';
         calendarSection.style.display = 'none';
         
-        // Запрос данных с бэкенда Google Sheets
         fetch(`${WEB_APP_URL}?action=getData&code=${encodeURIComponent(currentFullCode)}`)
             .then(res => res.json())
             .then(data => {
                 loader.style.display = 'none';
                 if(data.error) {
-                    alert('Ошибка на стороне бэкенда: ' + data.error);
+                    showToast('Ошибка сервера: ' + data.error, 'error');
                     return;
                 }
                 renderJuly2026(data.schedule || {});
@@ -370,23 +474,36 @@
             })
             .catch(err => {
                 loader.style.display = 'none';
-                alert('Не удалось связаться с Google Таблицей. Проверьте правильность URL.');
+                showToast('Не удалось связаться с Google Таблицей 🔌', 'error');
                 console.error(err);
             });
     });
+
+    // Функция обновления цвета ячейки
+    function updateCellVisuals(cellElement, shiftValue) {
+        cellElement.classList.remove('shift-day', 'shift-evening', 'shift-custom');
+        if (!shiftValue) return;
+
+        if (shiftValue === "14:00 — 18:00") {
+            cellElement.classList.add('shift-day');
+        } else if (shiftValue === "18:00 — 22:00" || shiftValue === "18:00 -- 22:00") {
+            cellElement.classList.add('shift-evening');
+        } else {
+            cellElement.classList.add('shift-custom');
+        }
+    }
 
     // Динамическая сборка сетки календаря
     function renderJuly2026(schedule) {
         calendarGrid.innerHTML = '';
         
         const totalDays = 31;
-        // 1 июля 2026 года — среда (в JS getDay возвращает 0 для ВС, 1 для ПН ... 3 для СР)
         const firstDayIndex = new Date(2026, 6, 1).getDay(); 
-        const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1; // Смещение для СР = 2 пустые ячейки
+        const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1; 
         
         const weekdays = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"];
         
-        // Вставка пустых блоков для смещения дней недели
+        // Вставка пустых блоков
         for (let i = 0; i < startOffset; i++) {
             const emptyCell = document.createElement('div');
             emptyCell.className = 'calendar-day empty';
@@ -403,16 +520,12 @@
             dayCell.id = `cell-${dayStr}`;
             
             const savedValue = schedule[dayStr] || "";
-            if (savedValue !== "") {
-                dayCell.classList.add('has-shift');
-            }
+            updateCellVisuals(dayCell, savedValue);
             
-            // Определение пресетов времени
             const isDayPreset = savedValue === "14:00 — 18:00";
             const isEveningPreset = savedValue === "18:00 — 22:00" || savedValue === "18:00 -- 22:00";
             const isCustom = savedValue !== "" && !isDayPreset && !isEveningPreset;
             
-            // Разбивка произвольного времени на блоки часов/минут
             let h1="", m1="", h2="", m2="";
             if (isCustom) {
                 const pieces = savedValue.split(/[-—]/);
@@ -429,8 +542,8 @@
                 <div class="day-controls">
                     <select class="shift-select" data-date="${dayStr}" onchange="onShiftSelectChange(this)">
                         <option value="">-- Выбрать --</option>
-                        <option value="14:00 — 18:00" ${isDayPreset ? 'selected' : ''}>Дневная смена с 14 до 18</option>
-                        <option value="18:00 — 22:00" ${isEveningPreset ? 'selected' : ''}>Вечерняя смена с 18 до 22</option>
+                        <option value="14:00 — 18:00" ${isDayPreset ? 'selected' : ''}>Дневная (14:00 — 18:00)</option>
+                        <option value="18:00 — 22:00" ${isEveningPreset ? 'selected' : ''}>Вечерняя (18:00 — 22:00)</option>
                         <option value="custom" ${isCustom ? 'selected' : ''}>Свой вариант</option>
                     </select>
                     
@@ -462,12 +575,8 @@
             customContainer.style.display = 'none';
         }
         
-        // Динамическая подсветка прямо на клиенте при редактировании
-        if (select.value !== "") {
-            cell.classList.add('has-shift');
-        } else {
-            cell.classList.remove('has-shift');
-        }
+        // Мгновенное перекрашивание ячейки при выборе
+        updateCellVisuals(cell, select.value);
     };
 
     // Отправка данных на запись
@@ -483,7 +592,7 @@
             const mode = select.value;
             
             if (mode === "") {
-                shiftsPackage[dateStr] = ""; // Удаление/пустое поле
+                shiftsPackage[dateStr] = ""; 
             } else if (mode === "14:00 — 18:00" || mode === "18:00 — 22:00") {
                 shiftsPackage[dateStr] = mode;
             } else if (mode === "custom") {
@@ -495,7 +604,6 @@
                 if (!h1 && !m1 && !h2 && !m2) {
                     shiftsPackage[dateStr] = "";
                 } else {
-                    // Форматирование к стандартному виду ЧЧ:ММ — ЧЧ:ММ
                     const formattedH1 = h1.padStart(2, '0');
                     const formattedM1 = m1.padStart(2, '0');
                     const formattedH2 = h2.padStart(2, '0');
@@ -505,7 +613,6 @@
             }
         });
 
-        // Отправляем через text/plain для обхода CORS preflight со стороны сторонних ресурсов
         fetch(WEB_APP_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain' },
@@ -519,17 +626,16 @@
             loader.style.display = 'none';
             btnSave.disabled = false;
             if (data.success) {
-                alert('Данные успешно сохранены!');
-                // Обновляем состояние и подсветку из первоисточника
-                btnJuly.click();
+                showToast('Данные успешно сохранены, ауф!', 'success');
+                btnJuly.click(); // Фоновое обновление данных
             } else {
-                alert('Ошибка: Код не найден в таблице.');
+                showToast('Ошибка: Сотрудник с таким кодом не найден.', 'error');
             }
         })
         .catch(err => {
             loader.style.display = 'none';
             btnSave.disabled = false;
-            alert('Сбой при сохранении данных.');
+            showToast('Сбой при сохранении данных ❌', 'error');
             console.error(err);
         });
     });
