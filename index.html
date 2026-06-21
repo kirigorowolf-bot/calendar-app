@@ -148,7 +148,7 @@
             </select>
             <input type="text" id="digits-input" class="digits-input" placeholder="Три цифры" inputmode="numeric" maxlength="5">
         </div>
-        <div id="error-message" class="error-message">Введите код, состоящий из трёх цифр</div>
+        <div id="error-message" class="error-message">Введите код, состоящий из трёх цифр, вуф 🐺</div>
     </div>
 
     <div class="main-buttons">
@@ -157,7 +157,7 @@
         <button id="btn-booking" class="btn-secondary" disabled>Абоненты по записи</button>
     </div>
 
-    <div id="loader" class="loader">Связь с базой данных... Пожалуйста, подождите ⏳</div>
+    <div id="loader" class="loader">Загрузка календаря... Пожалуйста, подождите ⏳</div>
 
     <div id="calendar-section">
         <div class="calendar-header">
@@ -174,7 +174,7 @@
 </div>
 
 <script>
-    const WEB_APP_URL = "ЗАМЕНИТЕ_ЭТОТ_ТЕКСТ_НА_ВАШУ_ССЫЛКУ_ИЗ_APPS_SCRIPT";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzPTujjJfHkRNuE-_chKl0kYxxE-usLak1KzTmTRtaRC2llT6bIu-fkUVdhXlddbys5/exec";
 
     const digitsInput = document.getElementById('digits-input');
     const prefixSelect = document.getElementById('prefix-select');
@@ -468,7 +468,7 @@
             loader.style.display = 'none';
             btnSave.disabled = false;
             if (data.success) {
-                showToast('Данные успешно сохранены!', 'success');
+                showToast('Данные успешно сохранены, ауф!', 'success');
             } else {
                 showToast('Ошибка: Сотрудник не найден.', 'error');
             }
