@@ -407,12 +407,6 @@ for (let day = 1; day <= totalDays; day++) {
             calendarGrid.appendChild(cell);
             allGridElements.push(cell);
         }
-            
-            cell.addEventListener('click', () => handleDayClick(cell, dayStr));
-            
-            calendarGrid.appendChild(cell);
-            allGridElements.push(cell);
-        }
     }
 
     function handleDayClick(clickedCell, dayStr) {
