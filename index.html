@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расписание смен на июль 2026</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --pastel-blue: #e3f2fd;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #ced4da;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .input-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .code-input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            max-width: 340px;
+        }
+
+        select, input {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .prefix-select {
+            width: 75px;
+            background-color: #fff;
+        }
+
+        .digits-input {
+            flex: 1;
+        }
+
+        .digits-input.invalid {
+            border-color: var(--danger-color);
+            background-color: #fff5f5;
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 14px;
+            margin-top: 6px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .main-buttons {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+
+        button:disabled {
+            background-color: #e0e0e0;
+            color: #9e9e9e;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+            width: 100%;
+            margin-top: 25px;
+            padding: 15px;
+            font-size: 17px;
+        }
+
+        #calendar-section {
+            display: none;
+            margin-top: 25px;
+            border-top: 2px solid #e9ecef;
+            padding-top: 20px;
+        }
+
+        .calendar-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background-color: #e9ecef;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-day {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 8px;
+            min-height: 105px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: #fff;
+        }
+
+        .calendar-day.empty {
+            background-color: #f8f9fa;
+            border: none;
+        }
+
+        .calendar-day.has-shift {
+            background-color: var(--pastel-blue);
+            border-color: #90caf9;
+        }
+
+        .day-number {
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .day-controls {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .shift-select {
+            width: 100%;
+            font-size: 12px;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            margin-top: 5px;
+            background-color: #fff;
+        }
+
+        .custom-time-container {
+            margin-top: 6px;
+        }
+
+        .custom-time-inputs {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            justify-content: start;
+        }
+
+        .time-part {
+            width: 32px;
+            padding: 3px 2px;
+            font-size: 11px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .time-divider {
+            font-size: 12px;
+            font-weight: bold;
+            color: #6c757d;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 15px 0;
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 650px) {
+            .calendar-header {
+                display: none;
+            }
+            .calendar-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .calendar-day {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                min-height: auto;
+                padding: 12px;
+            }
+            .calendar-day.empty {
+                display: none;
+            }
+            .day-number::after {
+                content: " " attr(data-weekday);
+                font-weight: normal;
+                color: #6c757d;
+                font-size: 13px;
+            }
+            .day-controls {
+                width: auto;
+                align-items: flex-end;
+                max-width: 210px;
+            }
+            .shift-select {
+                margin-top: 0;
+                font-size: 13px;
+            }
+            .custom-time-container {
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Интеграция с Гугл Таблицами</h2>
+    
+    <div class="form-group">
+        <span class="input-title">Введите ваш код:</span>
+        <div class="code-input-container">
+            <select id="prefix-select" class="prefix-select">
+                <option value="к">к</option>
+                <option value="в">в</option>
+            </select>
+            <input type="text" id="digits-input" class="digits-input" placeholder="Три цифры" inputmode="numeric" maxlength="5">
+        </div>
+        <div id="error-message" class="error-message">Введите код, состоящий из трёх цифр, вуф 🐺</div>
+    </div>
+
+    <div class="main-buttons">
+        <button id="btn-july" class="btn-primary" disabled>Смены в июле</button>
+        <button id="btn-booking" class="btn-secondary" disabled>Абоненты по записи</button>
+    </div>
+
+    <div id="loader" class="loader">Связь с базой данных... Пожалуйста, подождите.</div>
+
+    <div id="calendar-section">
+        <div class="calendar-header">
+            <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div>
+        </div>
+        <div id="calendar-grid" class="calendar-grid"></div>
+        <button id="btn-save" class="btn-success">Сохранить изменения в Таблицу</button>
+    </div>
+</div>
+
+<script>
+    // ВСТАВЬТЕ СЮДА ССЫЛКУ ИЗ GOOGLE APPS SCRIPT
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwf_pCxCAjKkUTEllJJjTBoHWxQsvppfFn377IOjkisq1y0majFFKATbMxSQTVO5euwfQ/exec";
+
+    const digitsInput = document.getElementById('digits-input');
+    const prefixSelect = document.getElementById('prefix-select');
+    const errorMessage = document.getElementById('error-message');
+    const btnJuly = document.getElementById('btn-july');
+    const btnBooking = document.getElementById('btn-booking');
+    const calendarSection = document.getElementById('calendar-section');
+    const calendarGrid = document.getElementById('calendar-grid');
+    const loader = document.getElementById('loader');
+    const btnSave = document.getElementById('btn-save');
+
+    let currentFullCode = "";
+
+    // Интерактивная валидация ввода
+    digitsInput.addEventListener('input', () => {
+        const val = digitsInput.value.trim();
+        if (/^\d{3}$/.test(val)) {
+            digitsInput.classList.remove('invalid');
+            errorMessage.style.display = 'none';
+            btnJuly.disabled = false;
+            btnBooking.disabled = false;
+            updateFullCode();
+        } else {
+            digitsInput.classList.add('invalid');
+            errorMessage.style.display = 'block';
+            btnJuly.disabled = true;
+            btnBooking.disabled = true;
+        }
+    });
+
+    prefixSelect.addEventListener('change', updateFullCode);
+
+    function updateFullCode() {
+        currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim();
+    }
+
+    btnJuly.addEventListener('click', () => {
+        loader.style.display = 'block';
+        calendarSection.style.display = 'none';
+        
+        // Запрос данных с бэкенда Google Sheets
+        fetch(`${WEB_APP_URL}?action=getData&code=${encodeURIComponent(currentFullCode)}`)
+            .then(res => res.json())
+            .then(data => {
+                loader.style.display = 'none';
+                if(data.error) {
+                    alert('Ошибка на стороне бэкенда: ' + data.error);
+                    return;
+                }
+                renderJuly2026(data.schedule || {});
+                calendarSection.style.display = 'block';
+                calendarSection.scrollIntoView({ behavior: 'smooth' });
+            })
+            .catch(err => {
+                loader.style.display = 'none';
+                alert('Не удалось связаться с Google Таблицей. Проверьте правильность URL.');
+                console.error(err);
+            });
+    });
+
+    // Динамическая сборка сетки календаря
+    function renderJuly2026(schedule) {
+        calendarGrid.innerHTML = '';
+        
+        const totalDays = 31;
+        // 1 июля 2026 года — среда (в JS getDay возвращает 0 для ВС, 1 для ПН ... 3 для СР)
+        const firstDayIndex = new Date(2026, 6, 1).getDay(); 
+        const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1; // Смещение для СР = 2 пустые ячейки
+        
+        const weekdays = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"];
+        
+        // Вставка пустых блоков для смещения дней недели
+        for (let i = 0; i < startOffset; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.className = 'calendar-day empty';
+            calendarGrid.appendChild(emptyCell);
+        }
+        
+        // Генерация 31 дня
+        for (let day = 1; day <= totalDays; day++) {
+            const dayStr = (day < 10 ? '0' + day : day) + '.07';
+            const weekdayName = weekdays[(startOffset + day - 1) % 7];
+            
+            const dayCell = document.createElement('div');
+            dayCell.className = 'calendar-day';
+            dayCell.id = `cell-${dayStr}`;
+            
+            const savedValue = schedule[dayStr] || "";
+            if (savedValue !== "") {
+                dayCell.classList.add('has-shift');
+            }
+            
+            // Определение пресетов времени
+            const isDayPreset = savedValue === "14:00 — 18:00";
+            const isEveningPreset = savedValue === "18:00 — 22:00" || savedValue === "18:00 -- 22:00";
+            const isCustom = savedValue !== "" && !isDayPreset && !isEveningPreset;
+            
+            // Разбивка произвольного времени на блоки часов/минут
+            let h1="", m1="", h2="", m2="";
+            if (isCustom) {
+                const pieces = savedValue.split(/[-—]/);
+                if (pieces.length === 2) {
+                    const t1 = pieces[0].trim().split(':');
+                    const t2 = pieces[1].trim().split(':');
+                    if (t1.length === 2) { h1 = t1[0]; m1 = t1[1]; }
+                    if (t2.length === 2) { h2 = t2[0]; m2 = t2[1]; }
+                }
+            }
+            
+            dayCell.innerHTML = `
+                <div class="day-number" data-weekday="(${weekdayName})">${day}</div>
+                <div class="day-controls">
+                    <select class="shift-select" data-date="${dayStr}" onchange="onShiftSelectChange(this)">
+                        <option value="">-- Выбрать --</option>
+                        <option value="14:00 — 18:00" ${isDayPreset ? 'selected' : ''}>Дневная смена с 14 до 18</option>
+                        <option value="18:00 — 22:00" ${isEveningPreset ? 'selected' : ''}>Вечерняя смена с 18 до 22</option>
+                        <option value="custom" ${isCustom ? 'selected' : ''}>Свой вариант</option>
+                    </select>
+                    
+                    <div class="custom-time-container" id="custom-wrap-${dayStr}" style="display: ${isCustom ? 'block' : 'none'};">
+                        <div class="custom-time-inputs">
+                            <input type="text" class="time-part" id="h1-${dayStr}" maxlength="2" placeholder="ЧЧ" value="${h1}">:
+                            <input type="text" class="time-part" id="m1-${dayStr}" maxlength="2" placeholder="ММ" value="${m1}">
+                            <span class="time-divider">—</span>
+                            <input type="text" class="time-part" id="h2-${dayStr}" maxlength="2" placeholder="ЧЧ" value="${h2}">:
+                            <input type="text" class="time-part" id="m2-${dayStr}" maxlength="2" placeholder="ММ" value="${m2}">
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            calendarGrid.appendChild(dayCell);
+        }
+    }
+
+    // Обработчик переключения селектора смен
+    window.onShiftSelectChange = function(select) {
+        const dateStr = select.getAttribute('data-date');
+        const customContainer = document.getElementById(`custom-wrap-${dateStr}`);
+        const cell = document.getElementById(`cell-${dateStr}`);
+        
+        if (select.value === 'custom') {
+            customContainer.style.display = 'block';
+        } else {
+            customContainer.style.display = 'none';
+        }
+        
+        // Динамическая подсветка прямо на клиенте при редактировании
+        if (select.value !== "") {
+            cell.classList.add('has-shift');
+        } else {
+            cell.classList.remove('has-shift');
+        }
+    };
+
+    // Отправка данных на запись
+    btnSave.addEventListener('click', () => {
+        loader.style.display = 'block';
+        btnSave.disabled = true;
+        
+        const shiftsPackage = {};
+        const allSelects = document.querySelectorAll('.shift-select');
+        
+        allSelects.forEach(select => {
+            const dateStr = select.getAttribute('data-date');
+            const mode = select.value;
+            
+            if (mode === "") {
+                shiftsPackage[dateStr] = ""; // Удаление/пустое поле
+            } else if (mode === "14:00 — 18:00" || mode === "18:00 — 22:00") {
+                shiftsPackage[dateStr] = mode;
+            } else if (mode === "custom") {
+                const h1 = document.getElementById(`h1-${dateStr}`).value.trim();
+                const m1 = document.getElementById(`m1-${dateStr}`).value.trim();
+                const h2 = document.getElementById(`h2-${dateStr}`).value.trim();
+                const m2 = document.getElementById(`m2-${dateStr}`).value.trim();
+                
+                if (!h1 && !m1 && !h2 && !m2) {
+                    shiftsPackage[dateStr] = "";
+                } else {
+                    // Форматирование к стандартному виду ЧЧ:ММ — ЧЧ:ММ
+                    const formattedH1 = h1.padStart(2, '0');
+                    const formattedM1 = m1.padStart(2, '0');
+                    const formattedH2 = h2.padStart(2, '0');
+                    const formattedM2 = m2.padStart(2, '0');
+                    shiftsPackage[dateStr] = `${formattedH1}:${formattedM1} — ${formattedH2}:${formattedM2}`;
+                }
+            }
+        });
+
+        // Отправляем через text/plain для обхода CORS preflight со стороны сторонних ресурсов
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({
+                code: currentFullCode,
+                shifts: shiftsPackage
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            loader.style.display = 'none';
+            btnSave.disabled = false;
+            if (data.success) {
+                alert('Данные успешно сохранены!');
+                // Обновляем состояние и подсветку из первоисточника
+                btnJuly.click();
+            } else {
+                alert('Ошибка: Код не найден в таблице.');
+            }
+        })
+        .catch(err => {
+            loader.style.display = 'none';
+            btnSave.disabled = false;
+            alert('Сбой при сохранении данных.');
+            console.error(err);
+        });
+    });
+</script>
+</body>
+</html>
