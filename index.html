@@ -1,501 +1,457 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Расписание смен на июль 2026</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #007bff;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --info-color: #17a2b8;
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-color: #2c3e50;
-            --border-color: #ced4da;
-            
-            /* Пастельная палитра для смен */
-            --pastel-blue: #e3f2fd;   
-            --border-blue: #90caf9;
-            --pastel-orange: #ffe0b2; 
-            --border-orange: #ffb74d;
-            --pastel-pink: #cbf8bb;   
-            --border-pink: #62f08f;
-        }
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Расписание смен на июль 2026</title>
+ <link rel="preconnect" href="https://googleapis.com">
+ <link rel="preconnect" href="https://gstatic.com" crossorigin>
+ <link href="https://googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+ <style>
+ :root {
+ --primary-color: #007bff;
+ --success-color: #28a745;
+ --danger-color: #dc3545;
+ --info-color: #17a2b8;
+ --bg-color: #f8f9fa;
+ --card-bg: #ffffff;
+ --text-color: #2c3e50;
+ --border-color: #ced4da;
+ 
+ /* Пастельная палитра для смен */
+ --pastel-blue: #e3f2fd; 
+ --border-blue: #90caf9;
+ --pastel-orange: #ffe0b2; 
+ --border-orange: #ffb74d;
+ --pastel-pink: #cbf8bb; 
+ --border-pink: #62f08f;
+ }
+ * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+ body { background-color: var(--bg-color); color: var(--text-color); padding: 15px; display: flex; justify-content: center; }
+ .toast {
+ position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 14px 28px;
+ border-radius: 50px; color: white; font-weight: 700; font-size: 16px;
+ box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); transition: top 0.4s cubic-bezier(0.68, -0.55, 0.26, 1.55); z-index: 9999;
+ display: flex; align-items: center; gap: 10px; text-align: center;
+ }
+ .toast.show { top: 25px; }
+ .toast.success { background-color: #2ecc71; }
+ .toast.error { background-color: #e74c3c; }
+ .container { width: 100%; max-width: 1000px; background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+ h2 { margin-bottom: 20px; font-size: 24px; font-weight: 800; color: var(--text-color); }
+ .form-group { margin-bottom: 15px; }
+ .input-title { font-weight: 700; margin-bottom: 8px; display: block; font-size: 16px; }
+ .code-input-container { display: flex; gap: 10px; align-items: center; max-width: 340px; }
+ 
+ select, input { padding: 12px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 16px; font-weight: 600; outline: none; transition: border-color 0.2s; }
+ select:focus, input:focus { border-color: var(--primary-color); }
+ .prefix-select { width: 85px; background-color: #fff; cursor: pointer; }
+ .digits-input { flex: 1; }
+ .digits-input.invalid { border-color: var(--danger-color); background-color: #fff5f5; }
+ .error-message { color: var(--danger-color); font-size: 14px; margin-top: 8px; display: none; font-weight: 700; }
+ .main-buttons { display: flex; gap: 12px; margin: 20px 0; flex-wrap: wrap; }
+ button { padding: 14px 22px; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; flex: 1; min-width: 150px; }
+ button:disabled { background-color: #e0e0e0 !important; color: #9e9e9e !important; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+ button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+ button:active:not(:disabled) { transform: translateY(0); }
+ .btn-primary { background-color: var(--primary-color); color: white; }
+ .btn-info { background-color: var(--info-color); color: white; }
+ .btn-secondary { background-color: #6c757d; color: white; }
+ .btn-success { background-color: var(--success-color); color: white; width: 100%; margin-top: 30px; padding: 16px; font-size: 18px; font-weight: 800; display: none; }
+ 
+ /* Блок предупреждения для кода 'к' */
+ .admin-warning { display: none; background-color: #fff3cd; border: 2px solid #ffeeba; color: #856404; padding: 12px 16px; border-radius: 12px; font-weight: 700; margin-bottom: 15px; font-size: 15px; text-align: center; }
+ 
+ #calendar-section { display: none; margin-top: 30px; border-top: 2px solid #edf2f7; padding-top: 25px; }
+ .calendar-header { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 800; margin-bottom: 12px; background-color: #edf2f7; padding: 12px 0; border-radius: 12px; font-size: 15px; color: #4a5568; }
+ 
+ /* Сетка календаря */
+ .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; position: relative; }
+ 
+ /* Компактные ячейки */
+ .calendar-day {
+ border: 2px solid #e2e8f0; border-radius: 16px; min-height: 80px; 
+ display: flex; justify-content: center; align-items: center;
+ background-color: #fff; transition: all 0.2s; cursor: pointer;
+ position: relative; 
+ }
+ .calendar-day.empty { background-color: transparent; border: none; cursor: default; }
+ .calendar-day.selected { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,123,255,0.2); transform: scale(1.03); z-index: 10; }
+ 
+ .day-number { font-weight: 800; font-size: 28px; color: var(--text-color); }
+ /* Цвета смен */
+ .calendar-day.shift-day { background-color: var(--pastel-orange); border-color: var(--border-orange); }
+ .calendar-day.shift-evening { background-color: var(--pastel-blue); border-color: var(--border-blue); }
+ .calendar-day.shift-custom { background-color: var(--pastel-pink); border-color: var(--border-pink); }
+ 
+ /* Темно-красная рамка для критических дней (0 смен по ТЗ) */
+ .calendar-day.critical-border { border: 3px solid #8b0000 !important; box-shadow: inset 0 0 4px rgba(139,0,0,0.2); }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); padding: 15px; display: flex; justify-content: center; }
-
-        .toast {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 14px 28px;
-            border-radius: 50px; color: white; font-weight: 700; font-size: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2); transition: top 0.4s cubic-bezier(0.68, -0.55, 0.26, 1.55); z-index: 9999;
-            display: flex; align-items: center; gap: 10px; text-align: center;
-        }
-        .toast.show { top: 25px; }
-        .toast.success { background-color: #2ecc71; }
-        .toast.error { background-color: #e74c3c; }
-
-        .container { width: 100%; max-width: 1000px; background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
-        h2 { margin-bottom: 20px; font-size: 24px; font-weight: 800; color: var(--text-color); }
-        .form-group { margin-bottom: 15px; }
-        .input-title { font-weight: 700; margin-bottom: 8px; display: block; font-size: 16px; }
-        .code-input-container { display: flex; gap: 10px; align-items: center; max-width: 340px; }
-        
-        select, input { padding: 12px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 16px; font-weight: 600; outline: none; transition: border-color 0.2s; }
-        select:focus, input:focus { border-color: var(--primary-color); }
-        .prefix-select { width: 85px; background-color: #fff; cursor: pointer; }
-        .digits-input { flex: 1; }
-        .digits-input.invalid { border-color: var(--danger-color); background-color: #fff5f5; }
-        .error-message { color: var(--danger-color); font-size: 14px; margin-top: 8px; display: none; font-weight: 700; }
-
-        .main-buttons { display: flex; gap: 12px; margin: 20px 0; flex-wrap: wrap; }
-        button { padding: 14px 22px; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; flex: 1; min-width: 150px; }
-        button:disabled { background-color: #e0e0e0 !important; color: #9e9e9e !important; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
-        button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
-        button:active:not(:disabled) { transform: translateY(0); }
-
-        .btn-primary { background-color: var(--primary-color); color: white; }
-        .btn-info { background-color: var(--info-color); color: white; }
-        .btn-secondary { background-color: #6c757d; color: white; }
-        .btn-success { background-color: var(--success-color); color: white; width: 100%; margin-top: 30px; padding: 16px; font-size: 18px; font-weight: 800; display: none; }
-
-        #calendar-section { display: none; margin-top: 30px; border-top: 2px solid #edf2f7; padding-top: 25px; }
-        .calendar-header { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 800; margin-bottom: 12px; background-color: #edf2f7; padding: 12px 0; border-radius: 12px; font-size: 15px; color: #4a5568; }
-        
-        /* Сетка календаря */
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; position: relative; }
-        
-        /* Компактные ячейки */
-        .calendar-day {
-            border: 2px solid #e2e8f0; border-radius: 16px; min-height: 80px; 
-            display: flex; justify-content: center; align-items: center;
-            background-color: #fff; transition: all 0.2s; cursor: pointer;
-            position: relative; /* Важно для абсолютного позиционирования окошка */
-        }
-        .calendar-day.empty { background-color: transparent; border: none; cursor: default; }
-        .calendar-day.selected { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,123,255,0.2); transform: scale(1.03); z-index: 10; }
-        
-        .day-number { font-weight: 800; font-size: 28px; color: var(--text-color); }
-
-        /* Цвета смен */
-        .calendar-day.shift-day { background-color: var(--pastel-orange); border-color: var(--border-orange); }
-        .calendar-day.shift-evening { background-color: var(--pastel-blue); border-color: var(--border-blue); }
-        .calendar-day.shift-custom { background-color: var(--pastel-pink); border-color: var(--border-pink); }
-
-        /* Стили для счетчиков психологов в общем расписании */
-        .day-number-tl {
-            position: absolute;
-            top: 6px;
-            left: 8px;
-            font-weight: 800;
-            font-size: 13px;
-            color: #718096;
-            line-height: 1;
-        }
-        .psy-counters {
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 14px;
-        }
-        .counter-column {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            line-height: 1;
-        }
-        .counter-icon {
-            font-size: 13px;
-            margin-bottom: 3px;
-        }
-        .counter-num {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--text-color);
-        }
-        .counter-slash {
-            font-size: 20px;
-            color: #cbd5e1;
-            font-weight: 400;
-            line-height: 1;
-        }
-
-        /* ВЫДВИЖНАЯ ПАНЕЛЬ (КОМПАКТНАЯ, БЕЗ ТОЛСТЫХ РАМОК) */
-        .expanded-panel {
-            grid-column: 1 / -1;
-            background: #ffffff;
-            border: 1px solid #e2e8f0; /* Легкая нейтральная рамка */
-            border-radius: 14px;
-            padding: 12px 18px; /* Компактные отступы */
-            margin: 4px 0 10px 0;
-            display: none;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-            animation: slideDown 0.2s ease-out;
-        }
-        .expanded-panel.active { display: block; }
-        
-        /* КОМПАКТНОЕ ВСПЛЫВАЮЩЕЕ ОКНО ДЛЯ ДЕСКТOПА (РЕЖИМ ЗАПИСИ СМЕН) */
-        .desktop-popover {
-            position: absolute;
-            top: 102%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 10px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            z-index: 110;
-            min-width: 210px;
-            cursor: default;
-        }
-
-        .panel-title { font-size: 15px; font-weight: 800; margin-bottom: 8px; color: var(--primary-color); border-bottom: 1px dashed #edf2f7; padding-bottom: 4px; }
-        .panel-controls { display: flex; flex-direction: column; gap: 8px; width: 100%; }
-        .shift-select { width: 100%; font-size: 14px; padding: 8px; border-radius: 8px; border: 2px solid var(--border-color); background-color: #fff; cursor: pointer; }
-        
-        .custom-time-inputs { display: flex; align-items: center; justify-content: center; gap: 4px; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
-        .time-part { width: 40px; padding: 5px 3px; font-size: 13px; text-align: center; border: 2px solid var(--border-color); border-radius: 6px; }
-        .time-divider { font-size: 13px; font-weight: 800; color: #718096; }
-
-        /* Внутренности панели - Компактный Общий режим */
-        .general-details-list { display: flex; flex-direction: column; gap: 10px; }
-        .details-section { background: #f8f9fa; padding: 10px 14px; border-radius: 10px; border: 1px solid #edf2f7; }
-        .section-title { font-size: 14px; font-weight: 800; text-transform: uppercase; color: #2c3e50; margin-bottom: 6px; border-bottom: 2px solid #e2e8f0; padding-bottom: 3px; }
-        .role-group { margin-bottom: 4px; font-size: 14px; }
-        .role-label { font-weight: 800; color: #718096; display: block; margin-bottom: 2px; }
-        .role-list { list-style: none; padding-left: 0; }
-        .role-list li { margin-bottom: 3px; color: #2d3748; font-weight: 600; }
-        .role-time { color: #718096; font-size: 13px; font-weight: 700; margin-left: 5px; }
-
-        .loader { display: none; text-align: center; font-size: 18px; font-weight: 800; color: var(--primary-color); margin: 25px 0; }
-
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Мобильная адаптация */
-        @media (max-width: 768px) {
-            /* Возвращаем шапку календаря и делаем шрифт меньше, чтобы влезло */
-            .calendar-header { 
-                display: grid; 
-                font-size: 11px; 
-                padding: 8px 0; 
-                margin-bottom: 8px; 
-                border-radius: 8px; 
-            }
-            .calendar-grid { gap: 6px; } /* Чуть сужаем расстояние между клетками */
-            .calendar-day { min-height: 55px; border-width: 1px; border-radius: 10px; }
-
-/* Адаптация счетчиков для мобильных экранов (ультра-компактно) */
-            .day-number-tl { font-size: 10px; top: 3px; left: 5px; }
-            .psy-counters { margin-top: 14px; gap: 2px; }
-            .counter-icon { font-size: 9px; margin-bottom: 1px; }
-            .counter-num { font-size: 12px; }
-            .counter-slash { font-size: 12px; color: rgba(44, 62, 80, 0.3); }
-        }
-    </style>
+ /* Стили для счетчиков психологов в общем расписании */
+ .day-number-tl { position: absolute; top: 6px; left: 8px; font-weight: 800; font-size: 13px; color: #718096; line-height: 1; }
+ .psy-counters { display: flex; align-items: flex-end; justify-content: center; gap: 8px; margin-top: 14px; }
+ .counter-column { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+ .counter-icon { font-size: 13px; margin-bottom: 3px; }
+ .counter-num { font-size: 20px; font-weight: 800; color: var(--text-color); }
+ .counter-slash { font-size: 20px; color: #cbd5e1; font-weight: 400; line-height: 1; }
+ 
+ /* ВЫДВИЖНАЯ ПАНЕЛЬ */
+ .expanded-panel { grid-column: 1 / -1; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 18px; margin: 4px 0 10px 0; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.06); animation: slideDown 0.2s ease-out; }
+ .expanded-panel.active { display: block; }
+ 
+ /* КОМПАКТНОЕ ВСПЛЫВАЮЩЕЕ ОКНО ДЛЯ ДЕСКТOПА */
+ .desktop-popover { position: absolute; top: 102%; left: 50%; transform: translateX(-50%); background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 110; min-width: 210px; cursor: default; }
+ .panel-title { font-size: 15px; font-weight: 800; margin-bottom: 8px; color: var(--primary-color); border-bottom: 1px dashed #edf2f7; padding-bottom: 4px; }
+ .panel-controls { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+ .shift-select { width: 100%; font-size: 14px; padding: 8px; border-radius: 8px; border: 2px solid var(--border-color); background-color: #fff; cursor: pointer; }
+ 
+ .custom-time-inputs { display: flex; align-items: center; justify-content: center; gap: 4px; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
+ .time-part { width: 40px; padding: 5px 3px; font-size: 13px; text-align: center; border: 2px solid var(--border-color); border-radius: 6px; }
+ .time-divider { font-size: 13px; font-weight: 800; color: #718096; }
+ /* Внутренности панели - Компактный Общий режим */
+ .general-details-list { display: flex; flex-direction: column; gap: 10px; }
+ .details-section { background: #f8f9fa; padding: 10px 14px; border-radius: 10px; border: 1px solid #edf2f7; }
+ .section-title { font-size: 14px; font-weight: 800; text-transform: uppercase; color: #2c3e50; margin-bottom: 6px; border-bottom: 2px solid #e2e8f0; padding-bottom: 3px; }
+ .role-group { margin-bottom: 4px; font-size: 14px; }
+ .role-label { font-weight: 800; color: #718096; display: block; margin-bottom: 2px; }
+ .role-list { list-style: none; padding-left: 0; }
+ .role-list li { margin-bottom: 3px; color: #2d3748; font-weight: 600; }
+ .role-time { color: #718096; font-size: 13px; font-weight: 700; margin-left: 5px; }
+ .loader { display: none; text-align: center; font-size: 18px; font-weight: 800; color: var(--primary-color); margin: 25px 0; }
+ @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+ 
+ @media (max-width: 768px) {
+ .calendar-header { display: grid; font-size: 11px; padding: 8px 0; margin-bottom: 8px; border-radius: 8px; }
+ .calendar-grid { gap: 6px; }
+ .calendar-day { min-height: 55px; border-width: 1px; border-radius: 10px; }
+ .day-number-tl { font-size: 10px; top: 3px; left: 5px; }
+ .psy-counters { margin-top: 14px; gap: 2px; }
+ .counter-icon { font-size: 9px; margin-bottom: 1px; }
+ .counter-num { font-size: 12px; }
+ .counter-slash { font-size: 12px; color: rgba(44, 62, 80, 0.3); }
+ }
+ </style>
 </head>
+    
 <body>
 
 <div id="toast" class="toast"></div>
-
 <div class="container">
-    <h2>Расписание на июль 2026</h2>
-    
-    <div class="form-group">
-        <span class="input-title">Введите ваш код:</span>
-        <div class="code-input-container">
-            <select id="prefix-select" class="prefix-select">
-                <option value="к">к</option>
-                <option value="в">в</option>
-            </select>
-            <input type="text" id="digits-input" class="digits-input" placeholder="Три цифры" inputmode="numeric" maxlength="5">
-        </div>
-        <div id="error-message" class="error-message">Введите код, состоящий из трёх цифр, вуф 🐺</div>
-    </div>
-
-    <div class="main-buttons">
-        <button id="btn-july" class="btn-primary" disabled>Смены в июле</button>
-        <button id="btn-general" class="btn-info" disabled>Общее расписание</button>
-        <button id="btn-booking" class="btn-secondary" disabled>Абоненты по записи</button>
-    </div>
-
-    <div id="loader" class="loader">Загрузка календаря... Пожалуйста, подождите ⏳</div>
-
-    <div id="calendar-section">
-        <div class="calendar-header">
-            <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div>
-        </div>
-        <div id="calendar-grid" class="calendar-grid"></div>
-        <button id="btn-save" class="btn-success">Сохранить</button>
-    </div>
+ <h2>Расписание на июль 2026</h2>
+ 
+ <div class="form-group">
+ <span class="input-title">Введите ваш код:</span>
+ <div class="code-input-container">
+ <select id="prefix-select" class="prefix-select">
+ <option value="к">к</option>
+ <option value="в">в</option>
+ <option value="а">а</option>
+ </select>
+ <input type="text" id="digits-input" class="digits-input" placeholder="Три цифры" inputmode="numeric" maxlength="5">
+ </div>
+ <div id="error-message" class="error-message">Введите код, состоящий из трёх цифр, вуф 🐺</div>
+ </div>
+ <div class="main-buttons">
+ <button id="btn-july" class="btn-primary" disabled>Смены в июле</button>
+ <button id="btn-general" class="btn-info" disabled>Общее расписание</button>
+ <button id="btn-booking" class="btn-secondary" disabled>Абоненты по записи</button>
+ </div>
+ <div id="loader" class="loader">Загрузка календаря... Пожалуйста, подождите ⏳</div>
+ 
+ <div id="calendar-section">
+ <!-- Предупреждение для нередактируемого режима (код "к") -->
+ <div id="admin-warning" class="admin-warning">Для внесения изменений обратитесь к администратору.</div>
+ 
+ <div class="calendar-header">
+ <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div>
+ </div>
+ <div id="calendar-grid" class="calendar-grid"></div>
+ <button id="btn-save" class="btn-success">Сохранить</button>
+ </div>
 </div>
 
 <div id="expanded-panel" class="expanded-panel">
-    <div id="panel-content"></div>
+ <div id="panel-content"></div>
 </div>
 
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzPTujjJfHkRNuE-_chKl0kYxxE-usLak1KzTmTRtaRC2llT6bIu-fkUVdhXlddbys5/exec";
 
     const digitsInput = document.getElementById('digits-input');
-    const prefixSelect = document.getElementById('prefix-select');
-    const errorMessage = document.getElementById('error-message');
-    const btnJuly = document.getElementById('btn-july');
-    const btnGeneral = document.getElementById('btn-general');
-    const btnBooking = document.getElementById('btn-booking');
-    const calendarSection = document.getElementById('calendar-section');
-    const calendarGrid = document.getElementById('calendar-grid');
-    const loader = document.getElementById('loader');
-    const btnSave = document.getElementById('btn-save');
-    const toast = document.getElementById('toast');
-    
-    const expandedPanel = document.getElementById('expanded-panel');
-    const panelContent = document.getElementById('panel-content');
+ const prefixSelect = document.getElementById('prefix-select');
+ const errorMessage = document.getElementById('error-message');
+ const btnJuly = document.getElementById('btn-july');
+ const btnGeneral = document.getElementById('btn-general');
+ const btnBooking = document.getElementById('btn-booking');
+ const calendarSection = document.getElementById('calendar-section');
+ const calendarGrid = document.getElementById('calendar-grid');
+ const loader = document.getElementById('loader');
+ const btnSave = document.getElementById('btn-save');
+ const toast = document.getElementById('toast');
+ const adminWarning = document.getElementById('admin-warning');
+ 
+ const expandedPanel = document.getElementById('expanded-panel');
+ const panelContent = document.getElementById('panel-content');
+ let currentFullCode = "";
+ let toastTimeout;
+ let currentViewMode = "personal"; // "personal" или "general"
+ 
+ let pendingShifts = {}; 
+ let globalGeneralData = {}; 
+ let allGridElements = []; 
+ 
+ function showToast(message, type = 'success') {
+ clearTimeout(toastTimeout);
+ toast.className = `toast ${type}`;
+ toast.innerHTML = message;
+ toast.classList.add('show');
+ toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3500);
+ }
 
-    let currentFullCode = "";
-    let toastTimeout;
-    let currentViewMode = "personal"; // "personal" или "general"
-    
-    let pendingShifts = {};       
-    let globalGeneralData = {};   
-    let allGridElements = [];     
+ digitsInput.addEventListener('input', () => {
+ const val = digitsInput.value.trim();
+ if (/^\d{3}$/.test(val)) {
+ digitsInput.classList.remove('invalid');
+ errorMessage.style.display = 'none';
+ btnJuly.disabled = false;
+ btnGeneral.disabled = false;
+ btnBooking.disabled = false;
+ updateFullCode();
+ } else {
+ digitsInput.classList.add('invalid');
+ errorMessage.style.display = 'block';
+ btnJuly.disabled = true;
+ btnGeneral.disabled = true;
+ btnBooking.disabled = true;
+ }
+ });
 
-    function showToast(message, type = 'success') {
-        clearTimeout(toastTimeout);
-        toast.className = `toast ${type}`;
-        toast.innerHTML = message;
-        toast.classList.add('show');
-        toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3500);
-    }
+ prefixSelect.addEventListener('change', updateFullCode);
+ 
+ function updateFullCode() {
+ currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim();
+ }
 
-    digitsInput.addEventListener('input', () => {
-        const val = digitsInput.value.trim();
-        if (/^\d{3}$/.test(val)) {
-            digitsInput.classList.remove('invalid');
-            errorMessage.style.display = 'none';
-            btnJuly.disabled = false;
-            btnGeneral.disabled = false;
-            btnBooking.disabled = false;
-            updateFullCode();
-        } else {
-            digitsInput.classList.add('invalid');
-            errorMessage.style.display = 'block';
-            btnJuly.disabled = true;
-            btnGeneral.disabled = true;
-            btnBooking.disabled = true;
-        }
-    });
+ btnJuly.addEventListener('click', () => {
+ currentViewMode = "personal";
+ const p = prefixSelect.value.toLowerCase();
+ if(p === 'к') {
+ btnSave.style.display = 'none';
+ adminWarning.style.display = 'block';
+ } else {
+ btnSave.style.display = 'block';
+ adminWarning.style.display = 'none';
+ }
+ expandedPanel.classList.remove('active');
+ removeDesktopPopover();
+ 
+ loadCalendarData(`${WEB_APP_URL}?action=getData&code=${encodeURIComponent(currentFullCode)}`);
+ });
 
-    prefixSelect.addEventListener('change', updateFullCode);
+ btnGeneral.addEventListener('click', () => {
+ currentViewMode = "general";
+ btnSave.style.display = 'none'; 
+ adminWarning.style.display = 'none';
+ expandedPanel.classList.remove('active');
+ removeDesktopPopover();
+ 
+ loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
+ });
 
-    function updateFullCode() {
-        currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim();
-    }
+ function removeDesktopPopover() {
+ const oldPopover = document.getElementById('desktop-personal-popover');
+ if (oldPopover) oldPopover.remove();
+ }
 
-    btnJuly.addEventListener('click', () => {
-        currentViewMode = "personal";
-        btnSave.style.display = 'block';
-        expandedPanel.classList.remove('active');
-        removeDesktopPopover();
-        loadCalendarData(`${WEB_APP_URL}?action=getData&code=${encodeURIComponent(currentFullCode)}`);
-    });
+ function loadCalendarData(url) {
+ loader.style.display = 'block';
+ calendarSection.style.display = 'none';
+ fetch(url)
+ .then(res => res.json())
+ .then(data => {
+ loader.style.display = 'none';
+ if(data.error) {
+ showToast('Ошибка сервера: ' + data.error, 'error');
+ return;
+ }
+ pendingShifts = data.schedule || {};
+ globalGeneralData = data.generalData || {};
+ 
+ renderGrid();
+ calendarSection.style.display = 'block';
+ calendarSection.scrollIntoView({ behavior: 'smooth' });
+ })
+ .catch(err => {
+ loader.style.display = 'none';
+ showToast('Не удалось связаться с Google Таблицей', 'error');
+ console.error(err);
+ });
+ }
 
-    btnGeneral.addEventListener('click', () => {
-        currentViewMode = "general";
-        btnSave.style.display = 'none'; 
-        expandedPanel.classList.remove('active');
-        removeDesktopPopover();
-        loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
-    });
+ function updateCellVisuals(cellElement, shiftValue) {
+ cellElement.classList.remove('shift-day', 'shift-evening', 'shift-custom');
+ if (!shiftValue) return;
+ if (shiftValue === "14:00 — 18:00") {
+ cellElement.classList.add('shift-day');
+ } else if (shiftValue === "18:00 — 22:00" || shiftValue === "18:00 -- 22:00") {
+ cellElement.classList.add('shift-evening');
+ } else {
+ cellElement.classList.add('shift-custom');
+ }
+ }
 
-    function removeDesktopPopover() {
-        const oldPopover = document.getElementById('desktop-personal-popover');
-        if (oldPopover) oldPopover.remove();
-    }
+ function renderGrid() {
+ calendarGrid.innerHTML = '';
+ allGridElements = [];
+ document.body.appendChild(expandedPanel);
+ 
+ const totalDays = 31;
+ const firstDayIndex = new Date(2026, 6, 1).getDay(); 
+ const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1; 
+ 
+ for (let i = 0; i < startOffset; i++) {
+ const emptyCell = document.createElement('div');
+ emptyCell.className = 'calendar-day empty';
+ calendarGrid.appendChild(emptyCell);
+ allGridElements.push(emptyCell);
+ }
+ 
+ const p = prefixSelect.value.toLowerCase();
+ 
+ for (let day = 1; day <= totalDays; day++) {
+ const dayStr = (day < 10 ? '0' + day : day) + '.07';
+ 
+ const cell = document.createElement('div');
+ cell.className = 'calendar-day';
+ cell.id = `cell-${dayStr}`;
+ 
+ const info = globalGeneralData[dayStr] || { dayPsychologists: [], eveningPsychologists: [], vDayCount: 0, vEveningCount: 0 };
+ const dayCount = info.dayPsychologists ? info.dayPsychologists.length : 0;
+ const eveningCount = info.eveningPsychologists ? info.eveningPsychologists.length : 0;
+ 
+ if (currentViewMode === "general") {
+ cell.innerHTML = `
+ <div class="day-number-tl">${day}</div>
+ <div class="psy-counters">
+ <div class="counter-column">
+ <span class="counter-icon">☀️</span>
+ <span class="counter-num">${dayCount}</span>
+ </div>
+ <span class="counter-slash">/</span>
+ <div class="counter-column">
+ <span class="counter-icon">🌙</span>
+ <span class="counter-num">${eveningCount}</span>
+ </div>
+ </div>
+ `;
+ updateCellVisuals(cell, pendingShifts[dayStr] || "");
+ 
+ if (p === 'в') {
+ if (dayCount === 0 || eveningCount === 0) {
+ cell.classList.add('critical-border');
+ }
+ } else if (p === 'а') {
+ if (info.vDayCount === 0 || info.vEveningCount === 0) {
+ cell.classList.add('critical-border');
+ }
+ }
+ } else {
+ cell.innerHTML = `<div class="day-number">${day}</div>`;
+ updateCellVisuals(cell, pendingShifts[dayStr] || "");
+ 
+ if (p === 'в') {
+ if (dayCount === 0 || eveningCount === 0) {
+ cell.classList.add('critical-border');
+ }
+ }
+ }
+ 
+ cell.addEventListener('click', () => handleDayClick(cell, dayStr));
+ 
+ calendarGrid.appendChild(cell);
+ allGridElements.push(cell);
+ }
+ }
 
-    function loadCalendarData(url) {
-        loader.style.display = 'block';
-        calendarSection.style.display = 'none';
-        
-        fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                loader.style.display = 'none';
-                if(data.error) {
-                    showToast('Ошибка сервера: ' + data.error, 'error');
-                    return;
-                }
-                pendingShifts = data.schedule || {};
-                globalGeneralData = data.generalData || {};
-                
-                renderGrid();
-                calendarSection.style.display = 'block';
-                calendarSection.scrollIntoView({ behavior: 'smooth' });
-            })
-            .catch(err => {
-                loader.style.display = 'none';
-                showToast('Не удалось связаться с Google Таблицей', 'error');
-                console.error(err);
-            });
-    }
+ function handleDayClick(clickedCell, dayStr) {
+ const isMobile = window.innerWidth <= 768;
+ const oldPopover = document.getElementById('desktop-personal-popover');
+ const p = prefixSelect.value.toLowerCase();
+ 
+ if (currentViewMode === "personal" && p === 'к') {
+ return; 
+ }
+ 
+ if (clickedCell.classList.contains('selected')) {
+ clickedCell.classList.remove('selected');
+ expandedPanel.classList.remove('active');
+ if (oldPopover) oldPopover.remove();
+ return;
+ }
+ document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
+ if (oldPopover) oldPopover.remove();
+ 
+ clickedCell.classList.add('selected');
+ if (isMobile || currentViewMode === "general") {
+ expandedPanel.classList.remove('active');
+ 
+ const cellIndex = allGridElements.indexOf(clickedCell);
+ const colIndex = cellIndex % 7; 
+ const daysToSunday = 6 - colIndex;
+ let insertAfterIndex = cellIndex + daysToSunday;
+ 
+ if (insertAfterIndex >= allGridElements.length) {
+ insertAfterIndex = allGridElements.length - 1;
+ }
+ const insertNode = allGridElements[insertAfterIndex];
+ insertNode.after(expandedPanel);
+ if (currentViewMode === "personal") {
+ renderPersonalPanel(dayStr, panelContent);
+ } else {
+ renderGeneralPanel(dayStr, panelContent);
+ }
+ expandedPanel.classList.add('active');
+ } 
+ else {
+ expandedPanel.classList.remove('active');
+ renderDesktopPersonalDropdown(clickedCell, dayStr);
+ }
+ }
 
-    function updateCellVisuals(cellElement, shiftValue) {
-        cellElement.classList.remove('shift-day', 'shift-evening', 'shift-custom');
-        if (!shiftValue) return;
-
-        if (shiftValue === "14:00 — 18:00") {
-            cellElement.classList.add('shift-day');
-        } else if (shiftValue === "18:00 — 22:00" || shiftValue === "18:00 -- 22:00") {
-            cellElement.classList.add('shift-evening');
-        } else {
-            cellElement.classList.add('shift-custom');
-        }
-    }
-
-    function renderGrid() {
-        calendarGrid.innerHTML = '';
-        allGridElements = [];
-        document.body.appendChild(expandedPanel);
-        
-        const totalDays = 31;
-        const firstDayIndex = new Date(2026, 6, 1).getDay(); 
-        const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1; 
-        
-        for (let i = 0; i < startOffset; i++) {
-            const emptyCell = document.createElement('div');
-            emptyCell.className = 'calendar-day empty';
-            calendarGrid.appendChild(emptyCell);
-            allGridElements.push(emptyCell);
-        }
-        
-for (let day = 1; day <= totalDays; day++) {
-            const dayStr = (day < 10 ? '0' + day : day) + '.07';
-            
-            const cell = document.createElement('div');
-            cell.className = 'calendar-day';
-            cell.id = `cell-${dayStr}`;
-            
-            if (currentViewMode === "general") {
-                const info = globalGeneralData[dayStr] || { dayPsychologists: [], eveningPsychologists: [] };
-                const dayCount = info.dayPsychologists ? info.dayPsychologists.length : 0;
-                const eveningCount = info.eveningPsychologists ? info.eveningPsychologists.length : 0;
-                
-                cell.innerHTML = `
-                    <div class="day-number-tl">${day}</div>
-                    <div class="psy-counters">
-                        <div class="counter-column">
-                            <span class="counter-icon">☀️</span>
-                            <span class="counter-num">${dayCount}</span>
-                        </div>
-                        <span class="counter-slash">/</span>
-                        <div class="counter-column">
-                            <span class="counter-icon">🌙</span>
-                            <span class="counter-num">${eveningCount}</span>
-                        </div>
-                    </div>
-                `;
-                // ВОЗВРАЩАЕМ ЗАЛИВКУ: Окрашиваем ячейку в цвет личной смены сотрудника
-                updateCellVisuals(cell, pendingShifts[dayStr] || "");
-            } else {
-                cell.innerHTML = `<div class="day-number">${day}</div>`;
-                updateCellVisuals(cell, pendingShifts[dayStr] || "");
-            }
-            
-            cell.addEventListener('click', () => handleDayClick(cell, dayStr));
-            
-            calendarGrid.appendChild(cell);
-            allGridElements.push(cell);
-        }
-    }
-
-    function handleDayClick(clickedCell, dayStr) {
-        const isMobile = window.innerWidth <= 768;
-        const oldPopover = document.getElementById('desktop-personal-popover');
-
-        if (clickedCell.classList.contains('selected')) {
-            clickedCell.classList.remove('selected');
-            expandedPanel.classList.remove('active');
-            if (oldPopover) oldPopover.remove();
-            return;
-        }
-
-        document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
-        if (oldPopover) oldPopover.remove();
-        
-        clickedCell.classList.add('selected');
-
-        // ЕСЛИ МОБИЛКА ИЛИ ОБЩЕЕ РАСПИСАНИЕ -> Используем выплывающую панель-строку
-        if (isMobile || currentViewMode === "general") {
-            expandedPanel.classList.remove('active');
-            
-            const cellIndex = allGridElements.indexOf(clickedCell);
-            const colIndex = cellIndex % 7; 
-            const daysToSunday = 6 - colIndex;
-            let insertAfterIndex = cellIndex + daysToSunday;
-            
-            if (insertAfterIndex >= allGridElements.length) {
-                insertAfterIndex = allGridElements.length - 1;
-            }
-
-            const insertNode = allGridElements[insertAfterIndex];
-            insertNode.after(expandedPanel);
-
-            if (currentViewMode === "personal") {
-                renderPersonalPanel(dayStr, panelContent);
-            } else {
-                renderGeneralPanel(dayStr, panelContent);
-            }
-            expandedPanel.classList.add('active');
-        } 
-        // ЕСЛИ ДЕСКТOП И РЕЖИМ СМЕН -> Выпадающее окошко прямо внутри/поверх ячейки
-        else {
-            expandedPanel.classList.remove('active');
-            renderDesktopPersonalDropdown(clickedCell, dayStr);
-        }
-    }
-
-    // Вспомогательная функция сборки HTML для выбора личных смен
-    function getPersonalHtml(dayStr, savedValue) {
-        const isDayPreset = savedValue === "14:00 — 18:00";
-        const isEveningPreset = savedValue === "18:00 — 22:00" || savedValue === "18:00 -- 22:00";
-        const isCustom = savedValue !== "" && !isDayPreset && !isEveningPreset;
-        
-        let h1="", m1="", h2="", m2="";
-        if (isCustom) {
-            const pieces = savedValue.split(/[-—]/);
-            if (pieces.length === 2) {
-                const t1 = pieces[0].trim().split(':'); const t2 = pieces[1].trim().split(':');
-                if (t1.length === 2) { h1 = t1[0]; m1 = t1[1]; }
-                if (t2.length === 2) { h2 = t2[0]; m2 = t2[1]; }
-            }
-        }
-
-        return `
-            <div class="panel-title">Смена на ${dayStr}</div>
-            <div class="panel-controls">
-                <select class="shift-select sub-select">
-                    <option value="">-- Выходной --</option>
-                    <option value="14:00 — 18:00" ${isDayPreset ? 'selected' : ''}>Дневная (14:00 — 18:00)</option>
-                    <option value="18:00 — 22:00" ${isEveningPreset ? 'selected' : ''}>Вечерняя (18:00 — 22:00)</option>
-                    <option value="custom" ${isCustom ? 'selected' : ''}>Свой вариант...</option>
-                </select>
-                
-                <div class="custom-time-inputs sub-custom-box" style="display: ${isCustom ? 'flex' : 'none'};">
-                    <input type="text" class="time-part sub-input" data-idx="0" maxlength="2" placeholder="ЧЧ" value="${h1}">:
-                    <input type="text" class="time-part sub-input" data-idx="1" maxlength="2" placeholder="ММ" value="${m1}">
-                    <span class="time-divider">—</span>
-                    <input type="text" class="time-part sub-input" data-idx="2" maxlength="2" placeholder="ЧЧ" value="${h2}">:
-                    <input type="text" class="time-part sub-input" data-idx="3" maxlength="2" placeholder="ММ" value="${m2}">
-                </div>
-            </div>
-        `;
-    }
+ function getPersonalHtml(dayStr, savedValue) {
+ const isDayPreset = savedValue === "14:00 — 18:00";
+ const isEveningPreset = savedValue === "18:00 — 22:00" || savedValue === "18:00 -- 22:00";
+ const isCustom = savedValue !== "" && !isDayPreset && !isEveningPreset;
+ 
+ let h1="", m1="", h2="", m2="";
+ if (isCustom) {
+ const pieces = savedValue.split(/[-—]/);
+ if (pieces.length === 2) {
+ const t1 = pieces[0].trim().split(':'); const t2 = pieces[1].trim().split(':');
+ if (t1.length === 2) { h1 = t1[0]; m1 = t1[1]; }
+ if (t2.length === 2) { h2 = t2[0]; m2 = t2[1]; }
+ }
+ }
+ return `
+ <div class="panel-title">Смена на ${dayStr}</div>
+ <div class="panel-controls">
+ <select class="shift-select sub-select">
+ <option value="">-- Выходной --</option>
+ <option value="14:00 — 18:00" ${isDayPreset ? 'selected' : ''}>Дневная (14:00 — 18:00)</option>
+ <option value="18:00 — 22:00" ${isEveningPreset ? 'selected' : ''}>Вечерняя (18:00 — 22:00)</option>
+ <option value="custom" ${isCustom ? 'selected' : ''}>Свой вариант...</option>
+ </select>
+ 
+ <div class="custom-time-inputs sub-custom-box" style="display: ${isCustom ? 'flex' : 'none'};">
+ <input type="text" class="time-part sub-input" data-idx="0" maxlength="2" placeholder="ЧЧ" value="${h1}">:
+ <input type="text" class="time-part sub-input" data-idx="1" maxlength="2" placeholder="ММ" value="${m1}">
+ <span class="time-divider">—</span>
+ <input type="text" class="time-part sub-input" data-idx="2" maxlength="2" placeholder="ЧЧ" value="${h2}">:
+ <input type="text" class="time-part sub-input" data-idx="3" maxlength="2" placeholder="ММ" value="${m2}">
+ </div>
+ </div>
+ `;
+ }
 
     function setupPersonalListeners(container, dayStr) {
         const selectEl = container.querySelector('.sub-select');
@@ -529,71 +485,99 @@ for (let day = 1; day <= totalDays; day++) {
     }
 
     // Отрисовка личных смен прямо на ячейке для десктопа
-    function renderDesktopPersonalDropdown(cell, dayStr) {
-        const popover = document.createElement('div');
-        popover.id = 'desktop-personal-popover';
-        popover.className = 'desktop-popover';
-        
-        // Предотвращаем закрытие ячейки при кликах внутри всплывающего меню
-        popover.addEventListener('click', (e) => e.stopPropagation());
+ function setupPersonalListeners(container, dayStr) {
+   const selectEl = container.querySelector('.sub-select');
+   const customBox = container.querySelector('.sub-custom-box');
+   const inputs = Array.from(container.querySelectorAll('.sub-input'));
+   
+   const updateLocalData = () => {
+     let newVal = selectEl.value;
+     if (newVal === 'custom') {
+       const v = inputs.map(i => i.value.trim());
+       if (v.some(val => val !== "")) {
+         newVal = `${v[0].padStart(2, '0')}:${v[1].padStart(2, '0')} — ${v[2].padStart(2, '0')}:${v[3].padStart(2, '0')}`;
+       } else { 
+         newVal = ""; 
+       }
+     }
+     pendingShifts[dayStr] = newVal;
+     updateCellVisuals(document.getElementById(`cell-${dayStr}`), newVal);
+   };
 
-        popover.innerHTML = getPersonalHtml(dayStr, pendingShifts[dayStr] || "");
-        cell.appendChild(popover);
-        
-        setupPersonalListeners(popover, dayStr);
-    }
+   selectEl.addEventListener('change', () => {
+     customBox.style.display = selectEl.value === 'custom' ? 'flex' : 'none';
+     updateLocalData();
+   });
+ 
+   inputs.forEach(input => input.addEventListener('input', updateLocalData));
+ }
 
-    // Отрисовка Общего расписания (компактное, без лишних рамок)
-    function renderGeneralPanel(dayStr, container) {
-        const info = globalGeneralData[dayStr] || { dayAdmins: [], eveningAdmins: [], dayPsychologists: [], eveningPsychologists: [] };
-        const buildList = (arr) => arr.length ? arr.map(p => `<li>${p.name} <span class="role-time">(${p.time})</span></li>`).join('') : "<li>—</li>";
+ function renderPersonalPanel(dayStr, container) {
+   container.innerHTML = getPersonalHtml(dayStr, pendingShifts[dayStr] || "");
+   setupPersonalListeners(container, dayStr);
+ }
 
-        container.innerHTML = `
-            <div class="panel-title">Расписание на ${dayStr}</div>
-            <div class="general-details-list">
-                <div class="details-section">
-                    <div class="section-title">☀️ День</div>
-                    <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildList(info.dayAdmins)}</ul></div>
-                    <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildList(info.dayPsychologists)}</ul></div>
-                </div>
-                <div class="details-section">
-                    <div class="section-title">🌙 Вечер</div>
-                    <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildList(info.eveningAdmins)}</ul></div>
-                    <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildList(info.eveningPsychologists)}</ul></div>
-                </div>
-            </div>
-        `;
-    }
+ function renderDesktopPersonalDropdown(cell, dayStr) {
+   const popover = document.createElement('div');
+   popover.id = 'desktop-personal-popover';
+   popover.className = 'desktop-popover';
+ 
+   popover.addEventListener('click', (e) => e.stopPropagation());
+   popover.innerHTML = getPersonalHtml(dayStr, pendingShifts[dayStr] || "");
+   cell.appendChild(popover);
+ 
+   setupPersonalListeners(popover, dayStr);
+ }
 
-    btnSave.addEventListener('click', () => {
-        loader.style.display = 'block';
-        btnSave.disabled = true;
+ function renderGeneralPanel(dayStr, container) {
+   const info = globalGeneralData[dayStr] || { dayAdmins: [], eveningAdmins: [], dayPsychologists: [], eveningPsychologists: [] };
+   const buildList = (arr) => arr.length ? arr.map(p => `<li>${p.name} <span class="role-time">(${p.time})</span></li>`).join('') : "<li>—</li>";
+   
+   container.innerHTML = `
+     <div class="panel-title">Расписание на ${dayStr}</div>
+     <div class="general-details-list">
+       <div class="details-section">
+         <div class="section-title">☀️ День</div>
+         <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildList(info.dayAdmins)}</ul></div>
+         <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildList(info.dayPsychologists)}</ul></div>
+       </div>
+       <div class="details-section">
+         <div class="section-title">🌙 Вечер</div>
+         <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildList(info.eveningAdmins)}</ul></div>
+         <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildList(info.eveningPsychologists)}</ul></div>
+       </div>
+     </div>
+   `;
+ }
 
-        fetch(WEB_APP_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify({
-                code: currentFullCode,
-                shifts: pendingShifts
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            loader.style.display = 'none';
-            btnSave.disabled = false;
-            if (data.success) {
-                showToast('Данные успешно сохранены, ауф!', 'success');
-            } else {
-                showToast('Ошибка: Сотрудник не найден.', 'error');
-            }
-        })
-        .catch(err => {
-            loader.style.display = 'none';
-            btnSave.disabled = false;
-            showToast('Сбой при сохранении данных ❌', 'error');
-            console.error(err);
-        });
-    });
+ btnSave.addEventListener('click', () => {
+   loader.style.display = 'block';
+   btnSave.disabled = true;
+   fetch(WEB_APP_URL, {
+     method: 'POST',
+     headers: { 'Content-Type': 'text/plain' },
+     body: JSON.stringify({
+       code: currentFullCode,
+       shifts: pendingShifts
+     })
+   })
+   .then(res => res.json())
+   .then(data => {
+     loader.style.display = 'none';
+     btnSave.disabled = false;
+     if (data.success) {
+       showToast('Данные успешно сохранены, ауф!', 'success');
+     } else {
+       showToast('Ошибка: Сотрудник не найден.', 'error');
+     }
+   })
+   .catch(err => {
+     loader.style.display = 'none';
+     btnSave.disabled = false;
+     showToast('Сбой при сохранении данных ❌', 'error');
+     console.error(err);
+   });
+ });
 </script>
 </body>
 </html>
