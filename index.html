@@ -378,7 +378,7 @@ function renderGrid() {
     
     // РЕЖИМ 1: Кнопка "Абоненты по записи"
     if (currentViewMode === "booking") {
-      cell.innerHTML = `<div class="day-number">${day}</div>`;
+      cell.innerHTML = `<div class="day-number-tl">${day}</div>`;
       updateCellVisuals(cell, userShift);
       
       // Если к психологу на этот день есть записи, выводим красивый счетчик
@@ -438,53 +438,57 @@ function renderGrid() {
   }
 }
 
- function handleDayClick(clickedCell, dayStr) {
- const isMobile = window.innerWidth <= 768;
- const oldPopover = document.getElementById('desktop-personal-popover');
- const p = prefixSelect.value.toLowerCase();
- 
- if (currentViewMode === "personal" && p === 'к') {
- return; 
- }
- 
- if (clickedCell.classList.contains('selected')) {
- clickedCell.classList.remove('selected');
- expandedPanel.classList.remove('active');
- if (oldPopover) oldPopover.remove();
- return;
- }
- document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
- if (oldPopover) oldPopover.remove();
- 
- clickedCell.classList.add('selected');
- if (isMobile || currentViewMode === "general") {
- expandedPanel.classList.remove('active');
- 
- const cellIndex = allGridElements.indexOf(clickedCell);
- const colIndex = cellIndex % 7; 
- const daysToSunday = 6 - colIndex;
- let insertAfterIndex = cellIndex + daysToSunday;
- 
- if (insertAfterIndex >= allGridElements.length) {
- insertAfterIndex = allGridElements.length - 1;
- }
- const insertNode = allGridElements[insertAfterIndex];
- insertNode.after(expandedPanel);
- if (currentViewMode === "personal") {
- renderPersonalPanel(dayStr, panelContent);
- } else {
- renderGeneralPanel(dayStr, panelContent);
- }
- expandedPanel.classList.add('active');
- } 
- else {
- expandedPanel.classList.remove('active');
- renderDesktopPersonalDropdown(clickedCell, dayStr);
- }
-  if (currentViewMode === "booking") {
-  renderBookingPanel(dayStr, panelContent);
+function handleDayClick(clickedCell, dayStr) {
+  const isMobile = window.innerWidth <= 768;
+  const oldPopover = document.getElementById('desktop-personal-popover');
+  const p = prefixSelect.value.toLowerCase();
+  
+  // Если режим личный и код "к" — блокируем клик
+  if (currentViewMode === "personal" && p === 'к') {
+    return; 
+  }
+  
+  if (clickedCell.classList.contains('selected')) {
+    clickedCell.classList.remove('selected');
+    expandedPanel.classList.remove('active');
+    if (oldPopover) oldPopover.remove();
+    return;
+  }
+  
+  document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
+  if (oldPopover) oldPopover.remove();
+  clickedCell.classList.add('selected');
+  
+  // ИСПРАВЛЕНИЕ: Для мобильных, Общего расписания И режима Абонентов — ВСЕГДА открываем выдвижную панель под неделей
+  if (isMobile || currentViewMode === "general" || currentViewMode === "booking") {
+    expandedPanel.classList.remove('active');
+    const cellIndex = allGridElements.indexOf(clickedCell);
+    const colIndex = cellIndex % 7; 
+    const daysToSunday = 6 - colIndex;
+    let insertAfterIndex = cellIndex + daysToSunday;
+    
+    if (insertAfterIndex >= allGridElements.length) {
+      insertAfterIndex = allGridElements.length - 1;
+    }
+    const insertNode = allGridElements[insertAfterIndex];
+    insertNode.after(expandedPanel);
+    
+    // Переключаем контент панели
+    if (currentViewMode === "personal") {
+      renderPersonalPanel(dayStr, panelContent);
+    } else if (currentViewMode === "booking") {
+      renderBookingPanel(dayStr, panelContent);
+    } else {
+      renderGeneralPanel(dayStr, panelContent);
+    }
+    expandedPanel.classList.add('active');
+  } 
+  else {
+    // Десктопное окошко открываем только для личного редактирования смен
+    expandedPanel.classList.remove('active');
+    renderDesktopPersonalDropdown(clickedCell, dayStr);
+  }
 }
- }
 
  function getPersonalHtml(dayStr, savedValue) {
  const isDayPreset = savedValue === "14:00 — 18:00";
