@@ -56,7 +56,7 @@
  button:active:not(:disabled) { transform: translateY(0); }
  .btn-primary { background-color: var(--primary-color); color: white; }
  .btn-info { background-color: var(--info-color); color: white; }
- .btn-secondary { background-color: #6c757d; color: white; }
+ .btn-secondary { background-color: #94d3f2; color: white; }
  .btn-success { background-color: var(--success-color); color: white; width: 100%; margin-top: 30px; padding: 16px; font-size: 18px; font-weight: 800; display: none; }
  
  /* Блок предупреждения для кода 'к' */
@@ -143,24 +143,33 @@
 /* Поля формы ввода абонентов */
 .booking-row {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 8px;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Запрещаем перенос, чтобы строка была компактной */
+  background: #f8f9fa;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
 }
 .booking-input {
-  padding: 8px 12px;
+  padding: 6px 8px;
   border: 2px solid #cbd5e1;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 14px;
   font-weight: 600;
+  outline: none;
+  text-align: center;
 }
-.b-time { width: 75px; text-align: center; }
-.b-name { flex: 2; min-width: 140px; }
-.b-age { width: 65px; text-align: center; }
-.b-city { flex: 1; min-width: 110px; }
-.booking-row span { font-weight: 800; color: #94a3b8; }
- }
+.booking-input:focus {
+  border-color: var(--primary-color);
+}
+/* Специфическая ширина для сужения областей */
+.b-hh, .b-mm { width: 45px; } /* Поля для ЧЧ и ММ */
+.b-name { flex: 2; min-width: 100px; text-align: left; } /* Ник чуть шире остальных */
+.b-age { width: 55px; } /* Возраст */
+.b-city { flex: 1; min-width: 80px; text-align: left; } /* Город */
+.booking-row span { font-weight: 800; color: #94a3b8; font-size: 14px; }
  </style>
 </head>
     
@@ -640,23 +649,33 @@ btnSave.addEventListener('click', () => {
     const clientsToSend = [];
     let validationPassed = true;
     
-    rows.forEach(row => {
-      const time = row.querySelector('.b-time').value.trim();
+  rows.forEach(row => {
+      const hh = row.querySelector('.b-hh').value.trim();
+      const mm = row.querySelector('.b-mm').value.trim();
       const name = row.querySelector('.b-name').value.trim();
       const age = row.querySelector('.b-age').value.trim();
       const city = row.querySelector('.b-city').value.trim();
       
-      // Если заполнено хотя бы одно поле, значит строчку пытаются сохранить
-      if (time || name || age || city) {
-        if (!time || !name || !age) {
+      // Смена считается частично заполненной, если введено хоть что-то
+      if (hh || mm || name || age || city) {
+        if (!hh || !mm || !name || !age) {
           validationPassed = false;
-          row.querySelector('.b-name').style.borderColor = 'var(--danger-color)';
-          row.querySelector('.b-age').style.borderColor = 'var(--danger-color)';
+          if (!hh) row.querySelector('.b-hh').style.borderColor = 'var(--danger-color)';
+          if (!mm) row.querySelector('.b-mm').style.borderColor = 'var(--danger-color)';
+          if (!name) row.querySelector('.b-name').style.borderColor = 'var(--danger-color)';
+          if (!age) row.querySelector('.b-age').style.borderColor = 'var(--danger-color)';
         } else {
+          row.querySelector('.b-hh').style.borderColor = '#cbd5e1';
+          row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
           row.querySelector('.b-name').style.borderColor = '#cbd5e1';
           row.querySelector('.b-age').style.borderColor = '#cbd5e1';
-          // Собираем строчку в правильном формате для базы данных
-          clientsToSend.push(`${time} — ${name} | ${age} | ${city || '—'}`);
+          
+          // Форматируем ЧЧ и ММ (добавляем ведущие нули при необходимости)
+          const cleanHH = hh.padStart(2, '0');
+          const cleanMM = mm.padStart(2, '0');
+          
+          // Собираем строчку в исходном формате для отправки на бэк: ЧЧ:ММ — Ник | Возраст | Город
+          clientsToSend.push(`${cleanHH}:${cleanMM} — ${name} | ${age} | ${city || '—'}`);
         }
       }
     });
@@ -731,7 +750,6 @@ btnSave.addEventListener('click', () => {
 function renderBookingPanel(dayStr, container) {
   const currentShift = pendingShifts[dayStr] || "";
   
-  // Если у психолога нет смены в этот день
   if (!currentShift || currentShift === "") {
     container.innerHTML = `
       <div class="panel-title" style="color:var(--danger-color)">Смена отсутствует</div>
@@ -744,55 +762,68 @@ function renderBookingPanel(dayStr, container) {
       </select>
     `;
     
-    // При выборе смены "на лету" — сохраняем её в локальный кэш, чтобы открылись поля
     container.querySelector('.booking-fallback-select').addEventListener('change', (e) => {
       if(e.target.value !== "") {
         pendingShifts[dayStr] = e.target.value;
         updateCellVisuals(document.getElementById(`cell-${dayStr}`), e.target.value);
-        renderBookingPanel(dayStr, container); // Перерисовываем, теперь смены есть
+        renderBookingPanel(dayStr, container);
       }
     });
     return;
   }
 
-  // Настройка дефолтных временных слотов в зависимости от выбранной смены
-  let defaultTimes = ["", "", "", "", ""];
+  // Дефолтные часы для автозаполнения
+  let defaultHours = ["", "", "", ""];
+  let defaultMinutes = "00";
   if (currentShift === "14:00 — 18:00") {
-    defaultTimes = ["14:00", "15:00", "16:00", "17:00", ""];
+    defaultHours = ["14", "15", "16", "17"];
   } else if (currentShift === "18:00 — 22:00" || currentShift === "18:00 -- 22:00") {
-    defaultTimes = ["18:00", "19:00", "20:00", "21:00", ""];
+    defaultHours = ["18", "19", "20", "21"];
   }
 
-  // Извлекаем уже сохраненных абонентов с сервера, если они есть
   const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
-  
   let html = `<div class="panel-title">Запись абонентов на ${dayStr} (${currentShift})</div>`;
   
   for (let i = 0; i < 5; i++) {
-    let t = defaultTimes[i];
+    let hh = defaultHours[i] || "";
+    let mm = hh ? defaultMinutes : "";
     let n = "", a = "", c = "";
     
-    // Если на сервере уже есть данные для этой строчки, парсим их
     if (savedClients[i]) {
-      const match = savedClients[i].match(/^([^—]+)—([^|]+)\|([^|]+)\|(.+)$/);
-      if (match) {
-        t = match[1].trim();
-        n = match[2].trim();
-        a = match[3].trim();
-        c = match[4].trim();
+      // Разбиваем строку базы по дефису/тире на [Время] и [Данные клиента]
+      const parts = savedClients[i].split(/[—–-]/);
+      if (parts.length >= 2) {
+        const timePart = parts[0].trim();
+        const timeSplit = timePart.split(':');
+        if (timeSplit.length === 2) {
+          hh = timeSplit[0].trim();
+          mm = timeSplit[1].trim();
+        }
+        
+        // Пересобираем остаток строки и делим по "|"
+        const clientPart = parts.slice(1).join('—');
+        const subParts = clientPart.split('|');
+        if (subParts.length >= 3) {
+          n = subParts[0].trim();
+          a = subParts[1].trim();
+          c = subParts[2].trim();
+        } else {
+          n = clientPart.trim();
+        }
       } else {
-        // Если формат по какой-то причине поплыл, выводим просто в поле имени всю строку
         n = savedClients[i];
       }
     }
     
     html += `
       <div class="booking-row" data-row="${i}">
-        <input type="text" class="booking-input b-time" placeholder="ЧЧ:ММ" value="${t}">
+        <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}">
+        <span>:</span>
+        <input type="text" class="booking-input b-mm" placeholder="ММ" maxlength="2" inputmode="numeric" value="${mm}">
         <span>—</span>
-        <input type="text" class="booking-input b-name" placeholder="Ник абонента (Обязательно)" value="${n}">
+        <input type="text" class="booking-input b-name" placeholder="Ник абонента" value="${n}">
         <span>|</span>
-        <input type="text" class="booking-input b-age" placeholder="Возраст" value="${a}">
+        <input type="text" class="booking-input b-age" placeholder="Возраст" maxlength="3" value="${a}">
         <span>|</span>
         <input type="text" class="booking-input b-city" placeholder="Город" value="${c}">
       </div>
