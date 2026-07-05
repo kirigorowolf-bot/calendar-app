@@ -191,7 +191,7 @@
         <div id="admin-warning" class="admin-warning">Для внесения изменений обратитесь к администратору.</div>
         
         <div id="analyst-search-bar" style="display: none; margin-bottom: 20px; background: #fff3cd; padding: 12px; border-radius: 12px; border: 1px solid #ffeeba;">
-            <span class="input-title" style="font-size: 15px; color: #856404; margin-bottom: 6px;">Вывод расписания конкретного психолога:</span>
+            <span class="input-title" style="font-size: 15px; color: #856404; margin-bottom: 6px;">Вывести расписание конкретного психолога:</span>
             <div style="display: flex; gap: 8px;">
                 <input type="text" id="global-expert-input" class="booking-input" placeholder="Ник или код" style="flex: 1; text-align: left; padding-left: 12px; height: 42px !important; background: #fff;">
                 <button id="btn-global-load-expert" class="btn-primary" style="min-width: auto; padding: 0 25px; height: 42px; font-size: 15px; border-radius: 10px;">Показать</button>
@@ -497,34 +497,56 @@
         `;
     }
     
-    function setupPersonalListeners(container, dayStr) {
-        const selectEl = container.querySelector('.sub-select');
-        const customBox = container.querySelector('.sub-custom-box');
-        const inputs = Array.from(container.querySelectorAll('.sub-input'));
+function setupPersonalListeners(container, dayStr) {
+    const selectEl = container.querySelector('.sub-select');
+    const customBox = container.querySelector('.sub-custom-box');
+    const inputs = Array.from(container.querySelectorAll('.sub-input'));
 
-        const updateLocalData = () => {
-            let newVal = selectEl.value;
-            if (newVal === 'custom') {
-                const v = inputs.map(i => i.value.trim());
-                if (v.some(val => val !== "")) {
-                    const hh1 = (v[0] || '').padStart(2, '0');
-                    const mm1 = (v[1] || '').padStart(2, '0');
-                    const hh2 = (v[2] || '').padStart(2, '0');
-                    const mm2 = (v[3] || '').padStart(2, '0');
-                    newVal = `${hh1}:${mm1} — ${hh2}:${mm2}`;
-                } else newVal = "";
+    const updateLocalData = () => {
+        let newVal = selectEl.value;
+        if (newVal === 'custom') {
+            const v = inputs.map(i => i.value.trim());
+            if (v.some(val => val !== "")) {
+                const hh1 = (v[0] || '').padStart(2, '0');
+                const mm1 = (v[1] || '').padStart(2, '0');
+                const hh2 = (v[2] || '').padStart(2, '0');
+                const mm2 = (v[3] || '').padStart(2, '0');
+                newVal = `${hh1}:${mm1} — ${hh2}:${mm2}`;
+            } else {
+                // Если выбрали кастом, но поля еще пустые, пишем временную заглушку для визуального контроля
+                newVal = "Свой вариант"; 
             }
-            pendingShifts[dayStr] = newVal;
-            
-            const cell = document.getElementById(`cell-${dayStr}`);
-            let shiftText = newVal ? `<div class="cell-shift-time">${newVal}</div>` : '';
-            cell.innerHTML = `<div class="day-number-tl">${parseInt(dayStr, 10)}</div>${shiftText}`;
-            updateCellVisuals(cell, newVal);
-        };
+        }
+        
+        // Записываем значение в массив для отправки
+        pendingShifts[dayStr] = newVal === "Свой вариант" ? "" : newVal;
+        
+        // ИСПРАВЛЕНИЕ: Обновляем только текст смены внутри ячейки, не ломая структуру и счетчики
+        const cell = document.getElementById(`cell-${dayStr}`);
+        if (cell) {
+            let timeDiv = cell.querySelector('.cell-shift-time');
+            if (newVal) {
+                if (!timeDiv) {
+                    timeDiv = document.createElement('div');
+                    timeDiv.className = 'cell-shift-time';
+                    cell.appendChild(timeDiv);
+                }
+                timeDiv.innerText = newVal;
+            } else if (timeDiv) {
+                timeDiv.remove(); // Если выбран выходной — убираем текст времени
+            }
+            updateCellVisuals(cell, pendingShifts[dayStr]);
+        }
+    };
 
-        selectEl.addEventListener('change', () => { customBox.style.display = selectEl.value === 'custom' ? 'flex' : 'none'; updateLocalData(); });
-        inputs.forEach(input => input.addEventListener('input', updateLocalData));
-    }
+    selectEl.addEventListener('change', () => { 
+        customBox.style.display = selectEl.value === 'custom' ? 'flex' : 'none'; 
+        updateLocalData(); 
+    });
+    
+    inputs.forEach(input => input.addEventListener('input', updateLocalData));
+}
+
     
     function renderPersonalPanel(dayStr, container) {
         container.innerHTML = getPersonalHtml(dayStr, pendingShifts[dayStr] || "");
