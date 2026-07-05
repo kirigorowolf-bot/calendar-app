@@ -65,36 +65,21 @@
         .btn-secondary { background-color: #94d3f2; color: white; }
         .btn-success { background-color: var(--success-color); color: white; width: 100%; margin-top: 30px; padding: 16px; font-size: 18px; font-weight: 800; display: none; }
 
-        /* Блок предупреждения для кода 'к' */
         .admin-warning { display: none; background-color: #fff3cd; border: 2px solid #ffeeba; color: #856404; padding: 12px 16px; border-radius: 12px; font-weight: 700; margin-bottom: 15px; font-size: 15px; text-align: center; }
 
         #calendar-section { display: none; margin-top: 30px; border-top: 2px solid #edf2f7; padding-top: 25px; }
         .calendar-header { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 800; margin-bottom: 12px; background-color: #edf2f7; padding: 12px 0; border-radius: 12px; font-size: 15px; color: #4a5568; }
         
-        /* Сетка календаря */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; position: relative; }
-        
-        /* Компактные ячейки */
-        .calendar-day {
-            border: 2px solid #e2e8f0; border-radius: 16px; min-height: 80px; 
-            display: flex; justify-content: center; align-items: center;
-            background-color: #fff; transition: all 0.2s; cursor: pointer;
-            position: relative; 
-        }
+        .calendar-day { border: 2px solid #e2e8f0; border-radius: 16px; min-height: 80px; display: flex; justify-content: center; align-items: center; background-color: #fff; transition: all 0.2s; cursor: pointer; position: relative; }
         .calendar-day.empty { background-color: transparent; border: none; cursor: default; }
         .calendar-day.selected { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,123,255,0.2); transform: scale(1.03); z-index: 10; }
         
-        .day-number { font-weight: 800; font-size: 28px; color: var(--text-color); }
-        
-        /* Цвета смен */
         .calendar-day.shift-day { background-color: var(--pastel-orange); border-color: var(--border-orange); }
         .calendar-day.shift-evening { background-color: var(--pastel-blue); border-color: var(--border-blue); }
         .calendar-day.shift-custom { background-color: var(--pastel-pink); border-color: var(--border-pink); }
-
-        /* Темно-красная рамка для критических дней (0 смен по ТЗ) */
         .calendar-day.critical-border { border: 3px solid #8b0000 !important; box-shadow: inset 0 0 4px rgba(139,0,0,0.2); }
         
-        /* Стили для счетчиков психологов в общем расписании */
         .day-number-tl { position: absolute; top: 6px; left: 8px; font-weight: 800; font-size: 13px; color: #718096; line-height: 1; }
         .psy-counters { display: flex; align-items: flex-end; justify-content: center; gap: 8px; margin-top: 14px; }
         .counter-column { display: flex; flex-direction: column; align-items: center; line-height: 1; }
@@ -102,47 +87,46 @@
         .counter-num { font-size: 20px; font-weight: 800; color: var(--text-color); }
         .counter-slash { font-size: 20px; color: #cbd5e1; font-weight: 400; line-height: 1; }
         
-        /* ВЫДВИЖНАЯ ПАНЕЛЬ */
         .expanded-panel { grid-column: 1 / -1; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 18px; margin: 4px 0 10px 0; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.06); animation: slideDown 0.2s ease-out; }
         .expanded-panel.active { display: block; }
         
-        /* КОМПАКТНОЕ ВСПЛЫВАЮЩЕЕ ОКНО ДЛЯ ДЕСКТOПА */
         .desktop-popover { position: absolute; top: 102%; left: 50%; transform: translateX(-50%); background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 110; min-width: 210px; cursor: default; }
         .panel-title { font-size: 15px; font-weight: 800; margin-bottom: 8px; color: var(--primary-color); border-bottom: 1px dashed #edf2f7; padding-bottom: 4px; }
         .panel-controls { display: flex; flex-direction: column; gap: 8px; width: 100%; }
         .shift-select { width: 100%; font-size: 14px; padding: 8px; border-radius: 8px; border: 2px solid var(--border-color); background-color: #fff; cursor: pointer; }
-        
         .custom-time-inputs { display: flex; align-items: center; justify-content: center; gap: 4px; background: #f8f9fa; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
         .time-part { width: 40px; padding: 5px 3px; font-size: 13px; text-align: center; border: 2px solid var(--border-color); border-radius: 6px; }
         .time-divider { font-size: 13px; font-weight: 800; color: #718096; }
         
-        /* Внутренности панели - Компактный Общий режим */
         .general-details-list { display: flex; flex-direction: column; gap: 10px; }
         .details-section { background: #f8f9fa; padding: 10px 14px; border-radius: 10px; border: 1px solid #edf2f7; }
         .section-title { font-size: 14px; font-weight: 800; text-transform: uppercase; color: #2c3e50; margin-bottom: 6px; border-bottom: 2px solid #e2e8f0; padding-bottom: 3px; }
         .role-group { margin-bottom: 4px; font-size: 14px; }
         .role-label { font-weight: 800; color: #718096; display: block; margin-bottom: 2px; }
         .role-list { list-style: none; padding-left: 0; }
-        .role-list li { margin-bottom: 3px; color: #2d3748; font-weight: 600; }
+        
+        /* СТИЛИ ДЛЯ АБОНЕНТОВ В ОБЩЕМ РАСПИСАНИИ */
+        .psy-list-item { margin-bottom: 12px; }
+        .psy-main-info { font-weight: 700; color: #2d3748; display: inline-block; }
         .role-time { color: #718096; font-size: 13px; font-weight: 700; margin-left: 5px; }
         
+        .read-only-bookings { display: inline; margin-left: 8px; color: #4a5568; font-size: 13px; font-weight: 700; }
+        .b-item { background: #e3f2fd; padding: 2px 6px; border-radius: 6px; border: 1px solid #90caf9; display: inline-block; margin: 2px 0; color: #1e3a8a; }
+        .b-arrow { margin: 0 4px; color: #94a3b8; font-size: 12px; }
+        .editable-bookings-container { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; margin-left: 10px; border-left: 2px solid var(--primary-color); padding-left: 10px; }
+
         .cell-shift-time { font-size: 11px; font-weight: 800; margin-top: 16px; text-align: center; color: #1e293b; line-height: 1.1; padding: 0 2px; }
-        
         .loader { display: none; text-align: center; font-size: 18px; font-weight: 800; color: var(--primary-color); margin: 25px 0; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-          
-        /* Счетчик абонентов на календаре */
         .booking-counter { font-size: 14px; font-weight: 800; color: var(--primary-color); background: #e3f2fd; padding: 2px 8px; border-radius: 10px; margin-top: 5px; }
         
-        /* Поля формы ввода абонентов */
-        .booking-row { display: flex !important; gap: 5px !important; margin-bottom: 6px !important; align-items: center !important; flex-wrap: nowrap !important; background: #f8f9fa !important; padding: 4px 8px !important; border-radius: 8px !important; border: 1px solid #e2e8f0 !important; width: 100% !important; box-sizing: border-box !important; }
+        .booking-row { display: flex !important; gap: 5px !important; margin-bottom: 6px !important; align-items: center !important; flex-wrap: nowrap !important; background: #ffffff !important; padding: 4px 8px !important; border-radius: 8px !important; border: 1px solid #e2e8f0 !important; width: 100% !important; box-sizing: border-box !important; }
         .booking-input { padding: 6px 4px !important; height: 32px !important; border: 2px solid #cbd5e1 !important; border-radius: 6px !important; font-size: 14px !important; font-weight: 600 !important; outline: none !important; text-align: center !important; box-sizing: border-box !important; flex: none !important; }
         .booking-input:focus { border-color: var(--primary-color) !important; }
 
         .b-hh, .b-mm { width: 38px !important; max-width: 38px !important; }
         .b-name { flex: 1 !important; text-align: left !important; padding-left: 8px !important; }
         .b-age { width: 60px !important; max-width: 60px !important; }
-
         .booking-row span { font-weight: 800 !important; color: #94a3b8 !important; font-size: 14px !important; flex: none !important; user-select: none !important; }
 
         @media (max-width: 768px) {
@@ -167,6 +151,12 @@
             .b-name { min-width: 0 !important; flex: 1 !important; font-size: 13px !important; padding: 4px !important; }
             .b-age { width: 50px !important; max-width: 50px !important; font-size: 13px !important; padding: 4px !important; }
             .b-hh, .b-mm { width: 32px !important; max-width: 32px !important; font-size: 13px !important; padding: 4px !important; }
+
+            /* Мобильная адаптация абонентов в Общем расписании */
+            .read-only-bookings { display: flex; flex-direction: column; margin-left: 10px; margin-top: 4px; border-left: 2px solid #cbd5e1; padding-left: 8px; }
+            .b-item { border: none; background: transparent; padding: 0; display: block; margin: 2px 0; font-size: 13px; color: #334155; }
+            .b-arrow { display: none; }
+            .editable-bookings-container { margin-left: 4px; padding-left: 6px; }
         }
     </style>
 </head>
@@ -204,7 +194,7 @@
             <span class="input-title" style="font-size: 15px; color: #856404; margin-bottom: 6px;">Вывод расписания конкретного психолога:</span>
             <div style="display: flex; gap: 8px;">
                 <input type="text" id="global-expert-input" class="booking-input" placeholder="Ник или код" style="flex: 1; text-align: left; padding-left: 12px; height: 42px !important; background: #fff;">
-                <button id="btn-global-load-expert" class="btn-primary" style="min-width: auto; padding: 0 25px; height: 42px; font-size: 15px; border-radius: 10px;">Показать календарь</button>
+                <button id="btn-global-load-expert" class="btn-primary" style="min-width: auto; padding: 0 25px; height: 42px; font-size: 15px; border-radius: 10px;">Показать</button>
             </div>
         </div>
         
@@ -240,7 +230,7 @@
     
     let currentFullCode = "";
     let toastTimeout;
-    let currentViewMode = "personal"; // "personal" или "general"
+    let currentViewMode = "personal";
 
     let pendingShifts = {};
     let globalGeneralData = {};
@@ -274,14 +264,11 @@
     
     prefixSelect.addEventListener('change', updateFullCode);
 
-    function updateFullCode() {
-        currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim();
-    }
+    function updateFullCode() { currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim(); }
     
     btnJuly.addEventListener('click', () => {
         currentViewMode = "personal";
         const p = prefixSelect.value.toLowerCase();
-
         document.getElementById('analyst-search-bar').style.display = 'none';
 
         if(p === 'к') {
@@ -299,11 +286,13 @@
     
     btnGeneral.addEventListener('click', () => {
         currentViewMode = "general";
-        btnSave.style.display = 'none';
+        const p = prefixSelect.value.toLowerCase();
+        
+        // Аналитику разрешаем сохранять из Общего расписания
+        btnSave.style.display = (p === 'а') ? 'block' : 'none';
         adminWarning.style.display = 'none';
 
         document.getElementById('analyst-search-bar').style.display = 'none';
-
         expandedPanel.classList.remove('active');
         removeDesktopPopover();
         
@@ -364,13 +353,9 @@
     function updateCellVisuals(cellElement, shiftValue) {
         cellElement.classList.remove('shift-day', 'shift-evening', 'shift-custom');
         if (!shiftValue) return;
-        if (shiftValue === "14:00 — 18:00") {
-            cellElement.classList.add('shift-day');
-        } else if (shiftValue === "18:00 — 22:00" || shiftValue === "18:00 -- 22:00") {
-            cellElement.classList.add('shift-evening');
-        } else {
-            cellElement.classList.add('shift-custom');
-        }
+        if (shiftValue === "14:00 — 18:00") cellElement.classList.add('shift-day');
+        else if (shiftValue === "18:00 — 22:00" || shiftValue === "18:00 -- 22:00") cellElement.classList.add('shift-evening');
+        else cellElement.classList.add('shift-custom');
     }
     
     function renderGrid() {
@@ -393,7 +378,6 @@
 
         for (let day = 1; day <= totalDays; day++) {
             const dayStr = (day < 10 ? '0' + day : day) + '.07';
-
             const cell = document.createElement('div');
             cell.className = 'calendar-day';
             cell.id = `cell-${dayStr}`;
@@ -405,55 +389,34 @@
             const dayCount = info.dayPsychologists ? info.dayPsychologists.length : 0;
             const eveningCount = info.eveningPsychologists ? info.eveningPsychologists.length : 0;
 
-            // РЕЖИМ 1: Кнопка "Абоненты по записи"
             if (currentViewMode === "booking") {
                 cell.innerHTML = `<div class="day-number-tl">${day}</div>`;
                 updateCellVisuals(cell, userShift);
-
                 if (dayBookings.length > 0) {
                     const bCount = document.createElement('div');
                     bCount.className = 'booking-counter';
                     bCount.innerText = `👥 ${dayBookings.length}`;
                     cell.appendChild(bCount);
                 }
-            }
-            // РЕЖИМ 2: Кнопка "Общее расписание"
-            else if (currentViewMode === "general") {
+            } else if (currentViewMode === "general") {
                 cell.innerHTML = `
                     <div class="day-number-tl">${day}</div>
                     <div class="psy-counters">
-                        <div class="counter-column">
-                            <span class="counter-icon">☀️</span>
-                            <span class="counter-num">${dayCount}</span>
-                        </div>
+                        <div class="counter-column"><span class="counter-icon">☀️</span><span class="counter-num">${dayCount}</span></div>
                         <span class="counter-slash">/</span>
-                        <div class="counter-column">
-                            <span class="counter-icon">🌙</span>
-                            <span class="counter-num">${eveningCount}</span>
-                        </div>
+                        <div class="counter-column"><span class="counter-icon">🌙</span><span class="counter-num">${eveningCount}</span></div>
                     </div>
                 `;
                 updateCellVisuals(cell, userShift);
-
-                if (p === 'в') {
-                    if (dayCount === 0 || eveningCount === 0) cell.classList.add('critical-border');
-                } else if (p === 'а') {
-                    if (info.vDayCount === 0 || info.vEveningCount === 0) cell.classList.add('critical-border');
-                } else if (p === 'к') {
-                    if (dayCount !== 2 || eveningCount !== 2) cell.classList.add('critical-border');
-                }
-            }
-            // РЕЖИМ 3: Кнопка "Смены в июле"
-            else {
+                if (p === 'в' && (dayCount === 0 || eveningCount === 0)) cell.classList.add('critical-border');
+                else if (p === 'а' && (info.vDayCount === 0 || info.vEveningCount === 0)) cell.classList.add('critical-border');
+                else if (p === 'к' && (dayCount !== 2 || eveningCount !== 2)) cell.classList.add('critical-border');
+            } else {
                 let shiftText = userShift ? `<div class="cell-shift-time">${userShift}</div>` : '';
                 cell.innerHTML = `<div class="day-number-tl">${day}</div>${shiftText}`;
                 updateCellVisuals(cell, userShift);
-
-                if (p === 'в') {
-                    if (dayCount === 0 || eveningCount === 0) cell.classList.add('critical-border');
-                } else if (p === 'к') {
-                    if (dayCount !== 2 || eveningCount !== 2) cell.classList.add('critical-border');
-                }
+                if (p === 'в' && (dayCount === 0 || eveningCount === 0)) cell.classList.add('critical-border');
+                else if (p === 'к' && (dayCount !== 2 || eveningCount !== 2)) cell.classList.add('critical-border');
             }
 
             cell.addEventListener('click', () => handleDayClick(cell, dayStr));
@@ -467,15 +430,9 @@
         const oldPopover = document.getElementById('desktop-personal-popover');
         const p = prefixSelect.value.toLowerCase();
 
-        if (currentViewMode === "personal" && p === 'к') {
-            return;
-        }
+        if (currentViewMode === "personal" && p === 'к') return;
 
         if (clickedCell.classList.contains('selected')) {
-            // Если режим абонентов - тихо скрываем панель
-            if (currentViewMode === "booking" && btnSave.style.display !== 'none' && !btnSave.disabled) {
-                 /* Не автосохраняем, просто закрываем */
-            }
             clickedCell.classList.remove('selected');
             expandedPanel.classList.remove('active');
             if (oldPopover) oldPopover.remove();
@@ -493,19 +450,13 @@
             const daysToSunday = 6 - colIndex;
             let insertAfterIndex = cellIndex + daysToSunday;
 
-            if (insertAfterIndex >= allGridElements.length) {
-                insertAfterIndex = allGridElements.length - 1;
-            }
-            const insertNode = allGridElements[insertAfterIndex];
-            insertNode.after(expandedPanel);
+            if (insertAfterIndex >= allGridElements.length) insertAfterIndex = allGridElements.length - 1;
+            allGridElements[insertAfterIndex].after(expandedPanel);
 
-            if (currentViewMode === "personal") {
-                renderPersonalPanel(dayStr, panelContent);
-            } else if (currentViewMode === "booking") {
-                renderBookingPanel(dayStr, panelContent);
-            } else {
-                renderGeneralPanel(dayStr, panelContent);
-            }
+            if (currentViewMode === "personal") renderPersonalPanel(dayStr, panelContent);
+            else if (currentViewMode === "booking") renderBookingPanel(dayStr, panelContent);
+            else renderGeneralPanel(dayStr, panelContent);
+            
             expandedPanel.classList.add('active');
         } else {
             expandedPanel.classList.remove('active');
@@ -517,7 +468,6 @@
         const isDayPreset = savedValue === "14:00 — 18:00";
         const isEveningPreset = savedValue === "18:00 — 22:00" || savedValue === "18:00 -- 22:00";
         const isCustom = savedValue !== "" && !isDayPreset && !isEveningPreset;
-
         let h1="", m1="", h2="", m2="";
         if (isCustom) {
             const pieces = savedValue.split(/[-—]/);
@@ -536,7 +486,6 @@
                     <option value="18:00 — 22:00" ${isEveningPreset ? 'selected' : ''}>Вечерняя (18:00 — 22:00)</option>
                     <option value="custom" ${isCustom ? 'selected' : ''}>Свой вариант...</option>
                 </select>
-
                 <div class="custom-time-inputs sub-custom-box" style="display: ${isCustom ? 'flex' : 'none'};">
                     <input type="text" class="time-part sub-input" data-idx="0" maxlength="2" placeholder="ЧЧ" value="${h1}">:
                     <input type="text" class="time-part sub-input" data-idx="1" maxlength="2" placeholder="ММ" value="${m1}">
@@ -563,23 +512,17 @@
                     const hh2 = (v[2] || '').padStart(2, '0');
                     const mm2 = (v[3] || '').padStart(2, '0');
                     newVal = `${hh1}:${mm1} — ${hh2}:${mm2}`;
-                } else {
-                    newVal = "";
-                }
+                } else newVal = "";
             }
             pendingShifts[dayStr] = newVal;
             
-            // Если мы находимся в режиме Смены (десктоп), обновляем прямо ячейку без перезапуска Grid
             const cell = document.getElementById(`cell-${dayStr}`);
             let shiftText = newVal ? `<div class="cell-shift-time">${newVal}</div>` : '';
             cell.innerHTML = `<div class="day-number-tl">${parseInt(dayStr, 10)}</div>${shiftText}`;
             updateCellVisuals(cell, newVal);
         };
 
-        selectEl.addEventListener('change', () => {
-            customBox.style.display = selectEl.value === 'custom' ? 'flex' : 'none';
-            updateLocalData();
-        });
+        selectEl.addEventListener('change', () => { customBox.style.display = selectEl.value === 'custom' ? 'flex' : 'none'; updateLocalData(); });
         inputs.forEach(input => input.addEventListener('input', updateLocalData));
     }
     
@@ -592,77 +535,149 @@
         const popover = document.createElement('div');
         popover.id = 'desktop-personal-popover';
         popover.className = 'desktop-popover';
-
         popover.addEventListener('click', (e) => e.stopPropagation());
         popover.innerHTML = getPersonalHtml(dayStr, pendingShifts[dayStr] || "");
         cell.appendChild(popover);
-
         setupPersonalListeners(popover, dayStr);
     }
     
     function renderGeneralPanel(dayStr, container) {
         const info = globalGeneralData[dayStr] || { dayAdmins: [], eveningAdmins: [], dayPsychologists: [], eveningPsychologists: [] };
-        const buildList = (arr) => arr.length ? arr.map(p => `<li>${p.name} <span class="role-time">(${p.time})</span></li>`).join('') : "<li>—</li>";
+        const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
+
+        const buildAdminList = (arr) => arr.length ? arr.map(p => `<li class="psy-list-item"><div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div></li>`).join('') : `<li class="psy-list-item">—</li>`;
+        
+        const buildPsyList = (arr, isDayShift) => {
+            if (!arr.length) return `<li class="psy-list-item">—</li>`;
+            
+            return arr.map(p => {
+                let bookingsHtml = "";
+                if (isAnalyst) {
+                    let defaultHours = isDayShift ? ["14", "15", "16", "17", ""] : ["18", "19", "20", "21", ""];
+                    let slotsHtml = "";
+                    for (let i = 0; i < 5; i++) {
+                        let hh = defaultHours[i] || "";
+                        let mm = hh ? "00" : "";
+                        let n = "", a = "";
+                        
+                        if (p.bookings && p.bookings[i]) {
+                            const parts = p.bookings[i].split(/[—–-]/);
+                            if (parts.length >= 2) {
+                                const timeSplit = parts[0].trim().split(':');
+                                if (timeSplit.length === 2) { hh = timeSplit[0].trim(); mm = timeSplit[1].trim(); }
+                                const clientPart = parts.slice(1).join('—');
+                                const subParts = clientPart.split('|');
+                                n = subParts[0] ? subParts[0].trim() : clientPart.trim();
+                                a = subParts[1] ? subParts[1].trim() : "";
+                            } else {
+                                n = p.bookings[i];
+                            }
+                        }
+                        
+                        slotsHtml += `
+                            <div class="booking-row general-b-row" data-code="${p.code}" data-name="${p.name}">
+                                <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}">
+                                <span>:</span>
+                                <input type="text" class="booking-input b-mm" placeholder="ММ" maxlength="2" inputmode="numeric" value="${mm}">
+                                <span>—</span>
+                                <input type="text" class="booking-input b-name" placeholder="Ник абонента" value="${n}">
+                                <span>|</span>
+                                <input type="text" class="booking-input b-age" placeholder="Возраст" maxlength="3" type="number" inputmode="numeric" pattern="[0-9]*" value="${a}">
+                            </div>
+                        `;
+                    }
+                    bookingsHtml = `<div class="editable-bookings-container">${slotsHtml}</div>`;
+                } else {
+                    if (p.bookings && p.bookings.length > 0) {
+                        let itemsHtml = p.bookings.map((b, idx) => {
+                            let arrow = idx < p.bookings.length - 1 ? `<span class="b-arrow">➔</span>` : "";
+                            return `<span class="b-item">${b}</span>${arrow}`;
+                        }).join(' ');
+                        bookingsHtml = `<div class="read-only-bookings">${itemsHtml}</div>`;
+                    }
+                }
+                
+                return `
+                    <li class="psy-list-item">
+                        <div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div>
+                        ${bookingsHtml}
+                    </li>
+                `;
+            }).join('');
+        };
 
         container.innerHTML = `
             <div class="panel-title">Расписание на ${dayStr}</div>
             <div class="general-details-list">
                 <div class="details-section">
                     <div class="section-title">☀️ День</div>
-                    <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildList(info.dayAdmins)}</ul></div>
-                    <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildList(info.dayPsychologists)}</ul></div>
+                    <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildAdminList(info.dayAdmins)}</ul></div>
+                    <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildPsyList(info.dayPsychologists, true)}</ul></div>
                 </div>
                 <div class="details-section">
                     <div class="section-title">🌙 Вечер</div>
-                    <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildList(info.eveningAdmins)}</ul></div>
-                    <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildList(info.eveningPsychologists)}</ul></div>
+                    <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildAdminList(info.eveningAdmins)}</ul></div>
+                    <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildPsyList(info.eveningPsychologists, false)}</ul></div>
                 </div>
             </div>
         `;
+        
+        if (isAnalyst) {
+            const nameInputs = container.querySelectorAll('.b-name');
+            nameInputs.forEach(input => {
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const row = e.target.closest('.booking-row');
+                        if (row) { const ageInput = row.querySelector('.b-age'); if (ageInput) ageInput.focus(); }
+                    }
+                });
+            });
+        }
     }
     
     btnSave.addEventListener('click', () => {
         loader.style.display = 'block';
         btnSave.disabled = true;
 
-        if (currentViewMode === "booking") {
+        // МАССОВОЕ СОХРАНЕНИЕ ИЗ ОБЩЕГО РАСПИСАНИЯ ДЛЯ АНАЛИТИКА
+        if (currentViewMode === "general") {
             const activeCell = document.querySelector('.calendar-day.selected');
-            
-            // Если дата не открыта, просто выдаем "Успешно" и не падаем
             if(!activeCell) {
-                loader.style.display = 'none';
-                btnSave.disabled = false;
-                showToast('Данные сохранены!', 'success');
-                return;
+                loader.style.display = 'none'; btnSave.disabled = false;
+                showToast('Данные сохранены!', 'success'); return;
             }
             
             const dayStr = activeCell.id.replace('cell-', '');
-            const rows = document.querySelectorAll('.booking-row');
-            const clientsToSend = [];
+            const rows = document.querySelectorAll('.general-b-row');
+            const psychMap = {};
             let validationPassed = true;
-
+            
             rows.forEach(row => {
+                const code = row.getAttribute('data-code');
+                const name = row.getAttribute('data-name');
+                const pId = code || name;
+                
+                if (!psychMap[pId]) psychMap[pId] = { code: code, name: name, clients: [] };
+                
                 const hh = row.querySelector('.b-hh').value.trim();
                 const mm = row.querySelector('.b-mm').value.trim();
-                const name = row.querySelector('.b-name').value.trim();
-                const age = row.querySelector('.b-age').value.trim();
-
-                if (name || age) { // Валидируем только по имени или возрасту
-                    if (!hh || !mm || !name || !age) {
+                const n = row.querySelector('.b-name').value.trim();
+                const a = row.querySelector('.b-age').value.trim();
+                
+                if (n || a) {
+                    if (!hh || !mm || !n || !a) {
                         validationPassed = false;
-                        if (!hh) row.querySelector('.b-hh').style.borderColor = 'var(--danger-color)';
-                        if (!mm) row.querySelector('.b-mm').style.borderColor = 'var(--danger-color)';
-                        if (!name) row.querySelector('.b-name').style.borderColor = 'var(--danger-color)';
-                        if (!age) row.querySelector('.b-age').style.borderColor = 'var(--danger-color)';
+                        row.querySelector('.b-hh').style.borderColor = !hh ? 'var(--danger-color)' : '#cbd5e1';
+                        row.querySelector('.b-mm').style.borderColor = !mm ? 'var(--danger-color)' : '#cbd5e1';
+                        row.querySelector('.b-name').style.borderColor = !n ? 'var(--danger-color)' : '#cbd5e1';
+                        row.querySelector('.b-age').style.borderColor = !a ? 'var(--danger-color)' : '#cbd5e1';
                     } else {
                         row.querySelector('.b-hh').style.borderColor = '#cbd5e1';
                         row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
                         row.querySelector('.b-name').style.borderColor = '#cbd5e1';
                         row.querySelector('.b-age').style.borderColor = '#cbd5e1';
-
-                        const cleanHH = hh.padStart(2, '0');
-                        const cleanMM = mm.padStart(2, '0');
-                        clientsToSend.push(`${cleanHH}:${cleanMM} — ${name} | ${age}`);
+                        psychMap[pId].clients.push(`${hh.padStart(2,'0')}:${mm.padStart(2,'0')} — ${n} | ${a}`);
                     }
                 } else {
                     row.querySelector('.b-hh').style.borderColor = '#cbd5e1';
@@ -672,79 +687,112 @@
                 }
             });
             
-            if(!validationPassed) {
-                loader.style.display = 'none';
-                btnSave.disabled = false;
+            if (!validationPassed) {
+                loader.style.display = 'none'; btnSave.disabled = false;
                 showToast('Поля Время, Ник и Возраст обязательны для заполнения, вуф!', 'error');
                 return;
             }
+            
+            const bulkData = Object.values(psychMap);
+            
+            fetch(WEB_APP_URL, {
+                method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: "saveBulkBookingData", date: dayStr, bulkData: bulkData })
+            }).then(res => res.json()).then(data => {
+                loader.style.display = 'none'; btnSave.disabled = false;
+                if (data.success) {
+                    showToast('Массовое расписание обновлено!', 'success');
+                    bulkData.forEach(psych => {
+                        ["dayPsychologists", "eveningPsychologists"].forEach(listName => {
+                            if (globalGeneralData[dayStr][listName]) {
+                                let target = globalGeneralData[dayStr][listName].find(p => p.code === psych.code || p.name === psych.name);
+                                if (target) target.bookings = psych.clients;
+                            }
+                        });
+                    });
+                    expandedPanel.classList.remove('active');
+                    renderGrid();
+                } else showToast('Ошибка при сохранении: ' + data.error, 'error');
+            }).catch(err => {
+                loader.style.display = 'none'; btnSave.disabled = false;
+                showToast('Ошибка подключения к серверу ❌', 'error');
+            });
+            
+        } 
+        // СОХРАНЕНИЕ АБОНЕНТОВ ДЛЯ ПСИХОЛОГА
+        else if (currentViewMode === "booking") {
+            const activeCell = document.querySelector('.calendar-day.selected');
+            if(!activeCell) {
+                loader.style.display = 'none'; btnSave.disabled = false;
+                showToast('Данные сохранены!', 'success'); return;
+            }
+            
+            const dayStr = activeCell.id.replace('cell-', '');
+            const rows = document.querySelectorAll('.booking-row');
+            const clientsToSend = [];
+            let validationPassed = true;
+
+            rows.forEach(row => {
+                const hh = row.querySelector('.b-hh').value.trim(); const mm = row.querySelector('.b-mm').value.trim();
+                const name = row.querySelector('.b-name').value.trim(); const age = row.querySelector('.b-age').value.trim();
+
+                if (name || age) {
+                    if (!hh || !mm || !name || !age) {
+                        validationPassed = false;
+                        if (!hh) row.querySelector('.b-hh').style.borderColor = 'var(--danger-color)';
+                        if (!mm) row.querySelector('.b-mm').style.borderColor = 'var(--danger-color)';
+                        if (!name) row.querySelector('.b-name').style.borderColor = 'var(--danger-color)';
+                        if (!age) row.querySelector('.b-age').style.borderColor = 'var(--danger-color)';
+                    } else {
+                        row.querySelector('.b-hh').style.borderColor = '#cbd5e1'; row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
+                        row.querySelector('.b-name').style.borderColor = '#cbd5e1'; row.querySelector('.b-age').style.borderColor = '#cbd5e1';
+                        clientsToSend.push(`${hh.padStart(2, '0')}:${mm.padStart(2, '0')} — ${name} | ${age}`);
+                    }
+                } else {
+                    row.querySelector('.b-hh').style.borderColor = '#cbd5e1'; row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
+                    row.querySelector('.b-name').style.borderColor = '#cbd5e1'; row.querySelector('.b-age').style.borderColor = '#cbd5e1';
+                }
+            });
+            
+            if(!validationPassed) {
+                loader.style.display = 'none'; btnSave.disabled = false;
+                showToast('Поля Время, Ник и Возраст обязательны для заполнения, вуф!', 'error'); return;
+            }
 
             let saveTargetCode = currentFullCode;
-            if (prefixSelect.value.toLowerCase() === 'а') {
-                if (window.currentSelectedExpertCode) {
-                    saveTargetCode = window.currentSelectedExpertCode;
-                }
+            if (prefixSelect.value.toLowerCase() === 'а' && window.currentSelectedExpertCode) {
+                saveTargetCode = window.currentSelectedExpertCode;
             }
             
             fetch(WEB_APP_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({
-                    action: "saveBookingData",
-                    code: saveTargetCode,
-                    date: dayStr,
-                    clients: clientsToSend
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                loader.style.display = 'none';
-                btnSave.disabled = false;
+                method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: "saveBookingData", code: saveTargetCode, date: dayStr, clients: clientsToSend })
+            }).then(res => res.json()).then(data => {
+                loader.style.display = 'none'; btnSave.disabled = false;
                 if (data.success) {
                     showToast('Абоненты успешно помечены!', 'success');
-
                     if(!globalGeneralData.bookings) globalGeneralData.bookings = {};
                     globalGeneralData.bookings[dayStr] = clientsToSend;
-
-                    // ЗАКРЫВАЕМ ПАНЕЛЬ ПРИ УСПЕХЕ И ПЕРЕРИСОВЫВАЕМ СЕТКУ
                     expandedPanel.classList.remove('active');
                     renderGrid(); 
-                } else {
-                    showToast('Ошибка при сохранении: ' + data.error, 'error');
-                }
-            })
-            .catch(err => {
-                loader.style.display = 'none';
-                btnSave.disabled = false;
+                } else showToast('Ошибка при сохранении: ' + data.error, 'error');
+            }).catch(err => {
+                loader.style.display = 'none'; btnSave.disabled = false;
                 showToast('Ошибка подключения к серверу ❌', 'error');
-                console.error(err);
             });
-
-        } else {
-            // Обычное сохранение рабочих смен (Кнопка "Смены в июле")
+        } 
+        // СОХРАНЕНИЕ СМЕН В ИЮЛЕ
+        else {
             fetch(WEB_APP_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({
-                    code: currentFullCode,
-                    shifts: pendingShifts
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                loader.style.display = 'none';
-                btnSave.disabled = false;
-                if (data.success) {
-                    showToast('Данные успешно сохранены, ауф!', 'success');
-                } else {
-                    showToast('Ошибка: Сотрудник не найден.', 'error');
-                }
-            })
-            .catch(err => {
-                loader.style.display = 'none';
-                btnSave.disabled = false;
+                method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ code: currentFullCode, shifts: pendingShifts })
+            }).then(res => res.json()).then(data => {
+                loader.style.display = 'none'; btnSave.disabled = false;
+                if (data.success) showToast('Данные успешно сохранены, ауф!', 'success');
+                else showToast('Ошибка: Сотрудник не найден.', 'error');
+            }).catch(err => {
+                loader.style.display = 'none'; btnSave.disabled = false;
                 showToast('Сбой при сохранении данных ❌', 'error');
-                console.error(err);
             });
         }
     });
@@ -763,7 +811,6 @@
                     <option value="custom">Свой вариант...</option>
                 </select>
             `;
-
             container.querySelector('.booking-fallback-select').addEventListener('change', (e) => {
                 if(e.target.value !== "") {
                     pendingShifts[dayStr] = e.target.value;
@@ -776,38 +823,26 @@
 
         let defaultHours = ["", "", "", ""];
         let defaultMinutes = "00";
-        if (currentShift === "14:00 — 18:00") {
-            defaultHours = ["14", "15", "16", "17"];
-        } else if (currentShift === "18:00 — 22:00" || currentShift === "18:00 -- 22:00") {
-            defaultHours = ["18", "19", "20", "21"];
-        }
+        if (currentShift === "14:00 — 18:00") defaultHours = ["14", "15", "16", "17"];
+        else if (currentShift === "18:00 — 22:00" || currentShift === "18:00 -- 22:00") defaultHours = ["18", "19", "20", "21"];
 
         const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
-        const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
-
         let html = `<div class="panel-title">Запись абонентов на ${dayStr} (${currentShift || 'Выбор специалиста'})</div>`;
 
         for (let i = 0; i < 5; i++) {
-            let hh = defaultHours[i] || "";
-            let mm = hh ? defaultMinutes : "";
+            let hh = defaultHours[i] || ""; let mm = hh ? defaultMinutes : "";
             let n = "", a = ""; 
 
             if (savedClients[i]) {
                 const parts = savedClients[i].split(/[—–-]/);
                 if (parts.length >= 2) {
-                    const timePart = parts[0].trim();
-                    const timeSplit = timePart.split(':');
-                    if (timeSplit.length === 2) {
-                        hh = timeSplit[0].trim();
-                        mm = timeSplit[1].trim();
-                    }
+                    const timeSplit = parts[0].trim().split(':');
+                    if (timeSplit.length === 2) { hh = timeSplit[0].trim(); mm = timeSplit[1].trim(); }
                     const clientPart = parts.slice(1).join('—');
                     const subParts = clientPart.split('|');
                     n = subParts[0] ? subParts[0].trim() : clientPart.trim();
                     a = subParts[1] ? subParts[1].trim() : "";
-                } else {
-                    n = savedClients[i];
-                }
+                } else n = savedClients[i];
             }
 
             html += `
@@ -824,18 +859,13 @@
         }
         
         container.innerHTML = html;
-
-        // ПЕРЕНОС ФОКУСА ПО ENTER
         const nameInputs = container.querySelectorAll('.b-name');
         nameInputs.forEach(input => {
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
-                    e.preventDefault(); // Останавливаем стандартное поведение Enter
+                    e.preventDefault();
                     const row = e.target.closest('.booking-row');
-                    if (row) {
-                        const ageInput = row.querySelector('.b-age');
-                        if (ageInput) ageInput.focus();
-                    }
+                    if (row) { const ageInput = row.querySelector('.b-age'); if (ageInput) ageInput.focus(); }
                 }
             });
         });
@@ -843,17 +873,11 @@
     
     document.getElementById('btn-global-load-expert').addEventListener('click', () => {
         const expertVal = document.getElementById('global-expert-input').value.trim();
-        if (!expertVal) {
-            showToast('Введите ник или код психолога!', 'error');
-            return;
-        }
-
+        if (!expertVal) { showToast('Введите ник или код психолога!', 'error'); return; }
         expandedPanel.classList.remove('active');
         document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
         removeDesktopPopover();
-
         window.currentSelectedExpertCode = expertVal;
-
         loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(expertVal)}`);
     });
     
