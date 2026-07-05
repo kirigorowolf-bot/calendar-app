@@ -924,11 +924,9 @@ function renderBookingPanel(dayStr, container) {
       </div>
     `;
   }
- 
-  container.innerHTML = html;
-  // Если это аналитик, вешаем обработчик на кнопку поиска внутри панели
-}
- // Обработчик поиска календаря для аналитика
+container.innerHTML = html;
+};
+ // Обработчик поиска календаря для аналитика 
 document.getElementById('btn-global-load-expert').addEventListener('click', () => {
   const expertVal = document.getElementById('global-expert-input').value.trim();
   if (!expertVal) {
