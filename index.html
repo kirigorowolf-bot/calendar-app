@@ -42,7 +42,7 @@
  h2 { margin-bottom: 20px; font-size: 24px; font-weight: 800; color: var(--text-color); }
  .form-group { margin-bottom: 15px; }
  .input-title { font-weight: 700; margin-bottom: 8px; display: block; font-size: 16px; }
- .code-input-container { display: flex; gap: 10px; align-items: center; max-width: 340px; }
+ .code-input-container { display: flex; gap: 10px; align-items: center; width: 100%; max-width: 340px; }
  
  select, input { padding: 12px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 16px; font-weight: 600; outline: none; transition: border-color 0.2s; }
  select:focus, input:focus { border-color: var(--primary-color); }
@@ -214,9 +214,16 @@
   .counter-num { font-size: 12px; }
   .counter-slash { font-size: 12px; color: rgba(44, 62, 80, 0.3); }
   .booking-counter { font-size: 12px !important; padding: 2px 6px !important; margin-top: 8px !important; }
-  .booking-row { padding: 4px !important; gap: 3px !important; }
-  .b-city { width: 80px !important; max-width: 80px !important; }
-  .b-age { width: 45px !important; max-width: 45px !important; }
+
+   .container { padding: 12px; border-radius: 12px; width: 100%; overflow: hidden; }
+   .code-input-container { max-width: 100%; }
+   .digits-input { width: 100%; min-width: 0; }
+   
+   /* Стили для сжатия новой формы без города */
+   .booking-row { padding: 4px !important; gap: 4px !important; }
+   .b-name { min-width: 0 !important; }
+   .b-age { width: 55px !important; max-width: 55px !important; }
+ }
 }
  </style>
 </head>
@@ -711,11 +718,8 @@ btnSave.addEventListener('click', () => {
       const mm = row.querySelector('.b-mm').value.trim();
       const name = row.querySelector('.b-name').value.trim();
       const age = row.querySelector('.b-age').value.trim();
-      const city = row.querySelector('.b-city').value.trim();
       
-// ИСПРАВЛЕНИЕ: Игнорируем строки, где есть только время от автозаполнения.
-      // Валидируем только те, где введены личные данные абонента.
-      if (name || age || city) {
+ if (name || age) { // Валидируем только по имени или возрасту
         if (!hh || !mm || !name || !age) {
           validationPassed = false;
           if (!hh) row.querySelector('.b-hh').style.borderColor = 'var(--danger-color)';
@@ -730,14 +734,14 @@ btnSave.addEventListener('click', () => {
           
           const cleanHH = hh.padStart(2, '0');
           const cleanMM = mm.padStart(2, '0');
-          clientsToSend.push(`${cleanHH}:${cleanMM} — ${name} | ${age} | ${city || '—'}`);
+          // Отправляем строку без города (только время, ник и возраст)
+          clientsToSend.push(`${cleanHH}:${cleanMM} — ${name} | ${age}`);
         }
       } else {
-         // Строка пуста (или содержит только авто-время) - просто сбрасываем рамки и игнорируем
-         row.querySelector('.b-hh').style.borderColor = '#cbd5e1';
-         row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
-         row.querySelector('.b-name').style.borderColor = '#cbd5e1';
-         row.querySelector('.b-age').style.borderColor = '#cbd5e1';
+        row.querySelector('.b-hh').style.borderColor = '#cbd5e1';
+        row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
+        row.querySelector('.b-name').style.borderColor = '#cbd5e1';
+        row.querySelector('.b-age').style.borderColor = '#cbd5e1';
       }
     });
     if(!validationPassed) {
@@ -844,13 +848,15 @@ function renderBookingPanel(dayStr, container) {
   const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
   let html = `<div class="panel-title">Запись абонентов на ${dayStr} (${currentShift})</div>`;
   
+const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
+  let html = `<div class="panel-title">Запись абонентов на ${dayStr} (${currentShift})</div>`;
+  
   for (let i = 0; i < 5; i++) {
     let hh = defaultHours[i] || "";
     let mm = hh ? defaultMinutes : "";
-    let n = "", a = "", c = "";
+    let n = "", a = ""; // Переменную города (c) убрали
     
     if (savedClients[i]) {
-      // Разбиваем строку базы по дефису/тире на [Время] и [Данные клиента]
       const parts = savedClients[i].split(/[—–-]/);
       if (parts.length >= 2) {
         const timePart = parts[0].trim();
@@ -859,22 +865,16 @@ function renderBookingPanel(dayStr, container) {
           hh = timeSplit[0].trim();
           mm = timeSplit[1].trim();
         }
-        
-        // Пересобираем остаток строки и делим по "|"
         const clientPart = parts.slice(1).join('—');
         const subParts = clientPart.split('|');
-        if (subParts.length >= 3) {
-          n = subParts[0].trim();
-          a = subParts[1].trim();
-          c = subParts[2].trim();
-        } else {
-          n = clientPart.trim();
-        }
+        n = subParts[0] ? subParts[0].trim() : clientPart.trim();
+        a = subParts[1] ? subParts[1].trim() : "";
       } else {
         n = savedClients[i];
       }
     }
     
+    // В верстке ниже удален инпут города, а для возраста добавлены inputmode и type
     html += `
       <div class="booking-row" data-row="${i}">
         <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}">
@@ -883,13 +883,10 @@ function renderBookingPanel(dayStr, container) {
         <span>—</span>
         <input type="text" class="booking-input b-name" placeholder="Ник абонента" value="${n}">
         <span>|</span>
-        <input type="text" class="booking-input b-age" placeholder="Возраст" maxlength="3" value="${a}">
-        <span>|</span>
-        <input type="text" class="booking-input b-city" placeholder="Город" value="${c}">
+        <input type="text" class="booking-input b-age" placeholder="Возраст" maxlength="3" type="number" inputmode="numeric" pattern="[0-9]*" value="${a}">
       </div>
     `;
   }
-  
   container.innerHTML = html;
 }
  if ('serviceWorker' in navigator) {
