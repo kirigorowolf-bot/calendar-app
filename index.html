@@ -594,7 +594,7 @@ function handleDayClick(clickedCell, dayStr) {
  `;
  }
 
- function setupPersonalListeners(container, dayStr) {
+function setupPersonalListeners(container, dayStr) {
   const selectEl = container.querySelector('.sub-select');
   const customBox = container.querySelector('.sub-custom-box');
   const inputs = Array.from(container.querySelectorAll('.sub-input'));
@@ -604,7 +604,12 @@ function handleDayClick(clickedCell, dayStr) {
     if (newVal === 'custom') {
       const v = inputs.map(i => i.value.trim());
       if (v.some(val => val !== "")) {
-        newVal = `${v[0].padStart(2, '0')}:${v[1].padStart(2, '0')} — ${v[2].padStart(2, '0')}:${v[3].padStart(2, '0')}`;
+        // Исправлено: берем каждый элемент массива по индексу и заполняем нулями до 2 символов
+        const hh1 = (v[0] || '').padStart(2, '0');
+        const mm1 = (v[1] || '').padStart(2, '0');
+        const hh2 = (v[2] || '').padStart(2, '0');
+        const mm2 = (v[3] || '').padStart(2, '0');
+        newVal = `${hh1}:${mm1} — ${hh2}:${mm2}`;
       } else { 
         newVal = ""; 
       }
