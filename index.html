@@ -349,13 +349,12 @@
  loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
  });
 
- btnBooking.addEventListener('click', () => {
+btnBooking.addEventListener('click', () => {
   currentViewMode = "booking";
-  btnSave.style.display = 'block'; // Кнопка сохранить нужна под календарем
+  btnSave.style.display = 'block'; 
   adminWarning.style.display = 'none';
   expandedPanel.classList.remove('active');
   removeDesktopPopover();
-  
   loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(currentFullCode)}`);
 });
 
@@ -517,16 +516,45 @@ function handleDayClick(clickedCell, dayStr) {
     return; 
   }
   
- if (clickedCell.classList.contains('selected')) {
-   // Если кнопка "Сохранить" видима и активна, автоматически триггерим сохранение перед закрытием
-   if (btnSave.style.display !== 'none' && !btnSave.disabled) {
-     btnSave.click();
-   }
-   clickedCell.classList.remove('selected');
-   expandedPanel.classList.remove('active');
-   if (oldPopover) oldPopover.remove();
-   return;
- }
+if (clickedCell.classList.contains('selected')) {
+  // Проверяем, нужно ли автосохранение для абонентов по записи
+  if (currentViewMode === "booking" && btnSave.style.display !== 'none' && !btnSave.disabled) {
+    // Вместо click() вызываем напрямую функцию сохранения без перезапуска рендеров интерфейса во время закрытия
+    const rows = document.querySelectorAll('.booking-row');
+    const clientsToSend = [];
+    let validationPassed = true;
+    
+    rows.forEach(row => {
+      const hh = row.querySelector('.b-hh').value.trim();
+      const mm = row.querySelector('.b-mm').value.trim();
+      const name = row.querySelector('.b-name').value.trim();
+      const age = row.querySelector('.b-age').value.trim();
+      if (name || age) {
+        if (!hh || !mm || !name || !age) validationPassed = false;
+        else clientsToSend.push(`${hh.padStart(2, '0')}:${mm.padStart(2, '0')} — ${name} | ${age}`);
+      }
+    });
+    
+    if (validationPassed && clientsToSend.length > 0) {
+      let saveTargetCode = currentFullCode;
+      const panelInput = document.getElementById('expert-search-panel-input');
+      if (prefixSelect.value.toLowerCase() === 'а' && panelInput) saveTargetCode = panelInput.value.trim();
+      
+      fetch(WEB_APP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: "saveBookingData", code: saveTargetCode, date: dayStr, clients: clientsToSend })
+      });
+      if(!globalGeneralData.bookings) globalGeneralData.bookings = {};
+      globalGeneralData.bookings[dayStr] = clientsToSend;
+    }
+  }
+  
+  clickedCell.classList.remove('selected');
+  expandedPanel.classList.remove('active');
+  if (oldPopover) oldPopover.remove();
+  return;
+}
   
   document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
   if (oldPopover) oldPopover.remove();
@@ -722,13 +750,20 @@ btnSave.addEventListener('click', () => {
       return;
     }
     
-    // Отправляем массив абонентов на сервер
+    let saveTargetCode = currentFullCode;
+    if (prefixSelect.value.toLowerCase() === 'а') {
+      const panelInput = document.getElementById('expert-search-panel-input');
+      if (panelInput) {
+        saveTargetCode = panelInput.value.trim();
+      }
+    }
+
     fetch(WEB_APP_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         action: "saveBookingData",
-        code: currentFullCode,
+        code: saveTargetCode,
         date: dayStr,
         clients: clientsToSend
       })
@@ -758,9 +793,15 @@ btnSave.addEventListener('click', () => {
      showToast('Ошибка при сохранении: ' + data.error, 'error');
    }
  })
-   
-  } else {
-    // Обычное сохранение рабочих смен (Кнопка "Смены в июле")
+ .catch(err => {
+   loader.style.display = 'none';
+   btnSave.disabled = false;
+   showToast('Ошибка подключения к серверу ❌', 'error');
+   console.error(err);
+ }); // <-- Теперь фетч закрыт корректно!
+ 
+ } else {
+   // Обычное сохранение рабочих смен (Кнопка "Смены в июле")
     fetch(WEB_APP_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
@@ -822,8 +863,23 @@ function renderBookingPanel(dayStr, container) {
     defaultHours = ["18", "19", "20", "21"];
   }
   
-const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
-  let html = `<div class="panel-title">Запись абонентов на ${dayStr} (${currentShift})</div>`;
+  const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
+  const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
+  
+  let html = `<div class="panel-title">Запись абонентов на ${dayStr} (${currentShift || 'Выбор специалиста'})</div>`;
+  
+  // Если зашел аналитик "а", выводим инпут для поиска психолога на самом верху панели
+  if (isAnalyst) {
+    html += `
+      <div class="form-group" style="margin-bottom: 15px; background: #fff3cd; padding: 10px; border-radius: 10px; border: 1px solid #ffeeba;">
+        <span class="input-title" style="font-size: 14px; color: #856404;">Ник или код психолога:</span>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="expert-search-panel-input" class="booking-input" placeholder="в-101 или Имя" style="flex: 1; text-align: left; padding-left: 8px; height: 38px !important;" value="${window.lastSearchedExpert || ''}">
+          <button id="btn-load-expert" class="btn-primary" style="min-width: auto; padding: 0 15px; height: 38px; font-size: 14px; border-radius: 8px;">Показать</button>
+        </div>
+      </div>
+    `;
+  }
   
   for (let i = 0; i < 5; i++) {
     let hh = defaultHours[i] || "";
@@ -861,7 +917,49 @@ const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[da
       </div>
     `;
   }
+ 
   container.innerHTML = html;
+  // Если это аналитик, вешаем обработчик на кнопку поиска внутри панели
+  if (isAnalyst) {
+    const btnLoadExpert = container.querySelector('#btn-load-expert');
+    const expertInput = container.querySelector('#expert-search-panel-input');
+    
+    btnLoadExpert.addEventListener('click', (e) => {
+      e.stopPropagation(); // Предотвращаем закрытие панели
+      const expertVal = expertInput.value.trim();
+      if (!expertVal) {
+        showToast('Введите ник или код психолога!', 'error');
+        return;
+      }
+      
+      // Сохраняем последний ввод во временную переменную, чтобы он не стирался при перерисовке
+      window.lastSearchedExpert = expertVal;
+      
+      loader.style.display = 'block';
+      // Запрашиваем данные конкретного психолога
+      fetch(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(expertVal)}`)
+      .then(res => res.json())
+      .then(data => {
+        loader.style.display = 'none';
+        if(data.error) {
+          showToast('Ошибка: ' + data.error, 'error');
+          return;
+        }
+        // Подменяем данные расписания в кэше для отрисовки этой панели
+        pendingShifts[dayStr] = data.schedule ? data.schedule[dayStr] : "";
+        if(!globalGeneralData.bookings) globalGeneralData.bookings = {};
+        globalGeneralData.bookings[dayStr] = data.generalData && data.generalData.bookings ? (data.generalData.bookings[dayStr] || []) : [];
+        
+        // Перерисовываем панель с новыми данными
+        renderBookingPanel(dayStr, container);
+        showToast('Данные специалиста загружены!', 'success');
+      })
+      .catch(err => {
+        loader.style.display = 'none';
+        showToast('Ошибка загрузки данных специалиста', 'error');
+      });
+    });
+  }
 }
  if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
@@ -869,6 +967,5 @@ const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[da
       .catch((err) => console.log('Ошибка SW:', err));
   }
 </script>
- 
 </body>
 </html>
