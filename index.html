@@ -118,6 +118,15 @@
  .role-list { list-style: none; padding-left: 0; }
  .role-list li { margin-bottom: 3px; color: #2d3748; font-weight: 600; }
  .role-time { color: #718096; font-size: 13px; font-weight: 700; margin-left: 5px; }
+  .cell-shift-time { 
+   font-size: 11px; 
+   font-weight: 800; 
+   margin-top: 16px; 
+   text-align: center; 
+   color: #1e293b; 
+   line-height: 1.1; 
+   padding: 0 2px; 
+ }
  .loader { display: none; text-align: center; font-size: 18px; font-weight: 800; color: var(--primary-color); margin: 25px 0; }
  @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
   
@@ -198,6 +207,7 @@
   .calendar-header { display: grid; font-size: 11px; padding: 8px 0; margin-bottom: 8px; border-radius: 8px; }
   .calendar-grid { gap: 6px; }
   .calendar-day { min-height: 55px; border-width: 1px; border-radius: 10px; }
+   .cell-shift-time { font-size: 9px; margin-top: 12px; }
   .day-number-tl, .day-number { font-size: 10px !important; top: 3px !important; left: 5px !important; }
   .psy-counters { margin-top: 14px; gap: 2px; }
   .counter-icon { font-size: 9px; margin-bottom: 1px; }
@@ -323,7 +333,7 @@
  expandedPanel.classList.remove('active');
  removeDesktopPopover();
  
- loadCalendarData(`${WEB_APP_URL}?action=getData&code=${encodeURIComponent(currentFullCode)}`);
+ loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
  });
 
  btnGeneral.addEventListener('click', () => {
@@ -465,12 +475,13 @@ function renderGrid() {
         }
       }
     } 
-    // РЕЖИМ 3: Кнопка "Смены в июле"
+// РЕЖИМ 3: Кнопка "Смены в июле"
     else {
-      cell.innerHTML = `<div class="day-number">${day}</div>`;
+      let shiftText = userShift ? `<div class="cell-shift-time">${userShift}</div>` : '';
+      cell.innerHTML = `<div class="day-number-tl">${day}</div>${shiftText}`;
       updateCellVisuals(cell, userShift);
       
-      // Код 'в' подсвечивает критические дни (0 смен) даже в личном календаре
+      // Код 'в' подсвечивает критические дни (0 смен)
       if (p === 'в') {
         if (dayCount === 0 || eveningCount === 0) {
           cell.classList.add('critical-border');
@@ -694,8 +705,9 @@ btnSave.addEventListener('click', () => {
       const age = row.querySelector('.b-age').value.trim();
       const city = row.querySelector('.b-city').value.trim();
       
-      // Смена считается частично заполненной, если введено хоть что-то
-      if (hh || mm || name || age || city) {
+// ИСПРАВЛЕНИЕ: Игнорируем строки, где есть только время от автозаполнения.
+      // Валидируем только те, где введены личные данные абонента.
+      if (name || age || city) {
         if (!hh || !mm || !name || !age) {
           validationPassed = false;
           if (!hh) row.querySelector('.b-hh').style.borderColor = 'var(--danger-color)';
@@ -708,15 +720,17 @@ btnSave.addEventListener('click', () => {
           row.querySelector('.b-name').style.borderColor = '#cbd5e1';
           row.querySelector('.b-age').style.borderColor = '#cbd5e1';
           
-          // Форматируем ЧЧ и ММ (добавляем ведущие нули при необходимости)
           const cleanHH = hh.padStart(2, '0');
           const cleanMM = mm.padStart(2, '0');
-          
-          // Собираем строчку в исходном формате для отправки на бэк: ЧЧ:ММ — Ник | Возраст | Город
           clientsToSend.push(`${cleanHH}:${cleanMM} — ${name} | ${age} | ${city || '—'}`);
         }
+      } else {
+         // Строка пуста (или содержит только авто-время) - просто сбрасываем рамки и игнорируем
+         row.querySelector('.b-hh').style.borderColor = '#cbd5e1';
+         row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
+         row.querySelector('.b-name').style.borderColor = '#cbd5e1';
+         row.querySelector('.b-age').style.borderColor = '#cbd5e1';
       }
-    });
     
     if(!validationPassed) {
       loader.style.display = 'none';
