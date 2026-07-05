@@ -792,13 +792,14 @@ btnSave.addEventListener('click', () => {
    } else {
      showToast('Ошибка при сохранении: ' + data.error, 'error');
    }
- })
+ });
+})
  .catch(err => {
    loader.style.display = 'none';
    btnSave.disabled = false;
    showToast('Ошибка подключения к серверу ❌', 'error');
    console.error(err);
- }); // <-- Теперь фетч закрыт корректно!
+ }); 
  
  } else {
    // Обычное сохранение рабочих смен (Кнопка "Смены в июле")
