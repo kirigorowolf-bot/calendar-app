@@ -446,7 +446,7 @@ function renderGrid() {
         cell.appendChild(bCount);
       }
     } 
-    // РЕЖИМ 2: Кнопка "Общее расписание"
+// РЕЖИМ 2: Кнопка "Общее расписание"
     else if (currentViewMode === "general") {
       cell.innerHTML = `
         <div class="day-number-tl">${day}</div>
@@ -473,24 +473,32 @@ function renderGrid() {
         if (info.vDayCount === 0 || info.vEveningCount === 0) {
           cell.classList.add('critical-border');
         }
+      } else if (p === 'к') {
+        // Для "к" обводим красным, если психологов не 2/2
+        if (dayCount !== 2 || eveningCount !== 2) {
+          cell.classList.add('critical-border');
+        }
       }
     } 
-// РЕЖИМ 3: Кнопка "Смены в июле"
+    // РЕЖИМ 3: Кнопка "Смены в июле"
     else {
       let shiftText = userShift ? `<div class="cell-shift-time">${userShift}</div>` : '';
       cell.innerHTML = `<div class="day-number-tl">${day}</div>${shiftText}`;
       updateCellVisuals(cell, userShift);
       
-      // Код 'в' подсвечивает критические дни (0 смен)
+      // Дублируем проверку критических дней для личного календаря
       if (p === 'в') {
         if (dayCount === 0 || eveningCount === 0) {
+          cell.classList.add('critical-border');
+        }
+      } else if (p === 'к') {
+        if (dayCount !== 2 || eveningCount !== 2) {
           cell.classList.add('critical-border');
         }
       }
     }
     
     cell.addEventListener('click', () => handleDayClick(cell, dayStr));
-    
     calendarGrid.appendChild(cell);
     allGridElements.push(cell);
   }
