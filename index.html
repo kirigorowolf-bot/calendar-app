@@ -930,16 +930,47 @@ function renderBookingPanel(dayStr, container) {
 }
  // Обработчик поиска календаря для аналитика
 document.getElementById('btn-global-load-expert').addEventListener('click', () => {
-  const expertVal = document.getElementById('global-expert-input').value.trim();
+  let expertVal = document.getElementById('global-expert-input').value.trim();
   if (!expertVal) {
     showToast('Введите ник или код психолога!', 'error');
     return;
   }
   
-  // Сохраняем глобально код целевого психолога, чтобы использовать его при сохранении
-  window.currentSelectedExpertCode = expertVal;
+  // Закрываем открытые панели
+  expandedPanel.classList.remove('active');
+  document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
+  removeDesktopPopover();
+
+  // ИСПРАВЛЕНИЕ 2: Если введен ник (нет дефиса), ищем его код в кэше общего расписания
+  const isCode = expertVal.includes('-');
+  if (!isCode && globalGeneralData) {
+    let foundCode = null;
+    const lowerName = expertVal.toLowerCase();
+    
+    // Пробегаемся по всем дням июля в кэше общего расписания
+    for (const day in globalGeneralData) {
+      if (globalGeneralData[day] && globalGeneralData[day].dayPsychologists) {
+        // Ищем в дневных сменах
+        const found = globalGeneralData[day].dayPsychologists.find(p => p.name.toLowerCase().includes(lowerName));
+        if (found && found.code) { foundCode = found.code; break; }
+      }
+      if (globalGeneralData[day] && globalGeneralData[day].eveningPsychologists) {
+        // Ищем в вечерних сменах
+        const found = globalGeneralData[day].eveningPsychologists.find(p => p.name.toLowerCase().includes(lowerName));
+        if (found && found.code) { foundCode = found.code; break; }
+      }
+    }
+    
+    if (foundCode) {
+      expertVal = foundCode; // Подменяем ник на найденный код (например, в-102)
+    } else {
+      // Если аналитик еще не загружал вкладку "Общее расписание", данных в кэше нет. 
+      // Выводим предупреждение, но пробуем отправить как есть
+      showToast('Поиск по нику точнее, если сначала открыть "Общее расписание"!', 'info');
+    }
+  }
   
-  // Загружаем данные и строим календарь именно этого психолога
+  window.currentSelectedExpertCode = expertVal;
   loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(expertVal)}`);
 });
  if ('serviceWorker' in navigator) {
