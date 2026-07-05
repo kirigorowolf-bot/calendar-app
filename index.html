@@ -517,12 +517,16 @@ function handleDayClick(clickedCell, dayStr) {
     return; 
   }
   
-  if (clickedCell.classList.contains('selected')) {
-    clickedCell.classList.remove('selected');
-    expandedPanel.classList.remove('active');
-    if (oldPopover) oldPopover.remove();
-    return;
-  }
+ if (clickedCell.classList.contains('selected')) {
+   // Если кнопка "Сохранить" видима и активна, автоматически триггерим сохранение перед закрытием
+   if (btnSave.style.display !== 'none' && !btnSave.disabled) {
+     btnSave.click();
+   }
+   clickedCell.classList.remove('selected');
+   expandedPanel.classList.remove('active');
+   if (oldPopover) oldPopover.remove();
+   return;
+ }
   
   document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
   if (oldPopover) oldPopover.remove();
@@ -730,25 +734,31 @@ btnSave.addEventListener('click', () => {
       })
     })
     .then(res => res.json())
-    .then(data => {
-      loader.style.display = 'none';
-      btnSave.disabled = false;
-      if (data.success) {
-        showToast('Абоненты успешно помечены!', 'success');
-        // Обновляем локальный кэш, чтобы счетчики сразу пересчитались
-        if(!globalGeneralData.bookings) globalGeneralData.bookings = {};
-        globalGeneralData.bookings[dayStr] = clientsToSend;
-        renderGrid();
-      } else {
-        showToast('Ошибка при сохранении: ' + data.error, 'error');
-      }
-    })
-    .catch(err => {
-      loader.style.display = 'none';
-      btnSave.disabled = false;
-      showToast('Ошибка подключения к серверу ❌', 'error');
-    });
-    
+ .then(data => {
+   loader.style.display = 'none';
+   btnSave.disabled = false;
+   if (data.success) {
+     showToast('Абоненты успешно помечены!', 'success');
+     
+     // Обновляем локальный кэш
+     if(!globalGeneralData.bookings) globalGeneralData.bookings = {};
+     globalGeneralData.bookings[dayStr] = clientsToSend;
+     
+     // Перерисовываем сетку, чтобы обновился счетчик на календаре
+     renderGrid();
+     
+     // Находим ячейку сохраненного дня и эмулируем клик, чтобы корректно обновить контент панели
+     const savedCell = document.getElementById(`cell-${dayStr}`);
+     if (savedCell) {
+       savedCell.classList.add('selected');
+       expandedPanel.classList.add('active');
+       renderBookingPanel(dayStr, panelContent);
+     }
+   } else {
+     showToast('Ошибка при сохранении: ' + data.error, 'error');
+   }
+ })
+   
   } else {
     // Обычное сохранение рабочих смен (Кнопка "Смены в июле")
     fetch(WEB_APP_URL, {
