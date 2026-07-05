@@ -197,29 +197,31 @@
   user-select: none !important;
 }
 
-  @media (max-width: 768px) {
+ @media (max-width: 768px) {
+  body { padding: 8px; }
+  .container { padding: 12px; border-radius: 12px; width: 100%; overflow: hidden; box-sizing: border-box; }
+  .code-input-container { max-width: 100%; width: 100%; display: flex; gap: 8px; }
+  .prefix-select { width: 75px; min-width: 75px; padding: 10px; }
+  .digits-input { width: 100%; min-width: 0; padding: 10px; flex: 1; }
+  
   .calendar-header { display: grid; font-size: 11px; padding: 8px 0; margin-bottom: 8px; border-radius: 8px; }
   .calendar-grid { gap: 6px; }
   .calendar-day { min-height: 55px; border-width: 1px; border-radius: 10px; }
-   .cell-shift-time { font-size: 9px; margin-top: 12px; }
+  .cell-shift-time { font-size: 9px; margin-top: 12px; }
   .day-number-tl, .day-number { font-size: 10px !important; top: 3px !important; left: 5px !important; }
   .psy-counters { margin-top: 14px; gap: 2px; }
   .counter-icon { font-size: 9px; margin-bottom: 1px; }
   .counter-num { font-size: 12px; }
   .counter-slash { font-size: 12px; color: rgba(44, 62, 80, 0.3); }
   .booking-counter { font-size: 12px !important; padding: 2px 6px !important; margin-top: 8px !important; }
-
-   .container { padding: 12px; border-radius: 12px; width: 100%; overflow: hidden; }
-   .code-input-container { max-width: 100%; }
-   .digits-input { width: 100%; min-width: 0; }
-   
-   /* Стили для сжатия новой формы без города */
-   .booking-row { padding: 4px !important; gap: 4px !important; }
-   .b-name { min-width: 0 !important; }
-   .b-age { width: 55px !important; max-width: 55px !important; }
+  
+  /* Новые компактные стили для формы ввода абонентов без города */
+  .booking-row { padding: 4px 6px !important; gap: 4px !important; display: flex !important; align-items: center !important; }
+  .b-name { min-width: 0 !important; flex: 1 !important; font-size: 13px !important; padding: 4px !important; }
+  .b-age { width: 50px !important; max-width: 50px !important; font-size: 13px !important; padding: 4px !important; }
+  .b-hh, .b-mm { width: 32px !important; max-width: 32px !important; font-size: 13px !important; padding: 4px !important; }
  }
-}
- </style>
+</style>
 </head>
     
 <body>
@@ -592,70 +594,36 @@ function handleDayClick(clickedCell, dayStr) {
  `;
  }
 
-    function setupPersonalListeners(container, dayStr) {
-        const selectEl = container.querySelector('.sub-select');
-        const customBox = container.querySelector('.sub-custom-box');
-        const inputs = Array.from(container.querySelectorAll('.sub-input'));
-
-        const updateLocalData = () => {
-            let newVal = selectEl.value;
-            if (newVal === 'custom') {
-                const v = inputs.map(i => i.value.trim());
-                if (v.some(val => val !== "")) {
-                    newVal = `${v[0].padStart(2, '0')}:${v[1].padStart(2, '0')} — ${v[2].padStart(2, '0')}:${v[3].padStart(2, '0')}`;
-                } else { newVal = ""; }
-            }
-            pendingShifts[dayStr] = newVal;
-            updateCellVisuals(document.getElementById(`cell-${dayStr}`), newVal);
-        };
-
-        selectEl.addEventListener('change', () => {
-            customBox.style.display = selectEl.value === 'custom' ? 'flex' : 'none';
-            updateLocalData();
-        });
-        
-        inputs.forEach(input => input.addEventListener('input', updateLocalData));
-    }
-
-    // Отрисовка личных смен для мобильного аккордеона
-    function renderPersonalPanel(dayStr, container) {
-        container.innerHTML = getPersonalHtml(dayStr, pendingShifts[dayStr] || "");
-        setupPersonalListeners(container, dayStr);
-    }
-
-    // Отрисовка личных смен прямо на ячейке для десктопа
  function setupPersonalListeners(container, dayStr) {
-   const selectEl = container.querySelector('.sub-select');
-   const customBox = container.querySelector('.sub-custom-box');
-   const inputs = Array.from(container.querySelectorAll('.sub-input'));
-   
-   const updateLocalData = () => {
-     let newVal = selectEl.value;
-     if (newVal === 'custom') {
-       const v = inputs.map(i => i.value.trim());
-       if (v.some(val => val !== "")) {
-         newVal = `${v[0].padStart(2, '0')}:${v[1].padStart(2, '0')} — ${v[2].padStart(2, '0')}:${v[3].padStart(2, '0')}`;
-       } else { 
-         newVal = ""; 
-       }
-     }
-     pendingShifts[dayStr] = newVal;
-     updateCellVisuals(document.getElementById(`cell-${dayStr}`), newVal);
-   };
+  const selectEl = container.querySelector('.sub-select');
+  const customBox = container.querySelector('.sub-custom-box');
+  const inputs = Array.from(container.querySelectorAll('.sub-input'));
+  
+  const updateLocalData = () => {
+    let newVal = selectEl.value;
+    if (newVal === 'custom') {
+      const v = inputs.map(i => i.value.trim());
+      if (v.some(val => val !== "")) {
+        newVal = `${v[0].padStart(2, '0')}:${v[1].padStart(2, '0')} — ${v[2].padStart(2, '0')}:${v[3].padStart(2, '0')}`;
+      } else { 
+        newVal = ""; 
+      }
+    }
+    pendingShifts[dayStr] = newVal;
+    updateCellVisuals(document.getElementById(`cell-${dayStr}`), newVal);
+  };
+  
+  selectEl.addEventListener('change', () => {
+    customBox.style.display = selectEl.value === 'custom' ? 'flex' : 'none';
+    updateLocalData();
+  });
+  inputs.forEach(input => input.addEventListener('input', updateLocalData));
+}
 
-   selectEl.addEventListener('change', () => {
-     customBox.style.display = selectEl.value === 'custom' ? 'flex' : 'none';
-     updateLocalData();
-   });
- 
-   inputs.forEach(input => input.addEventListener('input', updateLocalData));
- }
-
- function renderPersonalPanel(dayStr, container) {
-   container.innerHTML = getPersonalHtml(dayStr, pendingShifts[dayStr] || "");
-   setupPersonalListeners(container, dayStr);
- }
-
+function renderPersonalPanel(dayStr, container) {
+  container.innerHTML = getPersonalHtml(dayStr, pendingShifts[dayStr] || "");
+  setupPersonalListeners(container, dayStr);
+}
  function renderDesktopPersonalDropdown(cell, dayStr) {
    const popover = document.createElement('div');
    popover.id = 'desktop-personal-popover';
@@ -838,9 +806,6 @@ function renderBookingPanel(dayStr, container) {
   } else if (currentShift === "18:00 — 22:00" || currentShift === "18:00 -- 22:00") {
     defaultHours = ["18", "19", "20", "21"];
   }
-
-  const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
-  let html = `<div class="panel-title">Запись абонентов на ${dayStr} (${currentShift})</div>`;
   
 const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
   let html = `<div class="panel-title">Запись абонентов на ${dayStr} (${currentShift})</div>`;
