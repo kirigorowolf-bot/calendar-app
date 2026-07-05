@@ -252,7 +252,14 @@
  <div id="calendar-section">
  <!-- Предупреждение для нередактируемого режима (код "к") -->
  <div id="admin-warning" class="admin-warning">Для внесения изменений обратитесь к администратору.</div>
- 
+ <!-- Панель поиска психолога для аналитиков перед календарем -->
+<div id="analyst-search-bar" style="display: none; margin-bottom: 20px; background: #fff3cd; padding: 12px; border-radius: 12px; border: 1px solid #ffeeba;">
+  <span class="input-title" style="font-size: 15px; color: #856404; margin-bottom: 6px;">Вывод расписания конкретного психолога:</span>
+  <div style="display: flex; gap: 8px;">
+    <input type="text" id="global-expert-input" class="booking-input" placeholder="в-101 или Имя" style="flex: 1; text-align: left; padding-left: 12px; height: 42px !important; background: #fff;">
+    <button id="btn-global-load-expert" class="btn-primary" style="min-width: auto; padding: 0 25px; height: 42px; font-size: 15px; border-radius: 10px;">Показать календарь</button>
+  </div>
+</div>
  <div class="calendar-header">
  <div>ПН</div><div>ВТ</div><div>СР</div><div>ЧТ</div><div>ПТ</div><div>СБ</div><div>ВС</div>
  </div>
@@ -355,7 +362,21 @@ btnBooking.addEventListener('click', () => {
   adminWarning.style.display = 'none';
   expandedPanel.classList.remove('active');
   removeDesktopPopover();
-  loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(currentFullCode)}`);
+  
+  const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
+  const searchBar = document.getElementById('analyst-search-bar');
+  
+  if (isAnalyst) {
+    // Для аналитика показываем бар поиска и пустой календарный раздел
+    searchBar.style.display = 'block';
+    calendarGrid.innerHTML = ''; // Очищаем старую сетку
+    calendarSection.style.display = 'block';
+    calendarSection.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    // Для обычных пользователей сразу грузим их календарь
+    searchBar.style.display = 'none';
+    loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(currentFullCode)}`);
+  }
 });
 
  function removeDesktopPopover() {
@@ -538,7 +559,7 @@ if (clickedCell.classList.contains('selected')) {
     if (validationPassed && clientsToSend.length > 0) {
       let saveTargetCode = currentFullCode;
       const panelInput = document.getElementById('expert-search-panel-input');
-      if (prefixSelect.value.toLowerCase() === 'а' && panelInput) saveTargetCode = panelInput.value.trim();
+      if (prefixSelect.value.toLowerCase() === 'а' && panelInput) saveTargetCode = window.currentSelectedExpertCode;
       
       fetch(WEB_APP_URL, {
         method: 'POST',
@@ -750,13 +771,12 @@ btnSave.addEventListener('click', () => {
       return;
     }
     
-    let saveTargetCode = currentFullCode;
-    if (prefixSelect.value.toLowerCase() === 'а') {
-      const panelInput = document.getElementById('expert-search-panel-input');
-      if (panelInput) {
-        saveTargetCode = panelInput.value.trim();
-      }
-    }
+let saveTargetCode = currentFullCode;
+if (prefixSelect.value.toLowerCase() === 'а') {
+  if (window.currentSelectedExpertCode) {
+    saveTargetCode = window.currentSelectedExpertCode;
+  }
+}
 
     fetch(WEB_APP_URL, {
       method: 'POST',
@@ -867,20 +887,7 @@ function renderBookingPanel(dayStr, container) {
   const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
   
   let html = `<div class="panel-title">Запись абонентов на ${dayStr} (${currentShift || 'Выбор специалиста'})</div>`;
-  
-  // Если зашел аналитик "а", выводим инпут для поиска психолога на самом верху панели
-  if (isAnalyst) {
-    html += `
-      <div class="form-group" style="margin-bottom: 15px; background: #fff3cd; padding: 10px; border-radius: 10px; border: 1px solid #ffeeba;">
-        <span class="input-title" style="font-size: 14px; color: #856404;">Ник или код психолога:</span>
-        <div style="display: flex; gap: 8px;">
-          <input type="text" id="expert-search-panel-input" class="booking-input" placeholder="в-101 или Имя" style="flex: 1; text-align: left; padding-left: 8px; height: 38px !important;" value="${window.lastSearchedExpert || ''}">
-          <button id="btn-load-expert" class="btn-primary" style="min-width: auto; padding: 0 15px; height: 38px; font-size: 14px; border-radius: 8px;">Показать</button>
-        </div>
-      </div>
-    `;
-  }
-  
+   
   for (let i = 0; i < 5; i++) {
     let hh = defaultHours[i] || "";
     let mm = hh ? defaultMinutes : "";
@@ -920,47 +927,21 @@ function renderBookingPanel(dayStr, container) {
  
   container.innerHTML = html;
   // Если это аналитик, вешаем обработчик на кнопку поиска внутри панели
-  if (isAnalyst) {
-    const btnLoadExpert = container.querySelector('#btn-load-expert');
-    const expertInput = container.querySelector('#expert-search-panel-input');
-    
-    btnLoadExpert.addEventListener('click', (e) => {
-      e.stopPropagation(); // Предотвращаем закрытие панели
-      const expertVal = expertInput.value.trim();
-      if (!expertVal) {
-        showToast('Введите ник или код психолога!', 'error');
-        return;
-      }
-      
-      // Сохраняем последний ввод во временную переменную, чтобы он не стирался при перерисовке
-      window.lastSearchedExpert = expertVal;
-      
-      loader.style.display = 'block';
-      // Запрашиваем данные конкретного психолога
-      fetch(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(expertVal)}`)
-      .then(res => res.json())
-      .then(data => {
-        loader.style.display = 'none';
-        if(data.error) {
-          showToast('Ошибка: ' + data.error, 'error');
-          return;
-        }
-        // Подменяем данные расписания в кэше для отрисовки этой панели
-        pendingShifts[dayStr] = data.schedule ? data.schedule[dayStr] : "";
-        if(!globalGeneralData.bookings) globalGeneralData.bookings = {};
-        globalGeneralData.bookings[dayStr] = data.generalData && data.generalData.bookings ? (data.generalData.bookings[dayStr] || []) : [];
-        
-        // Перерисовываем панель с новыми данными
-        renderBookingPanel(dayStr, container);
-        showToast('Данные специалиста загружены!', 'success');
-      })
-      .catch(err => {
-        loader.style.display = 'none';
-        showToast('Ошибка загрузки данных специалиста', 'error');
-      });
-    });
-  }
 }
+ // Обработчик поиска календаря для аналитика
+document.getElementById('btn-global-load-expert').addEventListener('click', () => {
+  const expertVal = document.getElementById('global-expert-input').value.trim();
+  if (!expertVal) {
+    showToast('Введите ник или код психолога!', 'error');
+    return;
+  }
+  
+  // Сохраняем глобально код целевого психолога, чтобы использовать его при сохранении
+  window.currentSelectedExpertCode = expertVal;
+  
+  // Загружаем данные и строим календарь именно этого психолога
+  loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(expertVal)}`);
+});
  if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js')
       .then(() => console.log('Service Worker зарегистрирован!'))
