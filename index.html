@@ -458,7 +458,7 @@ function renderGrid() {
     // Извлекаем рабочие смены и данные по записям абонентов
     const userShift = pendingShifts[dayStr] || "";
     const info = globalGeneralData[dayStr] || { dayPsychologists: [], eveningPsychologists: [], vDayCount: 0, vEveningCount: 0 };
-    const dayBookings = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
+    const dayBookings = globalGeneralData ? (globalGeneralData[dayStr] || []) : [];
     
     const dayCount = info.dayPsychologists ? info.dayPsychologists.length : 0;
     const eveningCount = info.eveningPsychologists ? info.eveningPsychologists.length : 0;
