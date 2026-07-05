@@ -330,31 +330,39 @@
  currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim();
  }
 
- btnJuly.addEventListener('click', () => {
- currentViewMode = "personal";
- const p = prefixSelect.value.toLowerCase();
- if(p === 'к') {
- btnSave.style.display = 'none';
- adminWarning.style.display = 'block';
- } else {
- btnSave.style.display = 'block';
- adminWarning.style.display = 'none';
- }
- expandedPanel.classList.remove('active');
- removeDesktopPopover();
- 
- loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
- });
+btnJuly.addEventListener('click', () => {
+  currentViewMode = "personal";
+  const p = prefixSelect.value.toLowerCase();
+  
+  // Прячем панель поиска аналитика для этого режима
+  document.getElementById('analyst-search-bar').style.display = 'none';
+  
+  if(p === 'к') {
+    btnSave.style.display = 'none';
+    adminWarning.style.display = 'block';
+  } else {
+    btnSave.style.display = 'block';
+    adminWarning.style.display = 'none';
+  }
+  expandedPanel.classList.remove('active');
+  removeDesktopPopover();
+  // Запрос идет СТРОГО по родному коду аналитика
+  loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
+});
 
- btnGeneral.addEventListener('click', () => {
- currentViewMode = "general";
- btnSave.style.display = 'none'; 
- adminWarning.style.display = 'none';
- expandedPanel.classList.remove('active');
- removeDesktopPopover();
- 
- loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
- });
+btnGeneral.addEventListener('click', () => {
+  currentViewMode = "general";
+  btnSave.style.display = 'none'; 
+  adminWarning.style.display = 'none';
+  
+  // Прячем панель поиска аналитика для этого режима
+  document.getElementById('analyst-search-bar').style.display = 'none';
+  
+  expandedPanel.classList.remove('active');
+  removeDesktopPopover();
+  // Запрос идет СТРОГО по родному коду аналитика
+  loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
+});
 
 btnBooking.addEventListener('click', () => {
   currentViewMode = "booking";
@@ -367,13 +375,12 @@ btnBooking.addEventListener('click', () => {
   const searchBar = document.getElementById('analyst-search-bar');
   
   if (isAnalyst) {
-    // Для аналитика показываем бар поиска и пустой календарный раздел
+    // ТОЛЬКО ТУТ показываем панель поиска и очищаем старую сетку
     searchBar.style.display = 'block';
-    calendarGrid.innerHTML = ''; // Очищаем старую сетку
+    calendarGrid.innerHTML = ''; 
     calendarSection.style.display = 'block';
     calendarSection.scrollIntoView({ behavior: 'smooth' });
   } else {
-    // Для обычных пользователей сразу грузим их календарь
     searchBar.style.display = 'none';
     loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(currentFullCode)}`);
   }
