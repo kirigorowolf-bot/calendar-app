@@ -129,7 +129,72 @@
         .b-age { width: 60px !important; max-width: 60px !important; }
         .booking-row span { font-weight: 800 !important; color: #94a3b8 !important; font-size: 14px !important; flex: none !important; user-select: none !important; }
 
+/* ========================================= */
+        /* СТИЛИ ДЛЯ СТРОКИ АБОНЕНТОВ В ОБЩЕМ РАСПИСАНИИ */
+        /* ========================================= */
+        .editable-bookings-container.row-mode {
+            display: inline-flex !important;
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            gap: 6px !important;
+            border-left: none !important;
+            padding-left: 0 !important;
+            margin-left: 8px !important;
+            margin-top: 0 !important;
+            vertical-align: middle;
+        }
 
+        .row-mode .booking-row {
+            display: inline-flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            background: #e3f2fd !important; /* Голубая таблетка */
+            border: 1px solid #90caf9 !important;
+            border-radius: 6px !important;
+            padding: 2px 6px !important;
+            margin: 0 !important;
+            width: auto !important;
+            min-height: 26px !important;
+        }
+
+        .row-mode .booking-row span {
+            color: #1e3a8a !important;
+            font-weight: 700 !important;
+            font-size: 13px !important;
+            margin: 0 1px !important;
+        }
+
+        /* Делаем инпуты невидимыми и вписываем их в таблетку */
+        .row-mode .booking-input {
+            background: transparent !important;
+            border: none !important;
+            border-bottom: 1px dashed #90caf9 !important;
+            padding: 0 !important;
+            margin: 0 2px !important;
+            height: auto !important;
+            font-size: 13px !important;
+            color: #1e3a8a !important;
+            font-weight: 700 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        .row-mode .booking-input:focus {
+            border-bottom: 1px solid #1e3a8a !important;
+        }
+
+        /* Жесткая ширина полей, чтобы всё влезло в строку */
+        .row-mode .b-hh, .row-mode .b-mm { width: 18px !important; min-width: 18px !important; max-width: 18px !important; text-align: center !important; }
+        .row-mode .b-name { width: 70px !important; min-width: 70px !important; max-width: 70px !important; text-align: center !important; }
+        .row-mode .b-age { width: 25px !important; min-width: 25px !important; max-width: 25px !important; text-align: center !important; }
+
+        .row-mode .b-arrow {
+            color: #94a3b8;
+            font-size: 12px;
+            margin: 0 2px;
+        }
+        
         @media (max-width: 768px) {
             body { padding: 8px; }
             .container { padding: 12px; border-radius: 12px; width: 100%; overflow: hidden; box-sizing: border-box; }
