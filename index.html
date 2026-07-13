@@ -225,13 +225,45 @@
             .b-arrow { display: none; }
             .editable-bookings-container { margin-left: 4px; padding-left: 6px; }
         }
+        /* ========================================= */
+        /* ВКЛАДКИ МЕСЯЦЕВ */
+        /* ========================================= */
+        .month-tabs { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 20px; 
+            overflow-x: auto; 
+            padding-bottom: 5px; 
+        }
+        .month-tab { 
+            padding: 10px 18px; 
+            background: #e2e8f0; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            color: #4a5568; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            white-space: nowrap; 
+            border: 2px solid transparent; 
+        }
+        .month-tab:hover { background: #cbd5e1; }
+        .month-tab.active { 
+            background: #fff; 
+            border-color: var(--primary-color); 
+            color: var(--primary-color); 
+            box-shadow: 0 4px 10px rgba(0,123,255,0.15); 
+        }
     </style>
 </head>
 <body>
 
 <div id="toast" class="toast"></div>
 <div class="container">
-    <h2>Расписание на июль 2026</h2>
+    <div class="month-tabs" id="month-tabs">
+        <div class="month-tab active" data-month="july">Июль 2026</div>
+        <div class="month-tab" data-month="august">Август 2026</div>
+        <div class="month-tab" data-month="september">Сентябрь 2026</div>
+    </div>
     
     <div class="form-group">
         <span class="input-title">Введите ваш код:</span>
@@ -247,7 +279,7 @@
     </div>
     
     <div class="main-buttons">
-        <button id="btn-july" class="btn-primary" disabled>Смены в июле</button>
+        <button id="btn-july" class="btn-primary" disabled>Мои смены</button>
         <button id="btn-general" class="btn-info" disabled>Общее расписание</button>
         <button id="btn-booking" class="btn-secondary" disabled>Абоненты по записи</button>
     </div>
@@ -303,6 +335,51 @@
     let globalGeneralData = {};
     let allGridElements = [];
 
+    let currentMonth = "july"; // Месяц по умолчанию
+
+// Логика инициализации и переключения месяцев по хэшу URL
+function initMonthFromHash() {
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    if (['july', 'august', 'september'].includes(hash)) {
+        currentMonth = hash;
+    }
+    updateActiveMonthTab();
+}
+
+function updateActiveMonthTab() {
+    document.querySelectorAll('.month-tab').forEach(tab => {
+        if (tab.getAttribute('data-month') === currentMonth) tab.classList.add('active');
+        else tab.classList.remove('active');
+    });
+}
+
+// Функция для перезагрузки данных в активной вкладке после сохранения/смены месяца
+function reloadCurrentView() {
+    if (currentViewMode === "personal") btnJuly.click();
+    else if (currentViewMode === "general") btnGeneral.click();
+    else if (currentViewMode === "booking") btnBooking.click();
+}
+
+window.addEventListener('load', () => {
+    initMonthFromHash();
+    
+    document.querySelectorAll('.month-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            const selectedMonth = e.target.getAttribute('data-month');
+            if (currentMonth === selectedMonth) return; // Уже выбран
+            
+            currentMonth = selectedMonth;
+            window.location.hash = currentMonth;
+            updateActiveMonthTab();
+            
+            // Если код введен валидно, перерисовываем календарь
+            if (currentFullCode && /^\d{3}$/.test(digitsInput.value.trim())) {
+                reloadCurrentView();
+            }
+        });
+    });
+});
+
     function showToast(message, type = 'success') {
         clearTimeout(toastTimeout);
         toast.className = `toast ${type}`;
@@ -333,59 +410,63 @@
 
     function updateFullCode() { currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim(); }
     
-    btnJuly.addEventListener('click', () => {
-        currentViewMode = "personal";
-        const p = prefixSelect.value.toLowerCase();
-        document.getElementById('analyst-search-bar').style.display = 'none';
-
-        if(p === 'к') {
-            btnSave.style.display = 'none';
-            adminWarning.style.display = 'block';
-        } else {
-            btnSave.style.display = 'block';
-            adminWarning.style.display = 'none';
-        }
-        expandedPanel.classList.remove('active');
-        removeDesktopPopover();
-        
-        loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
-    });
-    
-    btnGeneral.addEventListener('click', () => {
-        currentViewMode = "general";
-        const p = prefixSelect.value.toLowerCase();
-        
-        // Аналитику разрешаем сохранять из Общего расписания
-        btnSave.style.display = (p === 'а') ? 'block' : 'none';
-        adminWarning.style.display = 'none';
-
-        document.getElementById('analyst-search-bar').style.display = 'none';
-        expandedPanel.classList.remove('active');
-        removeDesktopPopover();
-        
-        loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}`);
-    });
-    
-    btnBooking.addEventListener('click', () => {
-        currentViewMode = "booking";
+btnJuly.addEventListener('click', () => {
+    currentViewMode = "personal";
+    const p = prefixSelect.value.toLowerCase();
+    document.getElementById('analyst-search-bar').style.display = 'none';
+    if(p === 'к') {
+        btnSave.style.display = 'none';
+        adminWarning.style.display = 'block';
+    } else {
         btnSave.style.display = 'block';
         adminWarning.style.display = 'none';
-        expandedPanel.classList.remove('active');
-        removeDesktopPopover();
+    }
+    expandedPanel.classList.remove('active');
+    removeDesktopPopover();
+    
+    loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}&month=${currentMonth}`);
+});
 
-        const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
-        const searchBar = document.getElementById('analyst-search-bar');
+btnGeneral.addEventListener('click', () => {
+    currentViewMode = "general";
+    const p = prefixSelect.value.toLowerCase();
+    btnSave.style.display = (p === 'а') ? 'block' : 'none';
+    adminWarning.style.display = 'none';
+    document.getElementById('analyst-search-bar').style.display = 'none';
+    expandedPanel.classList.remove('active');
+    removeDesktopPopover();
+    
+    loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}&month=${currentMonth}`);
+});
 
-        if (isAnalyst) {
-            searchBar.style.display = 'block';
-            calendarGrid.innerHTML = '';
-            calendarSection.style.display = 'block';
-            calendarSection.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            searchBar.style.display = 'none';
-            loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(currentFullCode)}`);
-        }
-    });
+btnBooking.addEventListener('click', () => {
+    currentViewMode = "booking";
+    btnSave.style.display = 'block';
+    adminWarning.style.display = 'none';
+    expandedPanel.classList.remove('active');
+    removeDesktopPopover();
+    const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
+    const searchBar = document.getElementById('analyst-search-bar');
+    if (isAnalyst) {
+        searchBar.style.display = 'block';
+        calendarGrid.innerHTML = '';
+        calendarSection.style.display = 'block';
+        calendarSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        searchBar.style.display = 'none';
+        loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(currentFullCode)}&month=${currentMonth}`);
+    }
+});
+
+document.getElementById('btn-global-load-expert').addEventListener('click', () => {
+    const expertVal = document.getElementById('global-expert-input').value.trim();
+    if (!expertVal) { showToast('Введите ник или код психолога', 'error'); return; }
+    expandedPanel.classList.remove('active');
+    document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
+    removeDesktopPopover();
+    window.currentSelectedExpertCode = expertVal;
+    loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(expertVal)}&month=${currentMonth}`);
+});
     
     function removeDesktopPopover() {
         const oldPopover = document.getElementById('desktop-personal-popover');
@@ -425,72 +506,79 @@
         else cellElement.classList.add('shift-custom');
     }
     
-    function renderGrid() {
-        calendarGrid.innerHTML = '';
-        allGridElements = [];
-        document.body.appendChild(expandedPanel);
+function renderGrid() {
+    calendarGrid.innerHTML = '';
+    allGridElements = [];
+    document.body.appendChild(expandedPanel);
+    
+    let totalDays = 31;
+    let firstDayIndex = 3; // Среда (Июль 2026)
+    let monthPrefix = ".07";
 
-        const totalDays = 31;
-        const firstDayIndex = new Date(2026, 6, 1).getDay();
-        const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
-
-        for (let i = 0; i < startOffset; i++) {
-            const emptyCell = document.createElement('div');
-            emptyCell.className = 'calendar-day empty';
-            calendarGrid.appendChild(emptyCell);
-            allGridElements.push(emptyCell);
-        }
-
-        const p = prefixSelect.value.toLowerCase();
-
-        for (let day = 1; day <= totalDays; day++) {
-            const dayStr = (day < 10 ? '0' + day : day) + '.07';
-            const cell = document.createElement('div');
-            cell.className = 'calendar-day';
-            cell.id = `cell-${dayStr}`;
-
-            const userShift = pendingShifts[dayStr] || "";
-            const info = globalGeneralData[dayStr] || { dayPsychologists: [], eveningPsychologists: [], vDayCount: 0, vEveningCount: 0 };
-            const dayBookings = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
-
-            const dayCount = info.dayPsychologists ? info.dayPsychologists.length : 0;
-            const eveningCount = info.eveningPsychologists ? info.eveningPsychologists.length : 0;
-
-            if (currentViewMode === "booking") {
-                cell.innerHTML = `<div class="day-number-tl">${day}</div>`;
-                updateCellVisuals(cell, userShift);
-                if (dayBookings.length > 0) {
-                    const bCount = document.createElement('div');
-                    bCount.className = 'booking-counter';
-                    bCount.innerText = `👥 ${dayBookings.length}`;
-                    cell.appendChild(bCount);
-                }
-            } else if (currentViewMode === "general") {
-                cell.innerHTML = `
-                    <div class="day-number-tl">${day}</div>
-                    <div class="psy-counters">
-                        <div class="counter-column"><span class="counter-icon">☀️</span><span class="counter-num">${dayCount}</span></div>
-                        <span class="counter-slash">/</span>
-                        <div class="counter-column"><span class="counter-icon">🌙</span><span class="counter-num">${eveningCount}</span></div>
-                    </div>
-                `;
-                updateCellVisuals(cell, userShift);
-                if (p === 'в' && (dayCount === 0 || eveningCount === 0)) cell.classList.add('critical-border');
-                else if (p === 'а' && (info.vDayCount === 0 || info.vEveningCount === 0)) cell.classList.add('critical-border');
-                else if (p === 'к' && (dayCount !== 2 || eveningCount !== 2)) cell.classList.add('critical-border');
-            } else {
-                let shiftText = userShift ? `<div class="cell-shift-time">${userShift}</div>` : '';
-                cell.innerHTML = `<div class="day-number-tl">${day}</div>${shiftText}`;
-                updateCellVisuals(cell, userShift);
-                if (p === 'в' && (dayCount === 0 || eveningCount === 0)) cell.classList.add('critical-border');
-                else if (p === 'к' && (dayCount !== 2 || eveningCount !== 2)) cell.classList.add('critical-border');
-            }
-
-            cell.addEventListener('click', () => handleDayClick(cell, dayStr));
-            calendarGrid.appendChild(cell);
-            allGridElements.push(cell);
-        }
+    if (currentMonth === "august") {
+        totalDays = 31;
+        firstDayIndex = 6; // Суббота (Август 2026)
+        monthPrefix = ".08";
+    } else if (currentMonth === "september") {
+        totalDays = 30;
+        firstDayIndex = 2; // Вторник (Сентябрь 2026)
+        monthPrefix = ".09";
     }
+
+    const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+    for (let i = 0; i < startOffset; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'calendar-day empty';
+        calendarGrid.appendChild(emptyCell);
+        allGridElements.push(emptyCell);
+    }
+    
+    const p = prefixSelect.value.toLowerCase();
+    for (let day = 1; day <= totalDays; day++) {
+        const dayStr = (day < 10 ? '0' + day : day) + monthPrefix;
+        const cell = document.createElement('div');
+        cell.className = 'calendar-day';
+        cell.id = `cell-${dayStr}`;
+        const userShift = pendingShifts[dayStr] || "";
+        const info = globalGeneralData[dayStr] || { dayPsychologists: [], eveningPsychologists: [], vDayCount: 0, vEveningCount: 0 };
+        const dayBookings = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
+        const dayCount = info.dayPsychologists ? info.dayPsychologists.length : 0;
+        const eveningCount = info.eveningPsychologists ? info.eveningPsychologists.length : 0;
+        
+        if (currentViewMode === "booking") {
+            cell.innerHTML = `<div class="day-number-tl">${day}</div>`;
+            updateCellVisuals(cell, userShift);
+            if (dayBookings.length > 0) {
+                const bCount = document.createElement('div');
+                bCount.className = 'booking-counter';
+                bCount.innerText = ` 👥  ${dayBookings.length}`;
+                cell.appendChild(bCount);
+            }
+        } else if (currentViewMode === "general") {
+            cell.innerHTML = `
+                <div class="day-number-tl">${day}</div>
+                <div class="psy-counters">
+                    <div class="counter-column"><span class="counter-icon"> ☀️ ️</span><span class="counter-num">${dayCount}</span></div>
+                    <span class="counter-slash">/</span>
+                    <div class="counter-column"><span class="counter-icon"> 🌙 </span><span class="counter-num">${eveningCount}</span></div>
+                </div>
+            `;
+            updateCellVisuals(cell, userShift);
+            if (p === 'в' && (dayCount === 0 || eveningCount === 0)) cell.classList.add('critical-border');
+            else if (p === 'а' && (info.vDayCount === 0 || info.vEveningCount === 0)) cell.classList.add('critical-border');
+            else if (p === 'к' && (dayCount !== 2 || eveningCount !== 2)) cell.classList.add('critical-border');
+        } else {
+            let shiftText = userShift ? `<div class="cell-shift-time">${userShift}</div>` : '';
+            cell.innerHTML = `<div class="day-number-tl">${day}</div>${shiftText}`;
+            updateCellVisuals(cell, userShift);
+            if (p === 'в' && (dayCount === 0 || eveningCount === 0)) cell.classList.add('critical-border');
+            else if (p === 'к' && (dayCount !== 2 || eveningCount !== 2)) cell.classList.add('critical-border');
+        }
+        cell.addEventListener('click', () => handleDayClick(cell, dayStr));
+        calendarGrid.appendChild(cell);
+        allGridElements.push(cell);
+    }
+}
     
     function handleDayClick(clickedCell, dayStr) {
         const isMobile = window.innerWidth <= 768;
@@ -729,166 +817,170 @@ function setupPersonalListeners(container, dayStr) {
         }
     }
     
-    btnSave.addEventListener('click', () => {
-        loader.style.display = 'block';
-        btnSave.disabled = true;
+btnSave.addEventListener('click', () => {
+    loader.style.display = 'block';
+    btnSave.disabled = true;
 
-        // МАССОВОЕ СОХРАНЕНИЕ ИЗ ОБЩЕГО РАСПИСАНИЯ ДЛЯ АНАЛИТИКА
-        if (currentViewMode === "general") {
-            const activeCell = document.querySelector('.calendar-day.selected');
-            if(!activeCell) {
-                loader.style.display = 'none'; btnSave.disabled = false;
-                showToast('Данные сохранены!', 'success'); return;
-            }
-            
-            const dayStr = activeCell.id.replace('cell-', '');
-            const rows = document.querySelectorAll('.general-b-row');
-            const psychMap = {};
-            let validationPassed = true;
-            
-            rows.forEach(row => {
-                const code = row.getAttribute('data-code');
-                const name = row.getAttribute('data-name');
-                const pId = code || name;
-                
-                if (!psychMap[pId]) psychMap[pId] = { code: code, name: name, clients: [] };
-                
-                const hh = row.querySelector('.b-hh').value.trim();
-                const mm = row.querySelector('.b-mm').value.trim();
-                const n = row.querySelector('.b-name').value.trim();
-                const a = row.querySelector('.b-age').value.trim();
-                
-                if (n || a) {
-                    if (!hh || !mm || !n || !a) {
-                        validationPassed = false;
-                        row.querySelector('.b-hh').style.borderColor = !hh ? 'var(--danger-color)' : '#cbd5e1';
-                        row.querySelector('.b-mm').style.borderColor = !mm ? 'var(--danger-color)' : '#cbd5e1';
-                        row.querySelector('.b-name').style.borderColor = !n ? 'var(--danger-color)' : '#cbd5e1';
-                        row.querySelector('.b-age').style.borderColor = !a ? 'var(--danger-color)' : '#cbd5e1';
-                    } else {
-                        row.querySelector('.b-hh').style.borderColor = '#cbd5e1';
-                        row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
-                        row.querySelector('.b-name').style.borderColor = '#cbd5e1';
-                        row.querySelector('.b-age').style.borderColor = '#cbd5e1';
-                        psychMap[pId].clients.push(`${hh.padStart(2,'0')}:${mm.padStart(2,'0')} — ${n} | ${a}`);
-                    }
+    // МАССОВОЕ СОХРАНЕНИЕ ИЗ ОБЩЕГО РАСПИСАНИЯ ДЛЯ АНАЛИТИКА
+    if (currentViewMode === "general") {
+        const activeCell = document.querySelector('.calendar-day.selected');
+        if(!activeCell) {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Данные сохранены!', 'success'); return;
+        }
+
+        const dayStr = activeCell.id.replace('cell-', '');
+        const rows = document.querySelectorAll('.general-b-row');
+        const psychMap = {};
+        let validationPassed = true;
+
+        rows.forEach(row => {
+            const code = row.getAttribute('data-code');
+            const name = row.getAttribute('data-name');
+            const pId = code || name;
+
+            if (!psychMap[pId]) psychMap[pId] = { code: code, name: name, clients: [] };
+
+            const hh = row.querySelector('.b-hh').value.trim();
+            const mm = row.querySelector('.b-mm').value.trim();
+            const n = row.querySelector('.b-name').value.trim();
+            const a = row.querySelector('.b-age').value.trim();
+
+            if (n || a) {
+                if (!hh || !mm || !n || !a) {
+                    validationPassed = false;
+                    row.querySelector('.b-hh').style.borderColor = !hh ? 'var(--danger-color)' : '#cbd5e1';
+                    row.querySelector('.b-mm').style.borderColor = !mm ? 'var(--danger-color)' : '#cbd5e1';
+                    row.querySelector('.b-name').style.borderColor = !n ? 'var(--danger-color)' : '#cbd5e1';
+                    row.querySelector('.b-age').style.borderColor = !a ? 'var(--danger-color)' : '#cbd5e1';
                 } else {
                     row.querySelector('.b-hh').style.borderColor = '#cbd5e1';
                     row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
                     row.querySelector('.b-name').style.borderColor = '#cbd5e1';
                     row.querySelector('.b-age').style.borderColor = '#cbd5e1';
+                    psychMap[pId].clients.push(`${hh.padStart(2,'0')}:${mm.padStart(2,'0')} — ${n} | ${a}`);
                 }
-            });
-            
-            if (!validationPassed) {
-                loader.style.display = 'none'; btnSave.disabled = false;
-                showToast('Поля Время, Ник и Возраст обязательны для заполнения, вуф!', 'error');
-                return;
+            } else {
+                row.querySelector('.b-hh').style.borderColor = '#cbd5e1';
+                row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
+                row.querySelector('.b-name').style.borderColor = '#cbd5e1';
+                row.querySelector('.b-age').style.borderColor = '#cbd5e1';
             }
-            
-            const bulkData = Object.values(psychMap);
-            
-            fetch(WEB_APP_URL, {
-                method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ action: "saveBulkBookingData", date: dayStr, bulkData: bulkData })
-            }).then(res => res.json()).then(data => {
-                loader.style.display = 'none'; btnSave.disabled = false;
-                if (data.success) {
-                    showToast('Массовое расписание обновлено!', 'success');
-                    bulkData.forEach(psych => {
-                        ["dayPsychologists", "eveningPsychologists"].forEach(listName => {
-                            if (globalGeneralData[dayStr][listName]) {
-                                let target = globalGeneralData[dayStr][listName].find(p => p.code === psych.code || p.name === psych.name);
-                                if (target) target.bookings = psych.clients;
-                            }
-                        });
+        });
+
+        if (!validationPassed) {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Поля Время, Ник и Возраст обязательны для заполнения, вуф!', 'error');
+            return;
+        }
+
+        const bulkData = Object.values(psychMap);
+
+        fetch(WEB_APP_URL, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ action: "saveBulkBookingData", date: dayStr, bulkData: bulkData, month: currentMonth })
+        }).then(res => res.json()).then(data => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            if (data.success) {
+                showToast('Массовое расписание обновлено!', 'success');
+                bulkData.forEach(psych => {
+                    ["dayPsychologists", "eveningPsychologists"].forEach(listName => {
+                        if (globalGeneralData[dayStr][listName]) {
+                            let target = globalGeneralData[dayStr][listName].find(p => p.code === psych.code || p.name === psych.name);
+                            if (target) target.bookings = psych.clients;
+                        }
                     });
-                    expandedPanel.classList.remove('active');
-                    renderGrid();
-                } else showToast('Ошибка при сохранении: ' + data.error, 'error');
-            }).catch(err => {
-                loader.style.display = 'none'; btnSave.disabled = false;
-                showToast('Ошибка подключения к серверу ❌', 'error');
-            });
-            
-        } 
-        // СОХРАНЕНИЕ АБОНЕНТОВ ДЛЯ ПСИХОЛОГА
-        else if (currentViewMode === "booking") {
-            const activeCell = document.querySelector('.calendar-day.selected');
-            if(!activeCell) {
-                loader.style.display = 'none'; btnSave.disabled = false;
-                showToast('Данные сохранены!', 'success'); return;
-            }
-            
-            const dayStr = activeCell.id.replace('cell-', '');
-            const rows = document.querySelectorAll('.booking-row');
-            const clientsToSend = [];
-            let validationPassed = true;
+                });
+                expandedPanel.classList.remove('active');
+                renderGrid();
+            } else showToast('Ошибка при сохранении: ' + data.error, 'error');
+        }).catch(err => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Ошибка подключения к серверу  ❌ ', 'error');
+        });
+    }
+    
+    // СОХРАНЕНИЕ АБОНЕНТОВ ДЛЯ ПСИХОЛОГА
+    else if (currentViewMode === "booking") {
+        const activeCell = document.querySelector('.calendar-day.selected');
+        if(!activeCell) {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Данные сохранены!', 'success'); return;
+        }
 
-            rows.forEach(row => {
-                const hh = row.querySelector('.b-hh').value.trim(); const mm = row.querySelector('.b-mm').value.trim();
-                const name = row.querySelector('.b-name').value.trim(); const age = row.querySelector('.b-age').value.trim();
-
-                if (name || age) {
-                    if (!hh || !mm || !name || !age) {
-                        validationPassed = false;
-                        if (!hh) row.querySelector('.b-hh').style.borderColor = 'var(--danger-color)';
-                        if (!mm) row.querySelector('.b-mm').style.borderColor = 'var(--danger-color)';
-                        if (!name) row.querySelector('.b-name').style.borderColor = 'var(--danger-color)';
-                        if (!age) row.querySelector('.b-age').style.borderColor = 'var(--danger-color)';
-                    } else {
-                        row.querySelector('.b-hh').style.borderColor = '#cbd5e1'; row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
-                        row.querySelector('.b-name').style.borderColor = '#cbd5e1'; row.querySelector('.b-age').style.borderColor = '#cbd5e1';
-                        clientsToSend.push(`${hh.padStart(2, '0')}:${mm.padStart(2, '0')} — ${name} | ${age}`);
-                    }
+        const dayStr = activeCell.id.replace('cell-', '');
+        const rows = document.querySelectorAll('.booking-row');
+        const clientsToSend = [];
+        let validationPassed = true;
+        
+        rows.forEach(row => {
+            const hh = row.querySelector('.b-hh').value.trim(); const mm = row.querySelector('.b-mm').value.trim();
+            const name = row.querySelector('.b-name').value.trim(); const age = row.querySelector('.b-age').value.trim();
+            if (name || age) {
+                if (!hh || !mm || !name || !age) {
+                    validationPassed = false;
+                    if (!hh) row.querySelector('.b-hh').style.borderColor = 'var(--danger-color)';
+                    if (!mm) row.querySelector('.b-mm').style.borderColor = 'var(--danger-color)';
+                    if (!name) row.querySelector('.b-name').style.borderColor = 'var(--danger-color)';
+                    if (!age) row.querySelector('.b-age').style.borderColor = 'var(--danger-color)';
                 } else {
                     row.querySelector('.b-hh').style.borderColor = '#cbd5e1'; row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
                     row.querySelector('.b-name').style.borderColor = '#cbd5e1'; row.querySelector('.b-age').style.borderColor = '#cbd5e1';
+                    clientsToSend.push(`${hh.padStart(2, '0')}:${mm.padStart(2, '0')} — ${name} | ${age}`);
                 }
-            });
-            
-            if(!validationPassed) {
-                loader.style.display = 'none'; btnSave.disabled = false;
-                showToast('Поля Время, Ник и Возраст обязательны для заполнения, вуф!', 'error'); return;
+            } else {
+                row.querySelector('.b-hh').style.borderColor = '#cbd5e1'; row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
+                row.querySelector('.b-name').style.borderColor = '#cbd5e1'; row.querySelector('.b-age').style.borderColor = '#cbd5e1';
             }
+        });
 
-            let saveTargetCode = currentFullCode;
-            if (prefixSelect.value.toLowerCase() === 'а' && window.currentSelectedExpertCode) {
-                saveTargetCode = window.currentSelectedExpertCode;
-            }
-            
-            fetch(WEB_APP_URL, {
-                method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ action: "saveBookingData", code: saveTargetCode, date: dayStr, clients: clientsToSend })
-            }).then(res => res.json()).then(data => {
-                loader.style.display = 'none'; btnSave.disabled = false;
-                if (data.success) {
-                    showToast('Абоненты успешно помечены!', 'success');
-                    if(!globalGeneralData.bookings) globalGeneralData.bookings = {};
-                    globalGeneralData.bookings[dayStr] = clientsToSend;
-                    expandedPanel.classList.remove('active');
-                    renderGrid(); 
-                } else showToast('Ошибка при сохранении: ' + data.error, 'error');
-            }).catch(err => {
-                loader.style.display = 'none'; btnSave.disabled = false;
-                showToast('Ошибка подключения к серверу ❌', 'error');
-            });
-        } 
-        // СОХРАНЕНИЕ СМЕН В ИЮЛЕ
-        else {
-            fetch(WEB_APP_URL, {
-                method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ code: currentFullCode, shifts: pendingShifts })
-            }).then(res => res.json()).then(data => {
-                loader.style.display = 'none'; btnSave.disabled = false;
-                if (data.success) showToast('Данные успешно сохранены, ауф!', 'success');
-                else showToast('Ошибка: Сотрудник не найден.', 'error');
-            }).catch(err => {
-                loader.style.display = 'none'; btnSave.disabled = false;
-                showToast('Сбой при сохранении данных ❌', 'error');
-            });
+        if(!validationPassed) {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Поля Время, Ник и Возраст обязательны для заполнения, вуф!', 'error'); return;
         }
-    });
+        let saveTargetCode = currentFullCode;
+        if (prefixSelect.value.toLowerCase() === 'а' && window.currentSelectedExpertCode) {
+            saveTargetCode = window.currentSelectedExpertCode;
+        }
+
+        fetch(WEB_APP_URL, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ action: "saveBookingData", code: saveTargetCode, date: dayStr, clients: clientsToSend, month: currentMonth })
+        }).then(res => res.json()).then(data => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            if (data.success) {
+                showToast('Абоненты успешно помечены!', 'success');
+                if(!globalGeneralData.bookings) globalGeneralData.bookings = {};
+                globalGeneralData.bookings[dayStr] = clientsToSend;
+                expandedPanel.classList.remove('active');
+                renderGrid();
+            } else showToast('Ошибка при сохранении: ' + data.error, 'error');
+        }).catch(err => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Ошибка подключения к серверу  ❌ ', 'error');
+        });
+    }
+    
+    // СОХРАНЕНИЕ СМЕН В МЕСЯЦЕ
+    else {
+        fetch(WEB_APP_URL, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ code: currentFullCode, shifts: pendingShifts, month: currentMonth })
+        }).then(res => res.json()).then(data => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            if (data.success) {
+                showToast('Данные успешно сохранены, ауф!', 'success');
+                // Перезагружаем текущую вкладку
+                reloadCurrentView(); 
+            } else {
+                showToast('Ошибка: Сотрудник не найден.', 'error');
+            }
+        }).catch(err => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Сбой при сохранении данных  ❌ ', 'error');
+        });
+    }
+});
     
     function renderBookingPanel(dayStr, container) {
         const currentShift = pendingShifts[dayStr] || "";
@@ -962,16 +1054,6 @@ html += `
                 }
             });
         });
-    }
-    
-    document.getElementById('btn-global-load-expert').addEventListener('click', () => {
-        const expertVal = document.getElementById('global-expert-input').value.trim();
-        if (!expertVal) { showToast('Введите ник или код психолога!', 'error'); return; }
-        expandedPanel.classList.remove('active');
-        document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
-        removeDesktopPopover();
-        window.currentSelectedExpertCode = expertVal;
-        loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(expertVal)}`);
     });
     
     if ('serviceWorker' in navigator) {
