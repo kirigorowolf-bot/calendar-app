@@ -252,6 +252,22 @@
             color: var(--primary-color); 
             box-shadow: 0 4px 10px rgba(0,123,255,0.15); 
         }
+        /* Цвета для пустых и заполненных плашек в панели администратора */
+.row-mode .booking-row.empty-slot {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+}
+.row-mode .booking-row.empty-slot span {
+    color: #94a3b8 !important;
+}
+.row-mode .booking-row.empty-slot .booking-input {
+    border-bottom: 1px dashed #cbd5e1 !important;
+    color: #4a5568 !important;
+}
+.row-mode .booking-row.filled-slot {
+    background: #e3f2fd !important;
+    border: 1px solid #90caf9 !important;
+}
     </style>
 </head>
 <body>
@@ -723,50 +739,86 @@ function setupPersonalListeners(container, dayStr) {
 
         const buildAdminList = (arr) => arr.length ? arr.map(p => `<li class="psy-list-item"><div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div></li>`).join('') : `<li class="psy-list-item">—</li>`;
         
-        const buildPsyList = (arr, isDayShift) => {
+const buildPsyList = (arr, isDayShift) => {
             if (!arr.length) return `<li class="psy-list-item">—</li>`;
             
             return arr.map(p => {
                 let bookingsHtml = "";
                 if (isAnalyst) {
-                    let defaultHours = isDayShift ? ["14", "15", "16", "17", ""] : ["18", "19", "20", "21", ""];
-                    let slotsHtml = "";
-                    for (let i = 0; i < 5; i++) {
-                        let hh = defaultHours[i] || "";
-                        let mm = hh ? "00" : "";
-                        let n = "", a = "";
-                        
-                        if (p.bookings && p.bookings[i]) {
-                            const parts = p.bookings[i].split(/[—–-]/);
+                    // Оставляем строго 4 часа (убираем запасную плашку)
+                    let defaultHours = isDayShift ? ["14", "15", "16", "17"] : ["18", "19", "20", "21"];
+                    
+                    // Жестко привязываем текущие записи к их часам
+                    let mappedBookings = [null, null, null, null];
+                    if (p.bookings && p.bookings.length > 0) {
+                        p.bookings.forEach(b => {
+                            const parts = b.split(/[—–-]/);
                             if (parts.length >= 2) {
                                 const timeSplit = parts[0].trim().split(':');
-                                if (timeSplit.length === 2) { hh = timeSplit[0].trim(); mm = timeSplit[1].trim(); }
+                                if (timeSplit.length >= 1) {
+                                    const hr = timeSplit[0].trim();
+                                    const idx = defaultHours.indexOf(hr);
+                                    // Если час совпадает, ставим на нужное место
+                                    if (idx !== -1 && mappedBookings[idx] === null) {
+                                        mappedBookings[idx] = b;
+                                    } else {
+                                        // Если нестандартное время, ищем первое свободное
+                                        for (let k = 0; k < 4; k++) {
+                                            if (mappedBookings[k] === null) {
+                                                mappedBookings[k] = b;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    let slotsHtml = "";
+                    for (let i = 0; i < 4; i++) { // Цикл теперь до 4
+                        let hh = defaultHours[i] || "";
+                        let mm = "00";
+                        let n = "", a = "";
+                        
+                        let currentBooking = mappedBookings[i];
+                        if (currentBooking) {
+                            const parts = currentBooking.split(/[—–-]/);
+                            if (parts.length >= 2) {
+                                const timeSplit = parts[0].trim().split(':');
+                                if (timeSplit.length === 2) { 
+                                    hh = timeSplit[0].trim(); 
+                                    mm = timeSplit[1].trim(); 
+                                }
                                 const clientPart = parts.slice(1).join('—');
                                 const subParts = clientPart.split('|');
                                 n = subParts[0] ? subParts[0].trim() : clientPart.trim();
                                 a = subParts[1] ? subParts[1].trim() : "";
                             } else {
-                                n = p.bookings[i];
+                                n = currentBooking;
                             }
                         }
                         
-// Добавляем стрелочку после каждой записи, кроме последней
-        let arrowHtml = (i < 4) ? `<span class="b-arrow">➔</span>` : "";
-        
-        slotsHtml += `
-            <div class="booking-row general-b-row" data-code="${p.code}" data-name="${p.name}">
-                <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}">
-                <span>:</span>
-                <input type="text" class="booking-input b-mm" placeholder="ММ" maxlength="2" inputmode="numeric" value="${mm}">
-                <span>—</span>
-                <input type="text" class="booking-input b-name" placeholder="Ник" value="${n}">
-                <span>|</span>
-                <input type="text" class="booking-input b-age" placeholder="Лет" maxlength="3" type="number" inputmode="numeric" pattern="[0-9]*" value="${a}">
-            </div>${arrowHtml}
-        `;
-    }
-    // ДОБАВЛЕН КЛАСС row-mode
-    bookingsHtml = `<div class="editable-bookings-container row-mode">${slotsHtml}</div>`;
+                        // Определяем, заполнен слот или пуст (для цвета)
+                        let isFilled = (n !== "" || a !== "");
+                        let bgClass = isFilled ? "filled-slot" : "empty-slot";
+
+                        // Добавляем стрелочку после каждой записи, кроме последней
+                        let arrowHtml = (i < 3) ? `<span class="b-arrow">➔</span>` : "";
+                        
+                        slotsHtml += `
+                            <div class="booking-row general-b-row ${bgClass}" data-code="${p.code}" data-name="${p.name}">
+                                <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}">
+                                <span>:</span>
+                                <input type="text" class="booking-input b-mm" placeholder="ММ" maxlength="2" inputmode="numeric" value="${mm}">
+                                <span>—</span>
+                                <input type="text" class="booking-input b-name" placeholder="Ник" value="${n}">
+                                <span>|</span>
+                                <input type="text" class="booking-input b-age" placeholder="Лет" maxlength="3" type="number" inputmode="numeric" pattern="[0-9]*" value="${a}">
+                            </div>${arrowHtml}
+                        `;
+                    }
+                    bookingsHtml = `<div class="editable-bookings-container row-mode">${slotsHtml}</div>`;
                 } else {
                     if (p.bookings && p.bookings.length > 0) {
                         let itemsHtml = p.bookings.map((b, idx) => {
@@ -802,14 +854,34 @@ function setupPersonalListeners(container, dayStr) {
             </div>
         `;
         
-        if (isAnalyst) {
-            const nameInputs = container.querySelectorAll('.b-name');
-            nameInputs.forEach(input => {
-                input.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        const row = e.target.closest('.booking-row');
-                        if (row) { const ageInput = row.querySelector('.b-age'); if (ageInput) ageInput.focus(); }
+if (isAnalyst) {
+            const allInputs = container.querySelectorAll('.booking-input');
+            allInputs.forEach(input => {
+                // Перенос фокуса по Enter
+                if (input.classList.contains('b-name')) {
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const row = e.target.closest('.booking-row');
+                            if (row) { const ageInput = row.querySelector('.b-age'); if (ageInput) ageInput.focus(); }
+                        }
+                    });
+                }
+                
+                // Моментальная смена цвета плашки при вводе
+                input.addEventListener('input', (e) => {
+                    const row = e.target.closest('.booking-row');
+                    if (row) {
+                        const n = row.querySelector('.b-name').value.trim();
+                        const a = row.querySelector('.b-age').value.trim();
+                        
+                        if (n !== "" || a !== "") {
+                            row.classList.remove('empty-slot');
+                            row.classList.add('filled-slot');
+                        } else {
+                            row.classList.remove('filled-slot');
+                            row.classList.add('empty-slot');
+                        }
                     }
                 });
             });
