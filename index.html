@@ -26,8 +26,10 @@
             --pastel-pink: #cbf8bb;   
             --border-pink: #62f08f;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); padding: 15px; display: flex; justify-content: center; }
+
         .toast {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%); padding: 14px 28px;
             border-radius: 50px; color: white; font-weight: 700; font-size: 16px;
@@ -37,7 +39,7 @@
         .toast.show { top: 25px; }
         .toast.success { background-color: #2ecc71; }
         .toast.error { background-color: #e74c3c; }
-        .toast.info { background-color: #3498db; }
+
         .container { width: 100%; max-width: 1000px; background: var(--card-bg); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
         h2 { margin-bottom: 20px; font-size: 24px; font-weight: 800; color: var(--text-color); }
         .form-group { margin-bottom: 15px; }
@@ -50,16 +52,20 @@
         .digits-input { flex: 1; }
         .digits-input.invalid { border-color: var(--danger-color); background-color: #fff5f5; }
         .error-message { color: var(--danger-color); font-size: 14px; margin-top: 8px; display: none; font-weight: 700; }
+
         .main-buttons { display: flex; gap: 12px; margin: 20px 0; flex-wrap: wrap; }
         button { padding: 14px 22px; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; flex: 1; min-width: 150px; }
         button:disabled { background-color: #e0e0e0 !important; color: #9e9e9e !important; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
         button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
         button:active:not(:disabled) { transform: translateY(0); }
+
         .btn-primary { background-color: var(--primary-color); color: white; }
         .btn-info { background-color: var(--info-color); color: white; }
         .btn-secondary { background-color: #94d3f2; color: white; }
         .btn-success { background-color: var(--success-color); color: white; width: 100%; margin-top: 30px; padding: 16px; font-size: 18px; font-weight: 800; display: none; }
+
         .admin-warning { display: none; background-color: #fff3cd; border: 2px solid #ffeeba; color: #856404; padding: 12px 16px; border-radius: 12px; font-weight: 700; margin-bottom: 15px; font-size: 15px; text-align: center; }
+
         #calendar-section { display: none; margin-top: 30px; border-top: 2px solid #edf2f7; padding-top: 25px; }
         .calendar-header { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 800; margin-bottom: 12px; background-color: #edf2f7; padding: 12px 0; border-radius: 12px; font-size: 15px; color: #4a5568; }
         
@@ -83,6 +89,7 @@
         .expanded-panel { grid-column: 1 / -1; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px 18px; margin: 4px 0 10px 0; display: none; box-shadow: 0 4px 16px rgba(0,0,0,0.06); animation: slideDown 0.2s ease-out; }
         .expanded-panel.active { display: block; }
         
+        .desktop-popover { position: absolute; top: 102%; left: 50%; transform: translateX(-50%); background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; padding: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 110; min-width: 210px; cursor: default; }
         .panel-title { font-size: 15px; font-weight: 800; margin-bottom: 8px; color: var(--primary-color); border-bottom: 1px dashed #edf2f7; padding-bottom: 4px; }
         .panel-controls { display: flex; flex-direction: column; gap: 8px; width: 100%; }
         .shift-select { width: 100%; font-size: 14px; padding: 8px; border-radius: 8px; border: 2px solid var(--border-color); background-color: #fff; cursor: pointer; }
@@ -98,14 +105,15 @@
         .role-list { list-style: none; padding-left: 0; }
         
         /* СТИЛИ ДЛЯ АБОНЕНТОВ В ОБЩЕМ РАСПИСАНИИ */
-        .psy-list-item { margin-bottom: 15px; }
-        .psy-main-info { font-weight: 700; color: #2d3748; display: block; margin-bottom: 5px; }
+        .psy-list-item { margin-bottom: 12px; }
+        .psy-main-info { font-weight: 700; color: #2d3748; display: inline-block; }
         .role-time { color: #718096; font-size: 13px; font-weight: 700; margin-left: 5px; }
         
         .read-only-bookings { display: inline; margin-left: 8px; color: #4a5568; font-size: 13px; font-weight: 700; }
         .b-item { background: #e3f2fd; padding: 2px 6px; border-radius: 6px; border: 1px solid #90caf9; display: inline-block; margin: 2px 0; color: #1e3a8a; }
         .b-arrow { margin: 0 4px; color: #94a3b8; font-size: 12px; }
         .editable-bookings-container { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; margin-left: 10px; border-left: 2px solid var(--primary-color); padding-left: 10px; }
+
         .cell-shift-time { font-size: 11px; font-weight: 800; margin-top: 16px; text-align: center; color: #1e293b; line-height: 1.1; padding: 0 2px; }
         .loader { display: none; text-align: center; font-size: 18px; font-weight: 800; color: var(--primary-color); margin: 25px 0; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
@@ -114,37 +122,56 @@
         .booking-row { display: flex !important; gap: 5px !important; margin-bottom: 6px !important; align-items: center !important; flex-wrap: nowrap !important; background: #ffffff !important; padding: 4px 8px !important; border-radius: 8px !important; border: 1px solid #e2e8f0 !important; width: 100% !important; box-sizing: border-box !important; }
         .booking-input { padding: 6px 4px !important; height: 32px !important; border: 2px solid #cbd5e1 !important; border-radius: 6px !important; font-size: 14px !important; font-weight: 600 !important; outline: none !important; text-align: center !important; box-sizing: border-box !important; flex: none !important; }
         .booking-input:focus { border-color: var(--primary-color) !important; }
+
         .b-hh, .b-mm { width: 38px !important; max-width: 38px !important; }
         .b-name { flex: 1 !important; text-align: left !important; padding-left: 8px !important; }
         .b-age { width: 60px !important; max-width: 60px !important; }
         .booking-row span { font-weight: 800 !important; color: #94a3b8 !important; font-size: 14px !important; flex: none !important; user-select: none !important; }
-        
+
+/* ========================================= */
         /* СТИЛИ ДЛЯ СТРОКИ АБОНЕНТОВ В ОБЩЕМ РАСПИСАНИИ */
-        .editable-bookings-container.row-mode {
-            display: flex !important; flex-direction: row !important; flex-wrap: wrap !important; align-items: center !important; 
-            gap: 3px !important; border-left: none !important; padding-left: 0 !important; margin-left: 0px !important; margin-top: 5px !important;
+        /* ========================================= */
+        .editable-bookings-container.row-mode {display: inline-flex !important; flex-direction: row !important; flex-wrap: wrap !important; align-items: center !important; gap: 3px !important; border-left: none !important; padding-left: 0 !important; margin-left: 8px !important; margin-top: 0 !important; vertical-align: middle;
         }
-        .row-mode .booking-row {
-            display: inline-flex !important; flex-direction: row !important; align-items: center !important; background: #e3f2fd !important; 
-            border: 1px solid #90caf9 !important; border-radius: 6px !important; padding: 2px 3px !important; margin: 0 !important; 
-            width: auto !important; min-height: 26px !important;
+
+        .row-mode .booking-row {display: inline-flex !important; flex-direction: row !important; align-items: center !important; background: #e3f2fd !important; 
+/* Голубая таблетка */ 
+border: 1px solid #90caf9 !important; border-radius: 6px !important; padding: 2px 3px !important; margin: 0 !important; width: auto !important; min-height: 26px !important;
         }
-        .row-mode .booking-row span { color: #1e3a8a !important; font-weight: 700 !important; font-size: 13px !important; margin: 0 0px !important; }
+
+        .row-mode .booking-row span {color: #1e3a8a !important; font-weight: 700 !important; font-size: 13px !important; margin: 0 0px !important;
+        }
+
+        /* Делаем инпуты невидимыми и вписываем их в таблетку */
         .row-mode .booking-input {
-            background: transparent !important; border: none !important; border-bottom: 1px dashed #90caf9 !important; padding: 0 !important;
-            margin: 0 2px !important; height: auto !important; font-size: 13px !important; color: #1e3a8a !important;
-            font-weight: 700 !important; border-radius: 0 !important; box-shadow: none !important;
+            background: transparent !important;
+            border: none !important;
+            border-bottom: 1px dashed #90caf9 !important;
+            padding: 0 !important;
+            margin: 0 2px !important;
+            height: auto !important;
+            font-size: 13px !important;
+            color: #1e3a8a !important;
+            font-weight: 700 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
         }
-        .row-mode .booking-input:focus { border-bottom: 1px solid #1e3a8a !important; }
+
+        .row-mode .booking-input:focus {
+            border-bottom: 1px solid #1e3a8a !important;
+        }
+
+        /* Жесткая ширина полей, чтобы всё влезло в строку */
         .row-mode .b-hh { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; margin-right: 0px !important;}
         .row-mode .b-mm { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; margin-left: 0px !important;}
         .row-mode .b-name { width: 50px !important; min-width: 50px !important; max-width: 50px !important; text-align: center !important; }
         .row-mode .b-age { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; }
-        .row-mode .b-arrow { color: #94a3b8; font-size: 12px; margin: 0 2px; }
-        
-        .blocked-slot { background: #f1f5f9 !important; border: 1px solid #cbd5e1 !important; opacity: 0.6; }
-        .blocked-slot .booking-input { color: #94a3b8 !important; pointer-events: none; border-bottom-color: transparent !important; }
-        .blocked-slot span { color: #94a3b8 !important; }
+
+        .row-mode .b-arrow {
+            color: #94a3b8;
+            font-size: 12px;
+            margin: 0 2px;
+        }
         
         @media (max-width: 768px) {
             body { padding: 8px; }
@@ -152,42 +179,84 @@
             .code-input-container { max-width: 100%; width: 100%; display: flex; gap: 8px; }
             .prefix-select { width: 75px; min-width: 75px; padding: 10px; }
             .digits-input { width: 100%; min-width: 0; padding: 10px; flex: 1; }
+
             .calendar-header { display: grid; font-size: 11px; padding: 8px 0; margin-bottom: 8px; border-radius: 8px; }
             .calendar-grid { gap: 6px; }
             .calendar-day { min-height: 55px; border-width: 1px; border-radius: 10px; }
             .cell-shift-time { font-size: 9px; margin-top: 12px; }
-            .day-number-tl { font-size: 10px !important; top: 3px !important; left: 5px !important; }
+            .day-number-tl, .day-number { font-size: 10px !important; top: 3px !important; left: 5px !important; }
             .psy-counters { margin-top: 14px; gap: 2px; }
             .counter-icon { font-size: 9px; margin-bottom: 1px; }
             .counter-num { font-size: 12px; }
             .counter-slash { font-size: 12px; color: rgba(44, 62, 80, 0.3); }
             .booking-counter { font-size: 12px !important; padding: 2px 6px !important; margin-top: 8px !important; }
+
             .booking-row { padding: 4px 6px !important; gap: 4px !important; display: flex !important; align-items: center !important; }
             .b-name { min-width: 0 !important; flex: 1 !important; font-size: 13px !important; padding: 4px !important; }
             .b-age { width: 50px !important; max-width: 50px !important; font-size: 13px !important; padding: 4px !important; }
             .b-hh, .b-mm { width: 32px !important; max-width: 32px !important; font-size: 13px !important; padding: 4px !important; }
-            
-            .editable-bookings-container.row-mode { flex-direction: column !important; align-items: flex-start !important; }
-            .row-mode .b-arrow { display: none !important; }
-            .row-mode .booking-row { width: 100% !important; margin-bottom: 4px !important; }
+
+            /* Мобильная адаптация абонентов в Общем расписании */
+            .read-only-bookings { display: flex; flex-direction: column; margin-left: 10px; margin-top: 4px; border-left: 2px solid #cbd5e1; padding-left: 8px; }
+            .b-item { border: none; background: transparent; padding: 0; display: block; margin: 2px 0; font-size: 13px; color: #334155; }
+            .b-arrow { display: none; }
+            .editable-bookings-container { margin-left: 4px; padding-left: 6px; }
         }
-        
-        .month-tabs { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; }
-        .month-tab { padding: 10px 18px; background: #e2e8f0; border-radius: 12px; font-weight: 800; color: #4a5568; cursor: pointer; transition: all 0.2s; white-space: nowrap; border: 2px solid transparent; }
+        /* ========================================= */
+        /* ВКЛАДКИ МЕСЯЦЕВ */
+        /* ========================================= */
+        .month-tabs { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 20px; 
+            overflow-x: auto; 
+            padding-bottom: 5px; 
+        }
+        .month-tab { 
+            padding: 10px 18px; 
+            background: #e2e8f0; 
+            border-radius: 12px; 
+            font-weight: 800; 
+            color: #4a5568; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            white-space: nowrap; 
+            border: 2px solid transparent; 
+        }
         .month-tab:hover { background: #cbd5e1; }
-        .month-tab.active { background: #fff; border-color: var(--primary-color); color: var(--primary-color); box-shadow: 0 4px 10px rgba(0,123,255,0.15); }
-        .row-mode .booking-row.empty-slot { background: #ffffff !important; border: 1px solid #cbd5e1 !important; }
-        .row-mode .booking-row.empty-slot span { color: #94a3b8 !important; }
-        .row-mode .booking-row.empty-slot .booking-input { border-bottom: 1px dashed #cbd5e1 !important; color: #4a5568 !important; }
-        .row-mode .booking-row.filled-slot { background: #e3f2fd !important; border: 1px solid #90caf9 !important; }
+        .month-tab.active { 
+            background: #fff; 
+            border-color: var(--primary-color); 
+            color: var(--primary-color); 
+            box-shadow: 0 4px 10px rgba(0,123,255,0.15); 
+        }
+        /* Цвета для пустых и заполненных плашек в панели администратора */
+.row-mode .booking-row.empty-slot {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+}
+.row-mode .booking-row.empty-slot span {
+    color: #94a3b8 !important;
+}
+.row-mode .booking-row.empty-slot .booking-input {
+    border-bottom: 1px dashed #cbd5e1 !important;
+    color: #4a5568 !important;
+}
+.row-mode .booking-row.filled-slot {
+    background: #e3f2fd !important;
+    border: 1px solid #90caf9 !important;
+}
     </style>
 </head>
 <body>
+
 <div id="toast" class="toast"></div>
 <div class="container">
-    
-    <!-- Контейнер для вкладок, теперь он пустой, так как генерируется через JS -->
-    <div class="month-tabs" id="month-tabs"></div>
+    <div class="month-tabs" id="month-tabs">
+        <div class="month-tab active" data-month="july">Июль 2026</div>
+        <div class="month-tab" data-month="august">Август 2026</div>
+        <div class="month-tab" data-month="september">Сентябрь 2026</div>
+    </div>
     
     <div class="form-group">
         <span class="input-title">Введите ваш код:</span>
@@ -203,9 +272,9 @@
     </div>
     
     <div class="main-buttons">
-        <button id="btn-schedule" class="btn-primary" disabled>График</button>
+        <button id="btn-july" class="btn-primary" disabled>Мои смены</button>
         <button id="btn-general" class="btn-info" disabled>Общее расписание</button>
-        <button id="btn-my-clients" class="btn-secondary" disabled>Мои абоненты</button>
+        <button id="btn-booking" class="btn-secondary" disabled>Абоненты по записи</button>
     </div>
     
     <div id="loader" class="loader">Загрузка календаря... Пожалуйста, подождите ⏳</div>
@@ -228,97 +297,82 @@
         <button id="btn-save" class="btn-success">Сохранить</button>
     </div>
 </div>
+
 <div id="expanded-panel" class="expanded-panel">
     <div id="panel-content"></div>
 </div>
-<script>
-    // ==========================================
-    // НАСТРОЙКИ МЕСЯЦЕВ (ЗДЕСЬ МОЖНО ДОБАВЛЯТЬ/УДАЛЯТЬ МЕСЯЦЫ)
-    // ==========================================
-    const MONTHS_CONFIG = {
-        "july":      { label: "Июль 2026", days: 31, firstDayIndex: 3, prefix: ".07" },
-        "august":    { label: "Август 2026", days: 31, firstDayIndex: 6, prefix: ".08" },
-        "september": { label: "Сентябрь 2026", days: 30, firstDayIndex: 2, prefix: ".09" }
-        // Чтобы добавить октябрь, раскомментируйте строку ниже и удалите двойной слеш:
-        // "october":   { label: "Октябрь 2026", days: 31, firstDayIndex: 4, prefix: ".10" }
-    };
-    
-    // По умолчанию выбран первый месяц из списка выше
-    let currentMonth = Object.keys(MONTHS_CONFIG)[0];
-    // ==========================================
 
+<script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzPTujjJfHkRNuE-_chKl0kYxxE-usLak1KzTmTRtaRC2llT6bIu-fkUVdhXlddbys5/exec";
     const digitsInput = document.getElementById('digits-input');
     const prefixSelect = document.getElementById('prefix-select');
     const errorMessage = document.getElementById('error-message');
-    const btnSchedule = document.getElementById('btn-schedule');
+    const btnJuly = document.getElementById('btn-july');
     const btnGeneral = document.getElementById('btn-general');
-    const btnMyClients = document.getElementById('btn-my-clients');
+    const btnBooking = document.getElementById('btn-booking');
     const calendarSection = document.getElementById('calendar-section');
     const calendarGrid = document.getElementById('calendar-grid');
     const loader = document.getElementById('loader');
     const btnSave = document.getElementById('btn-save');
     const toast = document.getElementById('toast');
     const adminWarning = document.getElementById('admin-warning');
+
     const expandedPanel = document.getElementById('expanded-panel');
     const panelContent = document.getElementById('panel-content');
     
     let currentFullCode = "";
     let toastTimeout;
-    let currentViewMode = "schedule";
+    let currentViewMode = "personal";
+
     let pendingShifts = {};
     let globalGeneralData = {};
     let allGridElements = [];
-    
-    function initTabs() {
-        const tabsContainer = document.getElementById('month-tabs');
-        tabsContainer.innerHTML = '';
-        
-        Object.keys(MONTHS_CONFIG).forEach(key => {
-            const tab = document.createElement('div');
-            tab.className = 'month-tab';
-            tab.setAttribute('data-month', key);
-            tab.innerText = MONTHS_CONFIG[key].label;
-            tabsContainer.appendChild(tab);
-        });
 
-        document.querySelectorAll('.month-tab').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                const selectedMonth = e.target.getAttribute('data-month');
-                if (currentMonth === selectedMonth) return;
-                currentMonth = selectedMonth;
-                window.location.hash = currentMonth;
-                updateActiveMonthTab();
-                if (currentFullCode && /^\d{3}$/.test(digitsInput.value.trim())) reloadCurrentView();
-            });
-        });
-    }
+    let currentMonth = "july"; // Месяц по умолчанию
 
-    function initMonthFromHash() {
-        const hash = window.location.hash.replace('#', '').toLowerCase();
-        if (MONTHS_CONFIG.hasOwnProperty(hash)) currentMonth = hash;
-        updateActiveMonthTab();
+// Логика инициализации и переключения месяцев по хэшу URL
+function initMonthFromHash() {
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    if (['july', 'august', 'september'].includes(hash)) {
+        currentMonth = hash;
     }
-    
-    function updateActiveMonthTab() {
-        document.querySelectorAll('.month-tab').forEach(tab => {
-            if (tab.getAttribute('data-month') === currentMonth) tab.classList.add('active');
-            else tab.classList.remove('active');
-        });
-    }
-    
-    function reloadCurrentView() {
-        if (currentViewMode === "schedule") btnSchedule.click();
-        else if (currentViewMode === "general") btnGeneral.click();
-        else if (currentViewMode === "analyst_schedule") document.getElementById('btn-global-load-expert').click();
-    }
-    
-    window.addEventListener('load', () => {
-        initTabs();
-        initMonthFromHash();
-        updatePrefixLabels();
+    updateActiveMonthTab();
+}
+
+function updateActiveMonthTab() {
+    document.querySelectorAll('.month-tab').forEach(tab => {
+        if (tab.getAttribute('data-month') === currentMonth) tab.classList.add('active');
+        else tab.classList.remove('active');
     });
+}
+
+// Функция для перезагрузки данных в активной вкладке после сохранения/смены месяца
+function reloadCurrentView() {
+    if (currentViewMode === "personal") btnJuly.click();
+    else if (currentViewMode === "general") btnGeneral.click();
+    else if (currentViewMode === "booking") btnBooking.click();
+}
+
+window.addEventListener('load', () => {
+    initMonthFromHash();
     
+    document.querySelectorAll('.month-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            const selectedMonth = e.target.getAttribute('data-month');
+            if (currentMonth === selectedMonth) return; // Уже выбран
+            
+            currentMonth = selectedMonth;
+            window.location.hash = currentMonth;
+            updateActiveMonthTab();
+            
+            // Если код введен валидно, перерисовываем календарь
+            if (currentFullCode && /^\d{3}$/.test(digitsInput.value.trim())) {
+                reloadCurrentView();
+            }
+        });
+    });
+});
+
     function showToast(message, type = 'success') {
         clearTimeout(toastTimeout);
         toast.className = `toast ${type}`;
@@ -327,84 +381,90 @@
         toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3500);
     }
     
-    function updatePrefixLabels() {
-        if (prefixSelect.value.toLowerCase() === 'а') {
-            btnMyClients.innerText = 'Абоненты по записи';
-        } else {
-            btnMyClients.innerText = 'Мои абоненты';
-        }
-    }
-    
     digitsInput.addEventListener('input', () => {
         const val = digitsInput.value.trim();
         if (/^\d{3}$/.test(val)) {
             digitsInput.classList.remove('invalid');
             errorMessage.style.display = 'none';
-            btnSchedule.disabled = false;
+            btnJuly.disabled = false;
             btnGeneral.disabled = false;
-            btnMyClients.disabled = false;
+            btnBooking.disabled = false;
             updateFullCode();
         } else {
             digitsInput.classList.add('invalid');
             errorMessage.style.display = 'block';
-            btnSchedule.disabled = true;
+            btnJuly.disabled = true;
             btnGeneral.disabled = true;
-            btnMyClients.disabled = true;
+            btnBooking.disabled = true;
         }
     });
     
-    prefixSelect.addEventListener('change', () => {
-        updateFullCode();
-        updatePrefixLabels();
-    });
-    
+    prefixSelect.addEventListener('change', updateFullCode);
+
     function updateFullCode() { currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim(); }
     
-    btnSchedule.addEventListener('click', () => {
-        currentViewMode = "schedule";
-        btnSave.style.display = 'block'; 
+btnJuly.addEventListener('click', () => {
+    currentViewMode = "personal";
+    const p = prefixSelect.value.toLowerCase();
+    document.getElementById('analyst-search-bar').style.display = 'none';
+    if(p === 'к') {
+        btnSave.style.display = 'none';
+        adminWarning.style.display = 'block';
+    } else {
+        btnSave.style.display = 'block';
         adminWarning.style.display = 'none';
-        document.getElementById('analyst-search-bar').style.display = 'none';
-        expandedPanel.classList.remove('active');
+    }
+    expandedPanel.classList.remove('active');
+    removeDesktopPopover();
+    
+    loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}&month=${currentMonth}`);
+});
+
+btnGeneral.addEventListener('click', () => {
+    currentViewMode = "general";
+    const p = prefixSelect.value.toLowerCase();
+    btnSave.style.display = (p === 'а') ? 'block' : 'none';
+    adminWarning.style.display = 'none';
+    document.getElementById('analyst-search-bar').style.display = 'none';
+    expandedPanel.classList.remove('active');
+    removeDesktopPopover();
+    
+    loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}&month=${currentMonth}`);
+});
+
+btnBooking.addEventListener('click', () => {
+    currentViewMode = "booking";
+    btnSave.style.display = 'block';
+    adminWarning.style.display = 'none';
+    expandedPanel.classList.remove('active');
+    removeDesktopPopover();
+    const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
+    const searchBar = document.getElementById('analyst-search-bar');
+    if (isAnalyst) {
+        searchBar.style.display = 'block';
+        calendarGrid.innerHTML = '';
+        calendarSection.style.display = 'block';
+        calendarSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        searchBar.style.display = 'none';
         loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(currentFullCode)}&month=${currentMonth}`);
-    });
+    }
+});
+
+document.getElementById('btn-global-load-expert').addEventListener('click', () => {
+    const expertVal = document.getElementById('global-expert-input').value.trim();
+    if (!expertVal) { showToast('Введите ник или код психолога', 'error'); return; }
+    expandedPanel.classList.remove('active');
+    document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
+    removeDesktopPopover();
+    window.currentSelectedExpertCode = expertVal;
+    loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(expertVal)}&month=${currentMonth}`);
+});
     
-    btnGeneral.addEventListener('click', () => {
-        currentViewMode = "general";
-        const p = prefixSelect.value.toLowerCase();
-        btnSave.style.display = (p === 'а') ? 'block' : 'none';
-        adminWarning.style.display = 'none';
-        document.getElementById('analyst-search-bar').style.display = 'none';
-        expandedPanel.classList.remove('active');
-        loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}&month=${currentMonth}`);
-    });
-    
-    btnMyClients.addEventListener('click', () => {
-        const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
-        const searchBar = document.getElementById('analyst-search-bar');
-        
-        if (isAnalyst) {
-            currentViewMode = "analyst_schedule";
-            btnSave.style.display = 'block';
-            adminWarning.style.display = 'none';
-            searchBar.style.display = 'block';
-            calendarGrid.innerHTML = '';
-            calendarSection.style.display = 'block';
-            expandedPanel.classList.remove('active');
-        } else {
-            showToast('Эта вкладка находится в разработке', 'info');
-        }
-    });
-    
-    document.getElementById('btn-global-load-expert').addEventListener('click', () => {
-        const expertVal = document.getElementById('global-expert-input').value.trim();
-        if (!expertVal) { showToast('Введите ник или код психолога', 'error'); return; }
-        expandedPanel.classList.remove('active');
-        document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
-        window.currentSelectedExpertCode = expertVal;
-        
-        loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(expertVal)}&month=${currentMonth}`);
-    });
+    function removeDesktopPopover() {
+        const oldPopover = document.getElementById('desktop-personal-popover');
+        if (oldPopover) oldPopover.remove();
+    }
     
     function loadCalendarData(url) {
         loader.style.display = 'block';
@@ -413,15 +473,21 @@
             .then(res => res.json())
             .then(data => {
                 loader.style.display = 'none';
-                if(data.error) { showToast('Ошибка сервера: ' + data.error, 'error'); return; }
+                if(data.error) {
+                    showToast('Ошибка сервера: ' + data.error, 'error');
+                    return;
+                }
                 pendingShifts = data.schedule || {};
                 globalGeneralData = data.generalData || {};
+
                 renderGrid();
                 calendarSection.style.display = 'block';
+                calendarSection.scrollIntoView({ behavior: 'smooth' });
             })
             .catch(err => {
                 loader.style.display = 'none';
                 showToast('Не удалось связаться с Google Таблицей', 'error');
+                console.error(err);
             });
     }
     
@@ -433,115 +499,134 @@
         else cellElement.classList.add('shift-custom');
     }
     
-    function renderGrid() {
-        calendarGrid.innerHTML = '';
-        allGridElements = [];
-        document.body.appendChild(expandedPanel);
-        
-        // Получаем данные текущего месяца из конфигурации
-        const monthData = MONTHS_CONFIG[currentMonth];
-        let totalDays = monthData.days; 
-        let firstDayIndex = monthData.firstDayIndex; 
-        let monthPrefix = monthData.prefix;
-        
-        const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
-        for (let i = 0; i < startOffset; i++) {
-            const emptyCell = document.createElement('div');
-            emptyCell.className = 'calendar-day empty';
-            calendarGrid.appendChild(emptyCell);
-            allGridElements.push(emptyCell);
-        }
-        
-        const p = prefixSelect.value.toLowerCase();
-        for (let day = 1; day <= totalDays; day++) {
-            const dayStr = (day < 10 ? '0' + day : day) + monthPrefix;
-            const cell = document.createElement('div');
-            cell.className = 'calendar-day';
-            cell.id = `cell-${dayStr}`;
-            const userShift = pendingShifts[dayStr] || "";
-            const info = globalGeneralData[dayStr] || { dayPsychologists: [], eveningPsychologists: [], vDayCount: 0, vEveningCount: 0 };
-            const dayCount = info.dayPsychologists ? info.dayPsychologists.length : 0;
-            const eveningCount = info.eveningPsychologists ? info.eveningPsychologists.length : 0;
-            
-            if (currentViewMode === "general") {
-                cell.innerHTML = `
-                    <div class="day-number-tl">${day}</div>
-                    <div class="psy-counters">
-                        <div class="counter-column"><span class="counter-icon"> ☀️ ️</span><span class="counter-num">${dayCount}</span></div>
-                        <span class="counter-slash">/</span>
-                        <div class="counter-column"><span class="counter-icon"> 🌙 </span><span class="counter-num">${eveningCount}</span></div>
-                    </div>
-                `;
-                updateCellVisuals(cell, userShift);
-                if (p === 'в' && (dayCount === 0 || eveningCount === 0)) cell.classList.add('critical-border');
-                else if (p === 'а' && (info.vDayCount === 0 || info.vEveningCount === 0)) cell.classList.add('critical-border');
-                else if (p === 'к' && (dayCount !== 2 || eveningCount !== 2)) cell.classList.add('critical-border');
-            } else {
-                let shiftText = userShift ? `<div class="cell-shift-time">${userShift}</div>` : '';
-                cell.innerHTML = `<div class="day-number-tl">${day}</div>${shiftText}`;
-                
-                const dayBookings = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
-                if (dayBookings.length > 0) {
-                    const bCount = document.createElement('div');
-                    bCount.className = 'booking-counter';
-                    bCount.innerText = ` 👥  ${dayBookings.length}`;
-                    cell.appendChild(bCount);
-                }
-                
-                updateCellVisuals(cell, userShift);
-                if (p === 'в' && (dayCount === 0 || eveningCount === 0)) cell.classList.add('critical-border');
-                else if (p === 'к' && (dayCount !== 2 || eveningCount !== 2)) cell.classList.add('critical-border');
-            }
-            cell.addEventListener('click', () => handleDayClick(cell, dayStr));
-            calendarGrid.appendChild(cell);
-            allGridElements.push(cell);
-        }
+function renderGrid() {
+    calendarGrid.innerHTML = '';
+    allGridElements = [];
+    document.body.appendChild(expandedPanel);
+    
+    let totalDays = 31;
+    let firstDayIndex = 3; // Среда (Июль 2026)
+    let monthPrefix = ".07";
+
+    if (currentMonth === "august") {
+        totalDays = 31;
+        firstDayIndex = 6; // Суббота (Август 2026)
+        monthPrefix = ".08";
+    } else if (currentMonth === "september") {
+        totalDays = 30;
+        firstDayIndex = 2; // Вторник (Сентябрь 2026)
+        monthPrefix = ".09";
+    }
+
+    const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+    for (let i = 0; i < startOffset; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'calendar-day empty';
+        calendarGrid.appendChild(emptyCell);
+        allGridElements.push(emptyCell);
     }
     
+    const p = prefixSelect.value.toLowerCase();
+    for (let day = 1; day <= totalDays; day++) {
+        const dayStr = (day < 10 ? '0' + day : day) + monthPrefix;
+        const cell = document.createElement('div');
+        cell.className = 'calendar-day';
+        cell.id = `cell-${dayStr}`;
+        const userShift = pendingShifts[dayStr] || "";
+        const info = globalGeneralData[dayStr] || { dayPsychologists: [], eveningPsychologists: [], vDayCount: 0, vEveningCount: 0 };
+        const dayBookings = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
+        const dayCount = info.dayPsychologists ? info.dayPsychologists.length : 0;
+        const eveningCount = info.eveningPsychologists ? info.eveningPsychologists.length : 0;
+        
+        if (currentViewMode === "booking") {
+            cell.innerHTML = `<div class="day-number-tl">${day}</div>`;
+            updateCellVisuals(cell, userShift);
+            if (dayBookings.length > 0) {
+                const bCount = document.createElement('div');
+                bCount.className = 'booking-counter';
+                bCount.innerText = ` 👥  ${dayBookings.length}`;
+                cell.appendChild(bCount);
+            }
+        } else if (currentViewMode === "general") {
+            cell.innerHTML = `
+                <div class="day-number-tl">${day}</div>
+                <div class="psy-counters">
+                    <div class="counter-column"><span class="counter-icon"> ☀️ ️</span><span class="counter-num">${dayCount}</span></div>
+                    <span class="counter-slash">/</span>
+                    <div class="counter-column"><span class="counter-icon"> 🌙 </span><span class="counter-num">${eveningCount}</span></div>
+                </div>
+            `;
+            updateCellVisuals(cell, userShift);
+            if (p === 'в' && (dayCount === 0 || eveningCount === 0)) cell.classList.add('critical-border');
+            else if (p === 'а' && (info.vDayCount === 0 || info.vEveningCount === 0)) cell.classList.add('critical-border');
+            else if (p === 'к' && (dayCount !== 2 || eveningCount !== 2)) cell.classList.add('critical-border');
+        } else {
+            let shiftText = userShift ? `<div class="cell-shift-time">${userShift}</div>` : '';
+            cell.innerHTML = `<div class="day-number-tl">${day}</div>${shiftText}`;
+            updateCellVisuals(cell, userShift);
+            if (p === 'в' && (dayCount === 0 || eveningCount === 0)) cell.classList.add('critical-border');
+            else if (p === 'к' && (dayCount !== 2 || eveningCount !== 2)) cell.classList.add('critical-border');
+        }
+        cell.addEventListener('click', () => handleDayClick(cell, dayStr));
+        calendarGrid.appendChild(cell);
+        allGridElements.push(cell);
+    }
+}
+    
     function handleDayClick(clickedCell, dayStr) {
+        const isMobile = window.innerWidth <= 768;
+        const oldPopover = document.getElementById('desktop-personal-popover');
+        const p = prefixSelect.value.toLowerCase();
+
+        if (currentViewMode === "personal" && p === 'к') return;
+
         if (clickedCell.classList.contains('selected')) {
             clickedCell.classList.remove('selected');
             expandedPanel.classList.remove('active');
+            if (oldPopover) oldPopover.remove();
             return;
         }
-        document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
-        clickedCell.classList.add('selected');
-        
-        expandedPanel.classList.remove('active');
-        const cellIndex = allGridElements.indexOf(clickedCell);
-        const colIndex = cellIndex % 7;
-        const daysToSunday = 6 - colIndex;
-        let insertAfterIndex = cellIndex + daysToSunday;
-        if (insertAfterIndex >= allGridElements.length) insertAfterIndex = allGridElements.length - 1;
-        
-        allGridElements[insertAfterIndex].after(expandedPanel);
-        
-        if (currentViewMode === "schedule" || currentViewMode === "analyst_schedule") {
-            renderSchedulePanel(dayStr, panelContent);
-        } else {
-            renderGeneralPanel(dayStr, panelContent);
-        }
-        expandedPanel.classList.add('active');
-    }
 
-    function renderSchedulePanel(dayStr, container) {
-        let savedShift = pendingShifts[dayStr] || "";
-        const isDayPreset = savedShift === "14:00 — 18:00";
-        const isEveningPreset = savedShift === "18:00 — 22:00" || savedShift === "18:00 -- 22:00";
-        const isCustom = savedShift !== "" && !isDayPreset && !isEveningPreset;
-        
+        document.querySelectorAll('.calendar-day').forEach(el => el.classList.remove('selected'));
+        if (oldPopover) oldPopover.remove();
+        clickedCell.classList.add('selected');
+
+        if (isMobile || currentViewMode === "general" || currentViewMode === "booking") {
+            expandedPanel.classList.remove('active');
+            const cellIndex = allGridElements.indexOf(clickedCell);
+            const colIndex = cellIndex % 7;
+            const daysToSunday = 6 - colIndex;
+            let insertAfterIndex = cellIndex + daysToSunday;
+
+            if (insertAfterIndex >= allGridElements.length) insertAfterIndex = allGridElements.length - 1;
+            allGridElements[insertAfterIndex].after(expandedPanel);
+
+            if (currentViewMode === "personal") renderPersonalPanel(dayStr, panelContent);
+            else if (currentViewMode === "booking") renderBookingPanel(dayStr, panelContent);
+            else renderGeneralPanel(dayStr, panelContent);
+            
+            expandedPanel.classList.add('active');
+        } else {
+            expandedPanel.classList.remove('active');
+            renderDesktopPersonalDropdown(clickedCell, dayStr);
+        }
+    }
+    
+    function getPersonalHtml(dayStr, savedValue) {
+        const isDayPreset = savedValue === "14:00 — 18:00";
+        const isEveningPreset = savedValue === "18:00 — 22:00" || savedValue === "18:00 -- 22:00";
+        const isCustom = savedValue !== "" && !isDayPreset && !isEveningPreset;
         let h1="", m1="", h2="", m2="";
         if (isCustom) {
-            const pieces = savedShift.split(/[-—]/);
+            const pieces = savedValue.split(/[-—]/);
             if (pieces.length === 2) {
                 const t1 = pieces[0].trim().split(':'); const t2 = pieces[1].trim().split(':');
                 if (t1.length === 2) { h1 = t1[0]; m1 = t1[1]; }
                 if (t2.length === 2) { h2 = t2[0]; m2 = t2[1]; }
             }
         }
-        
-        let html = `
-            <div class="panel-title">Расписание на ${dayStr}</div>
+        return `
+            <div class="panel-title">Смена на ${dayStr}</div>
             <div class="panel-controls">
                 <select class="shift-select sub-select">
                     <option value="">-- Выходной --</option>
@@ -557,77 +642,431 @@
                     <input type="text" class="time-part sub-input" data-idx="3" maxlength="2" placeholder="ММ" value="${m2}">
                 </div>
             </div>
-            <div id="clients-wrapper" style="margin-top: 20px;"></div>
-            <button id="btn-delete-shift-inner" type="button" style="margin-top: 20px; width: 100%; padding: 14px; background: #e74c3c; color: white; border: none; border-radius: 12px; font-weight: 800; font-size: 15px; cursor: pointer;">Удалить смену</button>
         `;
-        container.innerHTML = html;
-        
-        setupScheduleListeners(container, dayStr);
-        renderClientsInSchedule(container.querySelector('#clients-wrapper'), dayStr, savedShift);
     }
     
-    function setupScheduleListeners(container, dayStr) {
-        const selectEl = container.querySelector('.sub-select');
-        const customBox = container.querySelector('.sub-custom-box');
-        const inputs = Array.from(container.querySelectorAll('.sub-input'));
-        const deleteBtn = container.querySelector('#btn-delete-shift-inner');
-        const clientsWrapper = container.querySelector('#clients-wrapper');
-        const updateLocalData = () => {
-            let newVal = selectEl.value;
-            if (newVal === 'custom') {
-                const v = inputs.map(i => i.value.trim());
-                if (v.some(val => val !== "")) {
-                    const hh1 = (v[0] || '').padStart(2, '0'); const mm1 = (v[1] || '').padStart(2, '0');
-                    const hh2 = (v[2] || '').padStart(2, '0'); const mm2 = (v[3] || '').padStart(2, '0');
-                    newVal = `${hh1}:${mm1} — ${hh2}:${mm2}`;
-                } else newVal = "Свой вариант";
-            }
-            pendingShifts[dayStr] = newVal === "Свой вариант" ? "" : newVal;
-            
-            const cell = document.getElementById(`cell-${dayStr}`);
-            if (cell) {
-                let timeDiv = cell.querySelector('.cell-shift-time');
-                if (newVal && newVal !== "Свой вариант") {
-                    if (!timeDiv) {
-                        timeDiv = document.createElement('div');
-                        timeDiv.className = 'cell-shift-time';
-                        cell.insertBefore(timeDiv, cell.querySelector('.booking-counter')); 
-                    }
-                    timeDiv.innerText = newVal;
-                } else if (timeDiv) {
-                    timeDiv.remove();
-                }
-                updateCellVisuals(cell, pendingShifts[dayStr]);
-            }
-            renderClientsInSchedule(clientsWrapper, dayStr, pendingShifts[dayStr]);
-        };
-        selectEl.addEventListener('change', () => {
-            customBox.style.display = selectEl.value === 'custom' ? 'flex' : 'none';
-            updateLocalData();
-        });
-        inputs.forEach(input => input.addEventListener('input', updateLocalData));
-        deleteBtn.addEventListener('click', () => {
-            selectEl.value = "";
-            customBox.style.display = 'none';
-            inputs.forEach(i => i.value = "");
-            updateLocalData();
-        });
-    }
+function setupPersonalListeners(container, dayStr) {
+    const selectEl = container.querySelector('.sub-select');
+    const customBox = container.querySelector('.sub-custom-box');
+    const inputs = Array.from(container.querySelectorAll('.sub-input'));
 
-    function renderClientsInSchedule(wrapper, dayStr, currentShift) {
-        if (!currentShift || currentShift === "Свой вариант") {
-            wrapper.innerHTML = `<div style="text-align: center; color: #94a3b8; font-weight: 700; font-size: 14px; background: #f8f9fa; padding: 15px; border-radius: 12px; border: 1px dashed #cbd5e1;">Выберите смену, чтобы записать абонентов</div>`;
+    const updateLocalData = () => {
+        let newVal = selectEl.value;
+        if (newVal === 'custom') {
+            const v = inputs.map(i => i.value.trim());
+            if (v.some(val => val !== "")) {
+                const hh1 = (v[0] || '').padStart(2, '0');
+                const mm1 = (v[1] || '').padStart(2, '0');
+                const hh2 = (v[2] || '').padStart(2, '0');
+                const mm2 = (v[3] || '').padStart(2, '0');
+                newVal = `${hh1}:${mm1} — ${hh2}:${mm2}`;
+            } else {
+                // Если выбрали кастом, но поля еще пустые, пишем временную заглушку для визуального контроля
+                newVal = "Свой вариант"; 
+            }
+        }
+        
+        // Записываем значение в массив для отправки
+        pendingShifts[dayStr] = newVal === "Свой вариант" ? "" : newVal;
+        
+        // ИСПРАВЛЕНИЕ: Обновляем только текст смены внутри ячейки, не ломая структуру и счетчики
+        const cell = document.getElementById(`cell-${dayStr}`);
+        if (cell) {
+            let timeDiv = cell.querySelector('.cell-shift-time');
+            if (newVal) {
+                if (!timeDiv) {
+                    timeDiv = document.createElement('div');
+                    timeDiv.className = 'cell-shift-time';
+                    cell.appendChild(timeDiv);
+                }
+                timeDiv.innerText = newVal;
+            } else if (timeDiv) {
+                timeDiv.remove(); // Если выбран выходной — убираем текст времени
+            }
+            updateCellVisuals(cell, pendingShifts[dayStr]);
+        }
+    };
+
+    selectEl.addEventListener('change', () => { 
+        customBox.style.display = selectEl.value === 'custom' ? 'flex' : 'none'; 
+        updateLocalData(); 
+    });
+    
+    inputs.forEach(input => input.addEventListener('input', updateLocalData));
+}
+
+    
+    function renderPersonalPanel(dayStr, container) {
+        container.innerHTML = getPersonalHtml(dayStr, pendingShifts[dayStr] || "");
+        setupPersonalListeners(container, dayStr);
+    }
+    
+    function renderDesktopPersonalDropdown(cell, dayStr) {
+        const popover = document.createElement('div');
+        popover.id = 'desktop-personal-popover';
+        popover.className = 'desktop-popover';
+        popover.addEventListener('click', (e) => e.stopPropagation());
+        popover.innerHTML = getPersonalHtml(dayStr, pendingShifts[dayStr] || "");
+        cell.appendChild(popover);
+        setupPersonalListeners(popover, dayStr);
+    }
+    
+    function renderGeneralPanel(dayStr, container) {
+        const info = globalGeneralData[dayStr] || { dayAdmins: [], eveningAdmins: [], dayPsychologists: [], eveningPsychologists: [] };
+        const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
+
+        const buildAdminList = (arr) => arr.length ? arr.map(p => `<li class="psy-list-item"><div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div></li>`).join('') : `<li class="psy-list-item">—</li>`;
+        
+const buildPsyList = (arr, isDayShift) => {
+            if (!arr.length) return `<li class="psy-list-item">—</li>`;
+            
+            return arr.map(p => {
+                let bookingsHtml = "";
+                if (isAnalyst) {
+                    // Оставляем строго 4 часа (убираем запасную плашку)
+                    let defaultHours = isDayShift ? ["14", "15", "16", "17"] : ["18", "19", "20", "21"];
+                    
+                    // Жестко привязываем текущие записи к их часам
+                    let mappedBookings = [null, null, null, null];
+                    if (p.bookings && p.bookings.length > 0) {
+                        p.bookings.forEach(b => {
+                            const parts = b.split(/[—–-]/);
+                            if (parts.length >= 2) {
+                                const timeSplit = parts[0].trim().split(':');
+                                if (timeSplit.length >= 1) {
+                                    const hr = timeSplit[0].trim();
+                                    const idx = defaultHours.indexOf(hr);
+                                    // Если час совпадает, ставим на нужное место
+                                    if (idx !== -1 && mappedBookings[idx] === null) {
+                                        mappedBookings[idx] = b;
+                                    } else {
+                                        // Если нестандартное время, ищем первое свободное
+                                        for (let k = 0; k < 4; k++) {
+                                            if (mappedBookings[k] === null) {
+                                                mappedBookings[k] = b;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    let slotsHtml = "";
+                    for (let i = 0; i < 4; i++) { // Цикл теперь до 4
+                        let hh = defaultHours[i] || "";
+                        let mm = "00";
+                        let n = "", a = "";
+                        
+                        let currentBooking = mappedBookings[i];
+                        if (currentBooking) {
+                            const parts = currentBooking.split(/[—–-]/);
+                            if (parts.length >= 2) {
+                                const timeSplit = parts[0].trim().split(':');
+                                if (timeSplit.length === 2) { 
+                                    hh = timeSplit[0].trim(); 
+                                    mm = timeSplit[1].trim(); 
+                                }
+                                const clientPart = parts.slice(1).join('—');
+                                const subParts = clientPart.split('|');
+                                n = subParts[0] ? subParts[0].trim() : clientPart.trim();
+                                a = subParts[1] ? subParts[1].trim() : "";
+                            } else {
+                                n = currentBooking;
+                            }
+                        }
+                        
+                        // Определяем, заполнен слот или пуст (для цвета)
+                        let isFilled = (n !== "" || a !== "");
+                        let bgClass = isFilled ? "filled-slot" : "empty-slot";
+
+                        // Добавляем стрелочку после каждой записи, кроме последней
+                        let arrowHtml = (i < 3) ? `<span class="b-arrow">➔</span>` : "";
+                        
+                        slotsHtml += `
+                            <div class="booking-row general-b-row ${bgClass}" data-code="${p.code}" data-name="${p.name}">
+                                <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}">
+                                <span>:</span>
+                                <input type="text" class="booking-input b-mm" placeholder="ММ" maxlength="2" inputmode="numeric" value="${mm}">
+                                <span>—</span>
+                                <input type="text" class="booking-input b-name" placeholder="Ник" value="${n}">
+                                <span>|</span>
+                                <input type="text" class="booking-input b-age" placeholder="Лет" maxlength="3" type="number" inputmode="numeric" pattern="[0-9]*" value="${a}">
+                            </div>${arrowHtml}
+                        `;
+                    }
+                    bookingsHtml = `<div class="editable-bookings-container row-mode">${slotsHtml}</div>`;
+                } else {
+                    if (p.bookings && p.bookings.length > 0) {
+                        let itemsHtml = p.bookings.map((b, idx) => {
+                            let arrow = idx < p.bookings.length - 1 ? `<span class="b-arrow">➔</span>` : "";
+                            return `<span class="b-item">${b}</span>${arrow}`;
+                        }).join(' ');
+                        bookingsHtml = `<div class="read-only-bookings">${itemsHtml}</div>`;
+                    }
+                }
+                
+                return `
+                    <li class="psy-list-item">
+                        <div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div>
+                        ${bookingsHtml}
+                    </li>
+                `;
+            }).join('');
+        };
+
+        container.innerHTML = `
+            <div class="panel-title">Расписание на ${dayStr}</div>
+            <div class="general-details-list">
+                <div class="details-section">
+                    <div class="section-title">☀️ День</div>
+                    <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildAdminList(info.dayAdmins)}</ul></div>
+                    <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildPsyList(info.dayPsychologists, true)}</ul></div>
+                </div>
+                <div class="details-section">
+                    <div class="section-title">🌙 Вечер</div>
+                    <div class="role-group"><span class="role-label">Админ:</span><ul class="role-list">${buildAdminList(info.eveningAdmins)}</ul></div>
+                    <div class="role-group"><span class="role-label">Психологи:</span><ul class="role-list">${buildPsyList(info.eveningPsychologists, false)}</ul></div>
+                </div>
+            </div>
+        `;
+        
+if (isAnalyst) {
+            const allInputs = container.querySelectorAll('.booking-input');
+            allInputs.forEach(input => {
+                // Перенос фокуса по Enter
+                if (input.classList.contains('b-name')) {
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const row = e.target.closest('.booking-row');
+                            if (row) { const ageInput = row.querySelector('.b-age'); if (ageInput) ageInput.focus(); }
+                        }
+                    });
+                }
+                
+                // Моментальная смена цвета плашки при вводе
+                input.addEventListener('input', (e) => {
+                    const row = e.target.closest('.booking-row');
+                    if (row) {
+                        const n = row.querySelector('.b-name').value.trim();
+                        const a = row.querySelector('.b-age').value.trim();
+                        
+                        if (n !== "" || a !== "") {
+                            row.classList.remove('empty-slot');
+                            row.classList.add('filled-slot');
+                        } else {
+                            row.classList.remove('filled-slot');
+                            row.classList.add('empty-slot');
+                        }
+                    }
+                });
+            });
+        }
+    }
+    
+btnSave.addEventListener('click', () => {
+    loader.style.display = 'block';
+    btnSave.disabled = true;
+
+    // МАССОВОЕ СОХРАНЕНИЕ ИЗ ОБЩЕГО РАСПИСАНИЯ ДЛЯ АНАЛИТИКА
+    if (currentViewMode === "general") {
+        const activeCell = document.querySelector('.calendar-day.selected');
+        if(!activeCell) {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Данные сохранены!', 'success'); return;
+        }
+
+        const dayStr = activeCell.id.replace('cell-', '');
+        const rows = document.querySelectorAll('.general-b-row');
+        const psychMap = {};
+        let validationPassed = true;
+
+        rows.forEach(row => {
+            const code = row.getAttribute('data-code');
+            const name = row.getAttribute('data-name');
+            const pId = code || name;
+
+            if (!psychMap[pId]) psychMap[pId] = { code: code, name: name, clients: [] };
+
+            const hh = row.querySelector('.b-hh').value.trim();
+            const mm = row.querySelector('.b-mm').value.trim();
+            const n = row.querySelector('.b-name').value.trim();
+            const a = row.querySelector('.b-age').value.trim();
+
+            if (n || a) {
+                if (!hh || !mm || !n || !a) {
+                    validationPassed = false;
+                    row.querySelector('.b-hh').style.borderColor = !hh ? 'var(--danger-color)' : '#cbd5e1';
+                    row.querySelector('.b-mm').style.borderColor = !mm ? 'var(--danger-color)' : '#cbd5e1';
+                    row.querySelector('.b-name').style.borderColor = !n ? 'var(--danger-color)' : '#cbd5e1';
+                    row.querySelector('.b-age').style.borderColor = !a ? 'var(--danger-color)' : '#cbd5e1';
+                } else {
+                    row.querySelector('.b-hh').style.borderColor = '#cbd5e1';
+                    row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
+                    row.querySelector('.b-name').style.borderColor = '#cbd5e1';
+                    row.querySelector('.b-age').style.borderColor = '#cbd5e1';
+                    psychMap[pId].clients.push(`${hh.padStart(2,'0')}:${mm.padStart(2,'0')} — ${n} | ${a}`);
+                }
+            } else {
+                row.querySelector('.b-hh').style.borderColor = '#cbd5e1';
+                row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
+                row.querySelector('.b-name').style.borderColor = '#cbd5e1';
+                row.querySelector('.b-age').style.borderColor = '#cbd5e1';
+            }
+        });
+
+        if (!validationPassed) {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Поля Время, Ник и Возраст обязательны для заполнения, вуф!', 'error');
             return;
         }
+
+        const bulkData = Object.values(psychMap);
+
+        fetch(WEB_APP_URL, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ action: "saveBulkBookingData", date: dayStr, bulkData: bulkData, month: currentMonth })
+        }).then(res => res.json()).then(data => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            if (data.success) {
+                showToast('Массовое расписание обновлено!', 'success');
+                bulkData.forEach(psych => {
+                    ["dayPsychologists", "eveningPsychologists"].forEach(listName => {
+                        if (globalGeneralData[dayStr][listName]) {
+                            let target = globalGeneralData[dayStr][listName].find(p => p.code === psych.code || p.name === psych.name);
+                            if (target) target.bookings = psych.clients;
+                        }
+                    });
+                });
+                expandedPanel.classList.remove('active');
+                renderGrid();
+            } else showToast('Ошибка при сохранении: ' + data.error, 'error');
+        }).catch(err => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Ошибка подключения к серверу  ❌ ', 'error');
+        });
+    }
+    
+    // СОХРАНЕНИЕ АБОНЕНТОВ ДЛЯ ПСИХОЛОГА
+    else if (currentViewMode === "booking") {
+        const activeCell = document.querySelector('.calendar-day.selected');
+        if(!activeCell) {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Данные сохранены!', 'success'); return;
+        }
+
+        const dayStr = activeCell.id.replace('cell-', '');
+        const rows = document.querySelectorAll('.booking-row');
+        const clientsToSend = [];
+        let validationPassed = true;
+        
+        rows.forEach(row => {
+            const hh = row.querySelector('.b-hh').value.trim(); const mm = row.querySelector('.b-mm').value.trim();
+            const name = row.querySelector('.b-name').value.trim(); const age = row.querySelector('.b-age').value.trim();
+            if (name || age) {
+                if (!hh || !mm || !name || !age) {
+                    validationPassed = false;
+                    if (!hh) row.querySelector('.b-hh').style.borderColor = 'var(--danger-color)';
+                    if (!mm) row.querySelector('.b-mm').style.borderColor = 'var(--danger-color)';
+                    if (!name) row.querySelector('.b-name').style.borderColor = 'var(--danger-color)';
+                    if (!age) row.querySelector('.b-age').style.borderColor = 'var(--danger-color)';
+                } else {
+                    row.querySelector('.b-hh').style.borderColor = '#cbd5e1'; row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
+                    row.querySelector('.b-name').style.borderColor = '#cbd5e1'; row.querySelector('.b-age').style.borderColor = '#cbd5e1';
+                    clientsToSend.push(`${hh.padStart(2, '0')}:${mm.padStart(2, '0')} — ${name} | ${age}`);
+                }
+            } else {
+                row.querySelector('.b-hh').style.borderColor = '#cbd5e1'; row.querySelector('.b-mm').style.borderColor = '#cbd5e1';
+                row.querySelector('.b-name').style.borderColor = '#cbd5e1'; row.querySelector('.b-age').style.borderColor = '#cbd5e1';
+            }
+        });
+
+        if(!validationPassed) {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Поля Время, Ник и Возраст обязательны для заполнения, вуф!', 'error'); return;
+        }
+        let saveTargetCode = currentFullCode;
+        if (prefixSelect.value.toLowerCase() === 'а' && window.currentSelectedExpertCode) {
+            saveTargetCode = window.currentSelectedExpertCode;
+        }
+
+        fetch(WEB_APP_URL, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ action: "saveBookingData", code: saveTargetCode, date: dayStr, clients: clientsToSend, month: currentMonth })
+        }).then(res => res.json()).then(data => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            if (data.success) {
+                showToast('Абоненты успешно помечены!', 'success');
+                if(!globalGeneralData.bookings) globalGeneralData.bookings = {};
+                globalGeneralData.bookings[dayStr] = clientsToSend;
+                expandedPanel.classList.remove('active');
+                renderGrid();
+            } else showToast('Ошибка при сохранении: ' + data.error, 'error');
+        }).catch(err => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Ошибка подключения к серверу  ❌ ', 'error');
+        });
+    }
+    
+    // СОХРАНЕНИЕ СМЕН В МЕСЯЦЕ
+    else {
+        fetch(WEB_APP_URL, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ code: currentFullCode, shifts: pendingShifts, month: currentMonth })
+        }).then(res => res.json()).then(data => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            if (data.success) {
+                showToast('Данные успешно сохранены, ауф!', 'success');
+                // Перезагружаем текущую вкладку
+                reloadCurrentView(); 
+            } else {
+                showToast('Ошибка: Сотрудник не найден.', 'error');
+            }
+        }).catch(err => {
+            loader.style.display = 'none'; btnSave.disabled = false;
+            showToast('Сбой при сохранении данных  ❌ ', 'error');
+        });
+    }
+});
+    
+    function renderBookingPanel(dayStr, container) {
+        const currentShift = pendingShifts[dayStr] || "";
+
+        if (!currentShift || currentShift === "") {
+            container.innerHTML = `
+                <div class="panel-title" style="color:var(--danger-color)">Смена отсутствует</div>
+                <div style="font-weight:700; margin-bottom:10px; color:#64748b;">Нужно записаться на смену и перезагрузить страницу:</div>
+                <select class="shift-select booking-fallback-select" style="border-color:var(--danger-color)">
+                    <option value="">-- Выберите смену --</option>
+                    <option value="14:00 — 18:00">Дневная (14:00 — 18:00)</option>
+                    <option value="18:00 — 22:00">Вечерняя (18:00 — 22:00)</option>
+                    <option value="custom">Свой вариант...</option>
+                </select>
+            `;
+            container.querySelector('.booking-fallback-select').addEventListener('change', (e) => {
+                if(e.target.value !== "") {
+                    pendingShifts[dayStr] = e.target.value;
+                    updateCellVisuals(document.getElementById(`cell-${dayStr}`), e.target.value);
+                    renderBookingPanel(dayStr, container);
+                }
+            });
+            return;
+        }
+
         let defaultHours = ["", "", "", ""];
         let defaultMinutes = "00";
-        if (currentShift.startsWith("14:00") || currentShift === "14:00 — 18:00") defaultHours = ["14", "15", "16", "17"];
-        else if (currentShift.startsWith("18:00") || currentShift === "18:00 — 22:00" || currentShift === "18:00 -- 22:00") defaultHours = ["18", "19", "20", "21"];
+        if (currentShift === "14:00 — 18:00") defaultHours = ["14", "15", "16", "17"];
+        else if (currentShift === "18:00 — 22:00" || currentShift === "18:00 -- 22:00") defaultHours = ["18", "19", "20", "21"];
+
         const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
-        let html = `<div style="font-weight: 800; font-size: 14px; margin-bottom: 10px; color: #2c3e50;">Запись абонентов:</div>`;
+        let html = `<div class="panel-title">Запись абонентов на ${dayStr} (${currentShift || 'Выбор специалиста'})</div>`;
+
         for (let i = 0; i < 5; i++) {
             let hh = defaultHours[i] || ""; let mm = hh ? defaultMinutes : "";
-            let n = "", a = "";
+            let n = "", a = ""; 
+
             if (savedClients[i]) {
                 const parts = savedClients[i].split(/[—–-]/);
                 if (parts.length >= 2) {
@@ -639,21 +1078,23 @@
                     a = subParts[1] ? subParts[1].trim() : "";
                 } else n = savedClients[i];
             }
-            html += `
-            <div class="booking-row" data-row="${i}">
-                <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}">
-                <span>:</span>
-                <input type="text" class="booking-input b-mm" placeholder="ММ" maxlength="2" inputmode="numeric" value="${mm}">
-                <span>—</span>
-                <input type="text" class="booking-input b-name" placeholder="Ник абонента" value="${n}">
-                <span>|</span>
-                <input type="text" class="booking-input b-age" placeholder="Возраст" maxlength="3" type="number" inputmode="numeric" pattern="[0-9]*" value="${a}">
-            </div>
-            `;
+
+html += `
+        <div class="booking-row" data-row="${i}">
+            <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}">
+            <span>:</span>
+            <input type="text" class="booking-input b-mm" placeholder="ММ" maxlength="2" inputmode="numeric" value="${mm}">
+            <span>—</span>
+            <input type="text" class="booking-input b-name" placeholder="Ник абонента" value="${n}">
+            <span>|</span>
+            <input type="text" class="booking-input b-age" placeholder="Возраст" maxlength="3" type="number" inputmode="numeric" pattern="[0-9]*" value="${a}">
+        </div>
+    `;
         }
-        wrapper.innerHTML = html;
         
-        wrapper.querySelectorAll('.b-name').forEach(input => {
+        container.innerHTML = html;
+        const nameInputs = container.querySelectorAll('.b-name');
+        nameInputs.forEach(input => {
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
@@ -664,138 +1105,10 @@
         });
     }
     
-    function normalizePsychologistsForView(info) {
-        const allPsy = [];
-        const seen = new Set();
-        [...(info.dayPsychologists || []), ...(info.eveningPsychologists || [])].forEach(p => {
-            const id = p.code || p.name;
-            if (!seen.has(id)) {
-                seen.add(id);
-                allPsy.push({ ...p });
-            }
-        });
-        const dayList = [];
-        const eveningList = [];
-        allPsy.forEach(p => {
-            let startHr = 14, endHr = 18;
-            if (p.time) {
-                const parts = p.time.split(/[-—]/);
-                if (parts.length >= 2) {
-                    const s = parts[0].trim().split(':'); const e = parts[1].trim().split(':');
-                    if (s.length >= 1) startHr = parseInt(s[0], 10);
-                    if (e.length >= 1) endHr = parseInt(e[0], 10);
-                }
-            }
-            if (startHr <= 17 && endHr > 14) dayList.push(p);
-            if (startHr <= 21 && endHr > 18) eveningList.push(p);
-        });
-        
-        return { dayList, eveningList };
-    }
-
-    function renderGeneralPanel(dayStr, container) {
-        const info = globalGeneralData[dayStr] || { dayAdmins: [], eveningAdmins: [], dayPsychologists: [], eveningPsychologists: [] };
-        const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
-        const buildAdminList = (arr) => arr.length ? arr.map(p => `<li class="psy-list-item"><div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div></li>`).join('') : `<li class="psy-list-item">—</li>`;
-        
-        const { dayList, eveningList } = normalizePsychologistsForView(info);
-        const buildPsyList = (arr, isDayShift) => {
-            if (!arr.length) return `<li class="psy-list-item">—</li>`;
-            
-            return arr.map(p => {
-                let startHr = 14, endHr = 18;
-                if (p.time) {
-                    const parts = p.time.split(/[-—]/);
-                    if (parts.length >= 2) {
-                        const s = parts[0].trim().split(':'); const e = parts[1].trim().split(':');
-                        if (s.length >= 1) startHr = parseInt(s[0], 10);
-                        if (e.length >= 1) endHr = parseInt(e[0], 10);
-                    }
-                }
-                let bookingsHtml = "";
-                if (isAnalyst) {
-                    let defaultHours = isDayShift ? ["14", "15", "16", "17"] : ["18", "19", "20", "21"];
-                    let mappedBookings = [null, null, null, null];
-                    
-                    if (p.bookings && p.bookings.length > 0) {
-                        p.bookings.forEach(b => {
-                            const parts = b.split(/[—–-]/);
-                            if (parts.length >= 2) {
-                                const timeSplit = parts[0].trim().split(':');
-                                if (timeSplit.length >= 1) {
-                                    const hr = timeSplit[0].trim();
-                                    const idx = defaultHours.indexOf(hr);
-                                    if (idx !== -1 && mappedBookings[idx] === null) mappedBookings[idx] = b;
-                                    else {
-                                        for (let i = 0; i < 4; i++) {
-                                            if (mappedBookings[i] === null) { mappedBookings[i] = b; break; }
-                                        }
-                                    }
-                                }
-                            } else {
-                                for (let i = 0; i < 4; i++) {
-                                    if (mappedBookings[i] === null) { mappedBookings[i] = b; break; }
-                                }
-                            }
-                        });
-                    }
-                    
-                    let rowsHtml = mappedBookings.map((b, i) => {
-                        let hh = defaultHours[i] || ""; let mm = hh ? "00" : "";
-                        let n = "", a = "";
-                        let hasData = false;
-                        
-                        if (b) {
-                            hasData = true;
-                            const parts = b.split(/[—–-]/);
-                            if (parts.length >= 2) {
-                                const timeSplit = parts[0].trim().split(':');
-                                if (timeSplit.length === 2) { hh = timeSplit[0].trim(); mm = timeSplit[1].trim(); }
-                                const clientPart = parts.slice(1).join('—');
-                                const subParts = clientPart.split('|');
-                                n = subParts[0] ? subParts[0].trim() : clientPart.trim();
-                                a = subParts[1] ? subParts[1].trim() : "";
-                            } else n = b;
-                        }
-                        
-                        const slotHour = parseInt(hh, 10);
-                        const isBlocked = (slotHour && (slotHour < startHr || slotHour >= endHr));
-                        
-                        return `
-                        <div class="booking-row ${isBlocked ? 'blocked-slot' : (hasData ? 'filled-slot' : 'empty-slot')}" data-original-psy="${p.code}" data-idx="${i}">
-                            <input type="text" class="booking-input b-hh" value="${hh}" ${isBlocked ? 'readonly' : ''}>
-                            <span>:</span>
-                            <input type="text" class="booking-input b-mm" value="${mm}" ${isBlocked ? 'readonly' : ''}>
-                            <span class="b-arrow">→</span>
-                            <input type="text" class="booking-input b-name" placeholder="${isBlocked ? '—' : 'Ник'}" value="${n}" ${isBlocked ? 'readonly' : ''}>
-                            <span class="b-arrow">|</span>
-                            <input type="text" class="booking-input b-age" placeholder="${isBlocked ? '—' : 'Лет'}" value="${a}" ${isBlocked ? 'readonly' : ''}>
-                        </div>
-                        `;
-                    }).join('');
-                    
-                    bookingsHtml = `<div class="editable-bookings-container row-mode" data-psy-code="${p.code}">${rowsHtml}</div>`;
-                }
-                
-                return `<li class="psy-list-item"><div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div>${bookingsHtml}</li>`;
-            }).join('');
-        };
-        
-        container.innerHTML = `
-            <div class="panel-title">${dayStr} — Общее расписание</div>
-            <div class="general-details-list">
-                <div class="details-section">
-                    <div class="section-title">☀️ Дневная смена (14:00 - 18:00)</div>
-                    <div class="role-group"><span class="role-label">Админы (${info.dayAdmins ? info.dayAdmins.length : 0}):</span><ul class="role-list">${buildAdminList(info.dayAdmins || [])}</ul></div>
-                    <div class="role-group" style="margin-top: 10px;"><span class="role-label">Психологи (${dayList.length}):</span><ul class="role-list">${buildPsyList(dayList, true)}</ul></div>
-                </div>
-                <div class="details-section">
-                    <div class="section-title">🌙 Вечерняя смена (18:00 - 22:00)</div>
-                    <div class="role-group"><span class="role-label">Админы (${info.eveningAdmins ? info.eveningAdmins.length : 0}):</span><ul class="role-list">${buildAdminList(info.eveningAdmins || [])}</ul></div>
-                    <div class="role-group" style="margin-top: 10px;"><span class="role-label">Психологи (${eveningList.length}):</span><ul class="role-list">${buildPsyList(eveningList, false)}</ul></div>
-                </div>
-            </div>
-        `;
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+        .then(() => console.log('Service Worker зарегистрирован!'))
+        .catch((err) => console.log('Ошибка SW:', err));
     }
 </script>
 </body>
