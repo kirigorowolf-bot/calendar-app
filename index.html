@@ -902,98 +902,112 @@
             }
         });
 
-        const buildPsyList = (arr, isDayShift) => {
-            if (!arr.length) return `<li class="psy-list-item">—</li>`;
-            
-            return arr.map(p => {
-                let bookingsHtml = "";
-                const parsedTime = parseShiftTime(p.time);
-                
-                if (isAnalyst) {
-                    let defaultHours = isDayShift ? ["14", "15", "16", "17"] : ["18", "19", "20", "21"];
-                    let mappedBookings = [null, null, null, null];
-                    if (p.bookings && p.bookings.length > 0) {
-                        p.bookings.forEach(b => {
-                            const parts = b.split(/[—–-]/);
-                            if (parts.length >= 2) {
-                                const timeSplit = parts[0].trim().split(':');
-                                if (timeSplit.length >= 1) {
-                                    const hr = timeSplit[0].trim();
-                                    const idx = defaultHours.indexOf(hr);
-                                    if (idx !== -1 && mappedBookings[idx] === null) mappedBookings[idx] = b;
-                                    else {
-                                        for (let k = 0; k < 4; k++) {
-                                            if (mappedBookings[k] === null) { mappedBookings[k] = b; break; }
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    
-                    let slotsHtml = "";
-                    for (let i = 0; i < 4; i++) {
-                        let hh = defaultHours[i] || "";
-                        
-                        // Логика блокировки лишних часов по условию 1.2 и 1.3
-                        let isBlocked = false;
-                        if (parsedTime && hh) {
-                            let slotHour = parseInt(hh);
-                            // Если конец слота (slotHour+1) раньше или в момент начала смены, или начало слота (slotHour) позже или в момент окончания смены
-                            if (slotHour + 1 <= parsedTime.start || slotHour >= parsedTime.end) {
-                                isBlocked = true;
-                            }
-                        }
+const buildPsyList = (arr, isDayShift) => {
+  if (!arr.length) return '<li class="psy-list-item">-</li>';
 
-                        let mm = "00"; let n = "", a = "";
-                        let currentBooking = mappedBookings[i];
-                        if (currentBooking) {
-                            const parts = currentBooking.split(/[—–-]/);
-                            if (parts.length >= 2) {
-                                const timeSplit = parts[0].trim().split(':');
-                                if (timeSplit.length === 2) { hh = timeSplit[0].trim(); mm = timeSplit[1].trim(); }
-                                const clientPart = parts.slice(1).join('—');
-                                const subParts = clientPart.split('|');
-                                n = subParts[0] ? subParts[0].trim() : clientPart.trim();
-                                a = subParts[1] ? subParts[1].trim() : "";
-                            } else n = currentBooking;
-                        }
-                        
-                        let isFilled = (n !== "" || a !== "");
-                        let bgClass = isBlocked ? "blocked-slot" : (isFilled ? "filled-slot" : "empty-slot");
-                        
-                        slotsHtml += `
-                            <div class="booking-row general-b-row ${bgClass}" data-code="${p.code}" data-name="${p.name}">
-                                <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}" ${isBlocked ? 'disabled' : ''}>
-                                <span>:</span>
-                                <input type="text" class="booking-input b-mm" placeholder="ММ" maxlength="2" inputmode="numeric" value="${mm}" ${isBlocked ? 'disabled' : ''}>
-                                <span>—</span>
-                                <input type="text" class="booking-input b-name" placeholder="Ник" value="${n}" ${isBlocked ? 'disabled' : ''}>
-                                <span>|</span>
-                                <input type="text" class="booking-input b-age" placeholder="Лет" maxlength="3" type="number" inputmode="numeric" pattern="[0-9]*" value="${a}" ${isBlocked ? 'disabled' : ''}>
-                            </div>
-                        `;
-                    }
-                    // Убрано .row-mode, теперь они строго друг под другом для аналитика!
-                    bookingsHtml = `<div class="editable-bookings-container">${slotsHtml}</div>`;
-                } else {
-                    if (p.bookings && p.bookings.length > 0) {
-                        let itemsHtml = p.bookings.map((b, idx) => {
-                            let arrow = idx < p.bookings.length - 1 ? `<span class="b-arrow">➔</span>` : "";
-                            return `<span class="b-item">${b}</span>${arrow}`;
-                        }).join(' ');
-                        bookingsHtml = `<div class="read-only-bookings">${itemsHtml}</div>`;
-                    }
+  return arr.map(p => {
+    let bookingsHtml = "";
+    const parsedTime = parseShiftTime(p.time);
+
+    if (isAnalyst) {
+      let defaultHours = isDayShift ? ["14", "15", "16", "17"] : ["18", "19", "20", "21"];
+      let mappedBookings = [null, null, null, null];
+
+      if (p.bookings && p.bookings.length > 0) {
+        p.bookings.forEach(b => {
+          const parts = b.split(/[—]/);
+          if (parts.length >= 2) {
+            const timeSplit = parts[0].trim().split(':');
+            if (timeSplit.length >= 1) {
+              const hr = timeSplit[0].trim();
+              const idx = defaultHours.indexOf(hr);
+              if (idx !== -1 && mappedBookings[idx] === null) {
+                mappedBookings[idx] = b;
+              } else {
+                for (let k = 0; k < 4; k++) {
+                  if (mappedBookings[k] === null) { mappedBookings[k] = b; break; }
                 }
-                
-                return `
-                    <li class="psy-list-item">
-                        <div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div>
-                        ${bookingsHtml}
-                    </li>
-                `;
-            }).join('');
-        };
+              }
+            }
+          }
+        });
+      }
+
+      let slotsHtml = "";
+      for (let i = 0; i < 4; i++) {
+        let hh = defaultHours[i] || "";
+        let mm = "00";
+        let n = "", a = "";
+
+        // Полностью сохраняем логику блокировки часов из Calendar 3
+        let isBlocked = false;
+        if (parsedTime && hh) {
+          let slotHour = parseInt(hh);
+          if (slotHour + 1 <= parsedTime.start || slotHour >= parsedTime.end) {
+            isBlocked = true;
+          }
+        }
+
+        let currentBooking = mappedBookings[i];
+        if (currentBooking) {
+          const parts = currentBooking.split(/[—]/);
+          if (parts.length >= 2) {
+            const timeSplit = parts[0].trim().split(':');
+            if (timeSplit.length === 2) { 
+              hh = timeSplit[0].trim(); 
+              mm = timeSplit[1].trim(); 
+            }
+            const clientPart = parts.slice(1).join('-');
+            const subParts = clientPart.split('|');
+            n = subParts[0] ? subParts[0].trim() : clientPart.trim();
+            a = subParts[1] ? subParts[1].trim() : "";
+          } else {
+            n = currentBooking;
+          }
+        }
+
+        let isFilled = (n !== "" || a !== "");
+        
+        // Применяем правильные классы для строк по правилам Calendar 3
+        let bgClass = isBlocked ? "blocked-slot" : (isFilled ? "filled-slot" : "empty-slot");
+        
+        // Стрелочка ставится между горизонтальными таблетками (кроме последней)
+        let arrowHtml = (i < 3) ? '<span class="b-arrow">→</span>' : "";
+
+        slotsHtml += `
+          <div class="booking-row general-b-row ${bgClass}" data-code="${p.code}" data-name="${p.name}">
+            <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}" ${isBlocked ? 'disabled' : ""}>
+            <span>:</span>
+            <input type="text" class="booking-input b-mm" placeholder="MM" maxlength="2" inputmode="numeric" value="${mm}" ${isBlocked ? 'disabled' : ""}>
+            <span>-</span>
+            <input type="text" class="booking-input b-name" placeholder="Ник" value="${n}" ${isBlocked ? 'disabled' : ""}>
+            <span></span>
+            <input type="text" class="booking-input b-age" placeholder="Лет" maxlength="3" type="number" inputmode="numeric" pattern="[0-9]*" value="${a}" ${isBlocked ? 'disabled' : ""}>
+          </div>${arrowHtml}
+        `;
+      }
+
+      // Возвращаем класс контейнера row-mode для горизонтального выстраивания
+      bookingsHtml = `<div class="editable-bookings-container row-mode">${slotsHtml}</div>`;
+
+    } else {
+      if (p.bookings && p.bookings.length > 0) {
+        let itemsHtml = p.bookings.map((b, idx) => {
+          let arrow = idx < p.bookings.length - 1 ? '<span class="b-arrow">→</span>' : "";
+          return `<span class="b-item">${b}</span>${arrow}`;
+        }).join(' ');
+        bookingsHtml = `<div class="read-only-bookings">${itemsHtml}</div>`;
+      }
+    }
+
+    return `
+      <li class="psy-list-item">
+        <div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div>
+        ${bookingsHtml}
+      </li>
+    `;
+  }).join("");
+};
         
         container.innerHTML = `
             <div class="panel-title">Расписание на ${dayStr}</div>
