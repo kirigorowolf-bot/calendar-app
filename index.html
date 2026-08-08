@@ -99,12 +99,7 @@
         .role-list { list-style: none; padding-left: 0; }
         
         .psy-list-item { margin-bottom: 12px; }
-        .psy-main-info { 
-    font-weight: 700; 
-    color: #2d3748; 
-    display: block; /* Перенос строки после имени */
-    margin-bottom: 4px; /* Небольшой отступ до плашек */
-}
+        .psy-main-info { font-weight: 700; color: #2d3748; display: inline-block; }
         .role-time { color: #718096; font-size: 13px; font-weight: 700; margin-left: 5px; }
         
         .read-only-bookings { display: inline; margin-left: 8px; color: #4a5568; font-size: 13px; font-weight: 700; }
@@ -112,24 +107,14 @@
         .b-arrow { margin: 0 4px; color: #94a3b8; font-size: 12px; }
         
         /* Стили контейнера для аналитиков (вертикально под именем) */
-        .editable-bookings-container { 
-    display: flex !important; 
-    flex-direction: row !important; 
-    flex-wrap: wrap !important; 
-    align-items: center !important; 
-    gap: 4px !important; 
-    border-left: none !important; 
-    padding-left: 0 !important; 
-    margin-left: 0 !important; 
-    margin-top: 4px !important; 
-}
+        .editable-bookings-container { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; margin-left: 10px; border-left: 2px solid var(--primary-color); padding-left: 10px; }
         
         .cell-shift-time { font-size: 11px; font-weight: 800; margin-top: 16px; text-align: center; color: #1e293b; line-height: 1.1; padding: 0 2px; }
         .loader { display: none; text-align: center; font-size: 18px; font-weight: 800; color: var(--primary-color); margin: 25px 0; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
         .booking-counter { font-size: 14px; font-weight: 800; color: var(--primary-color); background: #e3f2fd; padding: 2px 8px; border-radius: 10px; margin-top: 5px; }
         
-        .booking-row { display: flex !important; gap: 5px !important; margin-bottom: 6px !important; align-items: center !important; flex-wrap: nowrap !important; background: #ffffff !important; padding: 4px 8px !important; border-radius: 8px !important; border: 1px solid #e2e8f0 !important; width: auto !important; box-sizing: border-box !important; }
+        .booking-row { display: flex !important; gap: 5px !important; margin-bottom: 6px !important; align-items: center !important; flex-wrap: nowrap !important; background: #ffffff !important; padding: 4px 8px !important; border-radius: 8px !important; border: 1px solid #e2e8f0 !important; width: 100% !important; box-sizing: border-box !important; }
         .booking-input { padding: 6px 4px !important; height: 32px !important; border: 2px solid #cbd5e1 !important; border-radius: 6px !important; font-size: 14px !important; font-weight: 600 !important; outline: none !important; text-align: center !important; box-sizing: border-box !important; flex: none !important; }
         .booking-input:focus { border-color: var(--primary-color) !important; }
         .b-hh, .b-mm { width: 38px !important; max-width: 38px !important; }
@@ -137,12 +122,72 @@
         .b-age { width: 60px !important; max-width: 60px !important; }
         .booking-row span { font-weight: 800 !important; color: #94a3b8 !important; font-size: 14px !important; flex: none !important; user-select: none !important; }
         
-        /* Цвета для пустых, заполненных и ЗАБЛОКИРОВАННЫХ плашек в панели администратора */
-        .general-b-row.empty-slot { background: #ffffff !important; border: 1px solid #cbd5e1 !important; }
-        .general-b-row.filled-slot { background: #e3f2fd !important; border: 1px solid #90caf9 !important; }
-        
-        .blocked-slot { background-color: #f1f5f9 !important; border-color: #e2e8f0 !important; opacity: 0.6; pointer-events: none; }
-        .blocked-slot input { background: transparent !important; color: #94a3b8 !important; }
+/* ========================================== */
+/* СТИЛИ ДЛЯ СТРОКИ АБОНЕНТОВ В ОБЩЕМ РАСПИСАНИИ */
+/* ========================================== */
+.editable-bookings-container.row-mode {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 3px !important;
+  border-left: none !important;
+  padding-left: 0 !important;
+  margin-left: 8px !important;
+  margin-top: 0 !important;
+  vertical-align: middle;
+}
+.row-mode .booking-row {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  background: #e3f2fd !important; /* Голубая таблетка */
+  border: 1px solid #90caf9 !important;
+  border-radius: 6px !important;
+  padding: 2px 3px !important;
+  margin: 0 !important;
+  width: auto !important;
+  min-height: 26px !important;
+}
+.row-mode .booking-row span {
+  color: #1e3a8a !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  margin: 0 0px !important;
+}
+/* Делаем инпуты невидимыми и вписываем их в таблетку */
+.row-mode .booking-input {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px dashed #90caf9 !important;
+  padding: 0 !important;
+  margin: 0 2px !important;
+  height: auto !important;
+  font-size: 13px !important;
+  color: #1e3a8a !important;
+  font-weight: 700 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.row-mode .booking-input:focus {
+  border-bottom: 1px solid #1e3a8a !important;
+}
+/* Жесткая ширина полей, чтобы всё влезло в строку */
+.row-mode .b-hh { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; margin-right: 0px !important;}
+.row-mode .b-mm { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; margin-left: 0px !important;}
+.row-mode .b-name { width: 50px !important; min-width: 50px !important; max-width: 50px !important; text-align: center !important; }
+.row-mode .b-age { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; }
+.row-mode .b-arrow { color: #94a3b8; font-size: 12px; margin: 0 2px; }
+
+/* Цвета для пустых и заполненных плашек (совместимость с Calendar 3) */
+.row-mode .booking-row.empty-slot { background: #ffffff !important; border: 1px solid #cbd5e1 !important; }
+.row-mode .booking-row.empty-slot span { color: #94a3b8 !important; }
+.row-mode .booking-row.empty-slot .booking-input { border-bottom: 1px dashed #cbd5e1 !important; color: #4a5568 !important; }
+.row-mode .booking-row.filled-slot { background: #e3f2fd !important; border: 1px solid #90caf9 !important; }
+
+/* Логика блокировки для заблокированных таблеток */
+.row-mode .booking-row.blocked-slot { background-color: #f1f5f9 !important; border: 1px solid #e2e8f0 !important; opacity: 0.6; pointer-events: none; }
+.row-mode .booking-row.blocked-slot input { background: transparent !important; color: #94a3b8 !important; border-bottom: none !important; }
 
         @media (max-width: 768px) {
             body { padding: 8px; }
@@ -181,6 +226,7 @@
 <div id="toast" class="toast"></div>
 <div class="container">
     <div class="month-tabs" id="month-tabs">
+        <div class="month-tab active" data-month="july">Июль 2026</div>
         <div class="month-tab" data-month="august">Август 2026</div>
         <div class="month-tab" data-month="september">Сентябрь 2026</div>
     </div>
@@ -902,44 +948,42 @@
             }
         });
 
-const buildPsyList = (arr, isDayShift) => {
-  if (!arr.length) return '<li class="psy-list-item">-</li>';
-
-  return arr.map(p => {
-    let bookingsHtml = "";
-    const parsedTime = parseShiftTime(p.time);
-
-    if (isAnalyst) {
-      let defaultHours = isDayShift ? ["14", "15", "16", "17"] : ["18", "19", "20", "21"];
-      let mappedBookings = [null, null, null, null];
-
-      if (p.bookings && p.bookings.length > 0) {
-        p.bookings.forEach(b => {
-          const parts = b.split(/[—]/);
-          if (parts.length >= 2) {
-            const timeSplit = parts[0].trim().split(':');
-            if (timeSplit.length >= 1) {
-              const hr = timeSplit[0].trim();
-              const idx = defaultHours.indexOf(hr);
-              if (idx !== -1 && mappedBookings[idx] === null) {
-                mappedBookings[idx] = b;
-              } else {
-                for (let k = 0; k < 4; k++) {
-                  if (mappedBookings[k] === null) { mappedBookings[k] = b; break; }
-                }
-              }
-            }
-          }
-        });
-      }
-
+        const buildPsyList = (arr, isDayShift) => {
+            if (!arr.length) return `<li class="psy-list-item">—</li>`;
+            
+            return arr.map(p => {
+                let bookingsHtml = "";
+                const parsedTime = parseShiftTime(p.time);
+                
+                if (isAnalyst) {
+                    let defaultHours = isDayShift ? ["14", "15", "16", "17"] : ["18", "19", "20", "21"];
+                    let mappedBookings = [null, null, null, null];
+                    if (p.bookings && p.bookings.length > 0) {
+                        p.bookings.forEach(b => {
+                            const parts = b.split(/[—–-]/);
+                            if (parts.length >= 2) {
+                                const timeSplit = parts[0].trim().split(':');
+                                if (timeSplit.length >= 1) {
+                                    const hr = timeSplit[0].trim();
+                                    const idx = defaultHours.indexOf(hr);
+                                    if (idx !== -1 && mappedBookings[idx] === null) mappedBookings[idx] = b;
+                                    else {
+                                        for (let k = 0; k < 4; k++) {
+                                            if (mappedBookings[k] === null) { mappedBookings[k] = b; break; }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    
       let slotsHtml = "";
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 4; i++) { // Цикл теперь до 4
         let hh = defaultHours[i] || "";
         let mm = "00";
         let n = "", a = "";
 
-        // Полностью сохраняем логику блокировки часов из Calendar 3
+        // Восстанавливаем логику блокировки неактивных часов из Calendar 3
         let isBlocked = false;
         if (parsedTime && hh) {
           let slotHour = parseInt(hh);
@@ -953,9 +997,9 @@ const buildPsyList = (arr, isDayShift) => {
           const parts = currentBooking.split(/[—]/);
           if (parts.length >= 2) {
             const timeSplit = parts[0].trim().split(':');
-            if (timeSplit.length === 2) { 
-              hh = timeSplit[0].trim(); 
-              mm = timeSplit[1].trim(); 
+            if (timeSplit.length === 2) {
+              hh = timeSplit[0].trim();
+              mm = timeSplit[1].trim();
             }
             const clientPart = parts.slice(1).join('-');
             const subParts = clientPart.split('|');
@@ -966,12 +1010,13 @@ const buildPsyList = (arr, isDayShift) => {
           }
         }
 
+        // Определяем заполненность слота
         let isFilled = (n !== "" || a !== "");
         
-        // Применяем правильные классы для строк по правилам Calendar 3
+        // Связываем логику цвета из Calendar 3 с классами Calendar 1
         let bgClass = isBlocked ? "blocked-slot" : (isFilled ? "filled-slot" : "empty-slot");
-        
-        // Стрелочка ставится между горизонтальными таблетками (кроме последней)
+
+        // Добавляем стрелочку после каждой записи, кроме последней
         let arrowHtml = (i < 3) ? '<span class="b-arrow">→</span>' : "";
 
         slotsHtml += `
@@ -986,28 +1031,27 @@ const buildPsyList = (arr, isDayShift) => {
           </div>${arrowHtml}
         `;
       }
-
-      // Возвращаем класс контейнера row-mode для горизонтального выстраивания
+      
+      // Возвращаем контейнер со строковым режимом row-mode из Calendar 1
       bookingsHtml = `<div class="editable-bookings-container row-mode">${slotsHtml}</div>`;
-
-    } else {
-      if (p.bookings && p.bookings.length > 0) {
-        let itemsHtml = p.bookings.map((b, idx) => {
-          let arrow = idx < p.bookings.length - 1 ? '<span class="b-arrow">→</span>' : "";
-          return `<span class="b-item">${b}</span>${arrow}`;
-        }).join(' ');
-        bookingsHtml = `<div class="read-only-bookings">${itemsHtml}</div>`;
-      }
-    }
-
-    return `
-      <li class="psy-list-item">
-        <div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div>
-        ${bookingsHtml}
-      </li>
-    `;
-  }).join("");
-};
+                } else {
+                    if (p.bookings && p.bookings.length > 0) {
+                        let itemsHtml = p.bookings.map((b, idx) => {
+                            let arrow = idx < p.bookings.length - 1 ? `<span class="b-arrow">➔</span>` : "";
+                            return `<span class="b-item">${b}</span>${arrow}`;
+                        }).join(' ');
+                        bookingsHtml = `<div class="read-only-bookings">${itemsHtml}</div>`;
+                    }
+                }
+                
+                return `
+                    <li class="psy-list-item">
+                        <div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div>
+                        ${bookingsHtml}
+                    </li>
+                `;
+            }).join('');
+        };
         
         container.innerHTML = `
             <div class="panel-title">Расписание на ${dayStr}</div>
