@@ -192,7 +192,7 @@
         <div id="error-message" class="error-message">Введите код, состоящий из трёх цифр, вуф 🐺</div>
     </div>
     <div id="password-group" class="form-group" style="display: none;">
-        <span class="input-title">Нужен пароль. What do u think about wolfs?:</span>
+        <span class="input-title">Нужен пароль. What do u think about wolfs?</span>
         <input type="password" id="password-input" class="digits-input" placeholder="Пароль" style="width: 100%; max-width: 340px;">
     </div>
     
@@ -250,6 +250,7 @@
     let currentViewMode = "personal";
     let pendingShifts = {};
     let globalGeneralData = {};
+    let globalTgMap = {};
     let allGridElements = [];
     let currentMonth = "august";
 
@@ -441,6 +442,7 @@
         if (!forceRefresh && appCache[cacheKey]) {
             pendingShifts = appCache[cacheKey].pendingShifts;
             globalGeneralData = appCache[cacheKey].globalGeneralData;
+            globalTgMap = appCache[cacheKey].globalTgMap || {};
             renderGrid();
             calendarSection.style.display = 'block';
             calendarSection.scrollIntoView({ behavior: 'smooth' });
@@ -462,6 +464,7 @@
                 
                 pendingShifts = data.schedule || {};
                 globalGeneralData = data.generalData || {};
+                globalTgMap = data.tgMap || {};
                 if (data.userBookings) {
                     globalGeneralData.bookings = data.userBookings;
                 }
@@ -469,7 +472,8 @@
                 // Сохраняем в кэш (глубокое копирование для безопасности)
                 appCache[cacheKey] = {
                     pendingShifts: JSON.parse(JSON.stringify(pendingShifts)),
-                    globalGeneralData: JSON.parse(JSON.stringify(globalGeneralData))
+                    globalGeneralData: JSON.parse(JSON.stringify(globalGeneralData)),
+                    globalTgMap: JSON.parse(JSON.stringify(globalTgMap))
                 };
 
                 renderGrid();
@@ -924,6 +928,12 @@
             return arr.map(p => {
                 let bookingsHtml = "";
                 const parsedTime = parseShiftTime(p.time);
+
+                // ---> ДОБАВЛЕНО: Превращаем ник в ссылку, если мы аналитик и ссылка существует <---
+                let displayName = p.name;
+                if (isAnalyst && globalTgMap && globalTgMap[p.name]) {
+                    displayName = `<a href="https://t.me/${globalTgMap[p.name]}" target="_blank" style="color: #1e3a8a; text-decoration: none; border-bottom: 1px dashed #1e3a8a;" title="Написать в Telegram">${p.name}</a>`;
+                }
                 
                 if (isAnalyst) {
                     let defaultHours = isDayShift ? ["14", "15", "16", "17"] : ["18", "19", "20", "21"];
@@ -1005,7 +1015,7 @@
                 
                 return `
                     <li class="psy-list-item">
-                        <div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div>
+                        <div class="psy-main-info">${displayName} <span class="role-time">(${p.time})</span></div>
                         ${bookingsHtml}
                     </li>
                 `;
