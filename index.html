@@ -106,7 +106,6 @@
         .b-item { background: #e3f2fd; padding: 2px 6px; border-radius: 6px; border: 1px solid #90caf9; display: inline-block; margin: 2px 0; color: #1e3a8a; }
         .b-arrow { margin: 0 4px; color: #94a3b8; font-size: 12px; }
         
-        /* Стили контейнера для аналитиков (вертикально под именем) */
         .editable-bookings-container { display: flex; flex-direction: column; gap: 5px; margin-top: 6px; margin-left: 10px; border-left: 2px solid var(--primary-color); padding-left: 10px; }
         
         .cell-shift-time { font-size: 11px; font-weight: 800; margin-top: 16px; text-align: center; color: #1e293b; line-height: 1.1; padding: 0 2px; }
@@ -122,73 +121,24 @@
         .b-age { width: 60px !important; max-width: 60px !important; }
         .booking-row span { font-weight: 800 !important; color: #94a3b8 !important; font-size: 14px !important; flex: none !important; user-select: none !important; }
         
-/* ========================================== */
-/* СТИЛИ ДЛЯ СТРОКИ АБОНЕНТОВ В ОБЩЕМ РАСПИСАНИИ */
-/* ========================================== */
-.editable-bookings-container.row-mode {
-  display: inline-flex !important;
-  flex-direction: row !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  gap: 3px !important;
-  border-left: none !important;
-  padding-left: 0 !important;
-  margin-left: 8px !important;
-  margin-top: 0 !important;
-  vertical-align: middle;
-}
-.row-mode .booking-row {
-  display: inline-flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  background: #e3f2fd !important; /* Голубая таблетка */
-  border: 1px solid #90caf9 !important;
-  border-radius: 6px !important;
-  padding: 2px 3px !important;
-  margin: 0 !important;
-  width: auto !important;
-  min-height: 26px !important;
-}
-.row-mode .booking-row span {
-  color: #1e3a8a !important;
-  font-weight: 700 !important;
-  font-size: 13px !important;
-  margin: 0 0px !important;
-}
-/* Делаем инпуты невидимыми и вписываем их в таблетку */
-.row-mode .booking-input {
-  background: transparent !important;
-  border: none !important;
-  border-bottom: 1px dashed #90caf9 !important;
-  padding: 0 !important;
-  margin: 0 2px !important;
-  height: auto !important;
-  font-size: 13px !important;
-  color: #1e3a8a !important;
-  font-weight: 700 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-.row-mode .booking-input:focus {
-  border-bottom: 1px solid #1e3a8a !important;
-}
-/* Жесткая ширина полей, чтобы всё влезло в строку */
-.row-mode .b-hh { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; margin-right: 0px !important;}
-.row-mode .b-mm { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; margin-left: 0px !important;}
-.row-mode .b-name { width: 50px !important; min-width: 50px !important; max-width: 50px !important; text-align: center !important; }
-.row-mode .b-age { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; }
-.row-mode .b-arrow { color: #94a3b8; font-size: 12px; margin: 0 2px; }
-
-/* Цвета для пустых и заполненных плашек (совместимость с Calendar 3) */
-.row-mode .booking-row.empty-slot { background: #ffffff !important; border: 1px solid #cbd5e1 !important; }
-.row-mode .booking-row.empty-slot span { color: #94a3b8 !important; }
-.row-mode .booking-row.empty-slot .booking-input { border-bottom: 1px dashed #cbd5e1 !important; color: #4a5568 !important; }
-.row-mode .booking-row.filled-slot { background: #e3f2fd !important; border: 1px solid #90caf9 !important; }
-
-/* Логика блокировки для заблокированных таблеток */
-.row-mode .booking-row.blocked-slot { background-color: #f1f5f9 !important; border: 1px solid #e2e8f0 !important; opacity: 0.6; pointer-events: none; }
-.row-mode .booking-row.blocked-slot input { background: transparent !important; color: #94a3b8 !important; border-bottom: none !important; }
-
+        /* СТИЛИ ДЛЯ СТРОКИ АБОНЕНТОВ В ОБЩЕМ РАСПИСАНИИ */
+        .editable-bookings-container.row-mode { display: inline-flex !important; flex-direction: row !important; flex-wrap: wrap !important; align-items: center !important; gap: 3px !important; border-left: none !important; padding-left: 0 !important; margin-left: 8px !important; margin-top: 0 !important; vertical-align: middle; }
+        .row-mode .booking-row { display: inline-flex !important; flex-direction: row !important; align-items: center !important; background: #e3f2fd !important; border: 1px solid #90caf9 !important; border-radius: 6px !important; padding: 2px 3px !important; margin: 0 !important; width: auto !important; min-height: 26px !important; }
+        .row-mode .booking-row span { color: #1e3a8a !important; font-weight: 700 !important; font-size: 13px !important; margin: 0 0px !important; }
+        .row-mode .booking-input { background: transparent !important; border: none !important; border-bottom: 1px dashed #90caf9 !important; padding: 0 !important; margin: 0 2px !important; height: auto !important; font-size: 13px !important; color: #1e3a8a !important; font-weight: 700 !important; border-radius: 0 !important; box-shadow: none !important; }
+        .row-mode .booking-input:focus { border-bottom: 1px solid #1e3a8a !important; }
+        .row-mode .b-hh { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; margin-right: 0px !important;}
+        .row-mode .b-mm { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; margin-left: 0px !important;}
+        .row-mode .b-name { width: 50px !important; min-width: 50px !important; max-width: 50px !important; text-align: center !important; }
+        .row-mode .b-age { width: 16px !important; min-width: 16px !important; max-width: 16px !important; text-align: center !important; }
+        .row-mode .b-arrow { color: #94a3b8; font-size: 12px; margin: 0 2px; }
+        .row-mode .booking-row.empty-slot { background: #ffffff !important; border: 1px solid #cbd5e1 !important; }
+        .row-mode .booking-row.empty-slot span { color: #94a3b8 !important; }
+        .row-mode .booking-row.empty-slot .booking-input { border-bottom: 1px dashed #cbd5e1 !important; color: #4a5568 !important; }
+        .row-mode .booking-row.filled-slot { background: #e3f2fd !important; border: 1px solid #90caf9 !important; }
+        .row-mode .booking-row.blocked-slot { background-color: #f1f5f9 !important; border: 1px solid #e2e8f0 !important; opacity: 0.6; pointer-events: none; }
+        .row-mode .booking-row.blocked-slot input { background: transparent !important; color: #94a3b8 !important; border-bottom: none !important; }
+        
         @media (max-width: 768px) {
             body { padding: 8px; }
             .container { padding: 12px; border-radius: 12px; width: 100%; overflow: hidden; box-sizing: border-box; }
@@ -209,7 +159,6 @@
             .b-name { min-width: 0 !important; flex: 1 !important; font-size: 13px !important; padding: 4px !important; }
             .b-age { width: 50px !important; max-width: 50px !important; font-size: 13px !important; padding: 4px !important; }
             .b-hh, .b-mm { width: 32px !important; max-width: 32px !important; font-size: 13px !important; padding: 4px !important; }
-            /* Мобильная адаптация абонентов в Общем расписании */
             .read-only-bookings { display: flex; flex-direction: column; margin-left: 10px; margin-top: 4px; border-left: 2px solid #cbd5e1; padding-left: 8px; }
             .b-item { border: none; background: transparent; padding: 0; display: block; margin: 2px 0; font-size: 13px; color: #334155; }
             .b-arrow { display: none; }
@@ -242,6 +191,10 @@
         </div>
         <div id="error-message" class="error-message">Введите код, состоящий из трёх цифр, вуф 🐺</div>
     </div>
+    <div id="password-group" class="form-group" style="display: none;">
+        <span class="input-title">Введите пароль:</span>
+        <input type="password" id="password-input" class="digits-input" placeholder="Пароль" style="width: 100%; max-width: 340px;">
+    </div>
     
     <div class="main-buttons">
         <button id="btn-july" class="btn-primary" disabled>График</button>
@@ -270,12 +223,17 @@
 <div id="expanded-panel" class="expanded-panel">
     <div id="panel-content"></div>
 </div>
-
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzPTujjJfHkRNuE-_chKl0kYxxE-usLak1KzTmTRtaRC2llT6bIu-fkUVdhXlddbys5/exec";
+    
+    // --- ОПТИМИЗАЦИЯ 2: КЭШИРОВАНИЕ ДАННЫХ НА КЛИЕНТЕ ---
+    let appCache = {};
+
     const digitsInput = document.getElementById('digits-input');
     const prefixSelect = document.getElementById('prefix-select');
     const errorMessage = document.getElementById('error-message');
+    const passwordGroup = document.getElementById('password-group');
+    const passwordInput = document.getElementById('password-input');
     const btnJuly = document.getElementById('btn-july');
     const btnGeneral = document.getElementById('btn-general');
     const btnBooking = document.getElementById('btn-booking');
@@ -295,6 +253,37 @@
     let allGridElements = [];
     let currentMonth = "august";
 
+    // --- ОПТИМИЗАЦИЯ 4: ДЕЛЕГИРОВАНИЕ СОБЫТИЙ ---
+    // Единые обработчики для всех инпутов панели (существенно экономит память)
+    panelContent.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.classList.contains('b-name')) {
+            e.preventDefault();
+            const row = e.target.closest('.booking-row');
+            if (row) {
+                const ageInput = row.querySelector('.b-age');
+                if (ageInput) ageInput.focus();
+            }
+        }
+    });
+
+    panelContent.addEventListener('input', (e) => {
+        if (currentViewMode === "general" && e.target.classList.contains('booking-input')) {
+            const row = e.target.closest('.booking-row');
+            if (row && !row.classList.contains('blocked-slot')) {
+                const n = row.querySelector('.b-name') ? row.querySelector('.b-name').value.trim() : "";
+                const a = row.querySelector('.b-age') ? row.querySelector('.b-age').value.trim() : "";
+                if (n !== "" || a !== "") { 
+                    row.classList.remove('empty-slot'); 
+                    row.classList.add('filled-slot'); 
+                } else { 
+                    row.classList.remove('filled-slot'); 
+                    row.classList.add('empty-slot'); 
+                }
+            }
+        }
+    });
+    // ---------------------------------------------
+
     function initMonthFromHash() {
         const hash = window.location.hash.replace('#', '').toLowerCase();
         if (['july', 'august', 'september'].includes(hash)) currentMonth = hash;
@@ -307,7 +296,6 @@
             else tab.classList.remove('active');
         });
     }
-
     function reloadCurrentView() {
         if (currentViewMode === "personal") btnJuly.click();
         else if (currentViewMode === "general") btnGeneral.click();
@@ -316,36 +304,32 @@
     
     function updateUIForRole() {
         const val = prefixSelect.value.toLowerCase();
-        const valid = /^\d{3}$/.test(digitsInput.value.trim());
-
+        const validCode = /^\d{3}$/.test(digitsInput.value.trim());
+        let validPassword = true;
         if (val === 'а') {
+            passwordGroup.style.display = 'block';
+            validPassword = (passwordInput.value.trim() === 'wolfsarecute');
             btnJuly.innerText = "Мои смены";
             btnGeneral.innerText = "Общее расписание";
             btnBooking.innerText = "Смены психологов";
             btnBooking.style.display = 'inline-block';
-            
-            if (valid) {
-                btnJuly.disabled = false;
-                btnGeneral.disabled = false;
-                btnBooking.disabled = false;
-            }
         } else {
+            passwordGroup.style.display = 'none';
             btnJuly.innerText = "График";
             btnGeneral.innerText = "Общее расписание";
             btnBooking.innerText = "Мои абоненты";
-            
-            if (valid) {
-                btnJuly.disabled = false;
-                btnGeneral.disabled = false;
-                btnBooking.disabled = true; // Скрываем, как просили
-            } else {
-                btnJuly.disabled = true;
-                btnGeneral.disabled = true;
-                btnBooking.disabled = true;
-            }
+        }
+        if (validCode && validPassword) {
+            btnJuly.disabled = false;
+            btnGeneral.disabled = false;
+            btnBooking.disabled = (val !== 'а');
+        } else {
+            btnJuly.disabled = true;
+            btnGeneral.disabled = true;
+            btnBooking.disabled = true;
         }
     }
-
+    
     window.addEventListener('load', () => {
         initMonthFromHash();
         updateUIForRole();
@@ -359,11 +343,16 @@
                 window.location.hash = currentMonth;
                 updateActiveMonthTab();
                 
-                if (currentFullCode && /^\d{3}$/.test(digitsInput.value.trim())) reloadCurrentView();
+                if (currentFullCode && /^\d{3}$/.test(digitsInput.value.trim())) {
+                    const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
+                    if (!isAnalyst || (isAnalyst && passwordInput.value.trim() === 'wolfsarecute')) {
+                        reloadCurrentView();
+                    }
+                }
             });
         });
     });
-
+    
     function showToast(message, type = 'success') {
         clearTimeout(toastTimeout);
         toast.className = `toast ${type}`;
@@ -378,20 +367,14 @@
             digitsInput.classList.remove('invalid');
             errorMessage.style.display = 'none';
             updateFullCode();
-            updateUIForRole();
         } else {
             digitsInput.classList.add('invalid');
             errorMessage.style.display = 'block';
-            btnJuly.disabled = true;
-            btnGeneral.disabled = true;
-            btnBooking.disabled = true;
         }
-    });
-    
-    prefixSelect.addEventListener('change', () => {
-        updateFullCode();
         updateUIForRole();
     });
+    passwordInput.addEventListener('input', () => { updateUIForRole(); });
+    prefixSelect.addEventListener('change', () => { updateFullCode(); updateUIForRole(); });
     
     function updateFullCode() { currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim(); }
     
@@ -399,35 +382,11 @@
         currentViewMode = "personal";
         const p = prefixSelect.value.toLowerCase();
         document.getElementById('analyst-search-bar').style.display = 'none';
-        
-        // Для "а" глобальная кнопка "Сохранить" нужна (осталась старая панель), 
-        // для волонтеров она скрывается, так как перенесена прямо в окно абонентов.
         btnSave.style.display = (p === 'а') ? 'block' : 'none'; 
-        
         expandedPanel.classList.remove('active');
         removeDesktopPopover();
         
-        if (p === 'а') {
-            loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}&month=${currentMonth}`);
-        } else {
-            // Для "Графика" загружаем и смены, и личных абонентов
-            loader.style.display = 'block';
-            calendarSection.style.display = 'none';
-            Promise.all([
-                fetch(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}&month=${currentMonth}`).then(r=>r.json()),
-                fetch(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(currentFullCode)}&month=${currentMonth}`).then(r=>r.json())
-            ]).then(([genData, bookData]) => {
-                loader.style.display = 'none';
-                pendingShifts = genData.schedule || {};
-                globalGeneralData = genData.generalData || {};
-                globalGeneralData.bookings = bookData.generalData ? bookData.generalData.bookings : {};
-                renderGrid();
-                calendarSection.style.display = 'block';
-                calendarSection.scrollIntoView({ behavior: 'smooth' });
-            }).catch(err => {
-                loader.style.display = 'none'; showToast('Ошибка сети', 'error');
-            });
-        }
+        loadCalendarData(currentFullCode);
     });
 
     btnGeneral.addEventListener('click', () => {
@@ -437,12 +396,13 @@
         document.getElementById('analyst-search-bar').style.display = 'none';
         expandedPanel.classList.remove('active');
         removeDesktopPopover();
-        loadCalendarData(`${WEB_APP_URL}?action=getGeneralData&code=${encodeURIComponent(currentFullCode)}&month=${currentMonth}`);
+
+        loadCalendarData(currentFullCode);
     });
 
     btnBooking.addEventListener('click', () => {
         currentViewMode = "booking";
-        btnSave.style.display = 'none'; // Вкладка теперь с объединенным сохранением
+        btnSave.style.display = 'none';
         expandedPanel.classList.remove('active');
         removeDesktopPopover();
         
@@ -465,8 +425,7 @@
         removeDesktopPopover();
         window.currentSelectedExpertCode = expertVal;
         
-        // Аналитику нужны и смены и абоненты, getBookingData возвращает и то, и то.
-        loadCalendarData(`${WEB_APP_URL}?action=getBookingData&code=${encodeURIComponent(expertVal)}&month=${currentMonth}`);
+        loadCalendarData(expertVal);
     });
     
     function removeDesktopPopover() {
@@ -474,10 +433,25 @@
         if (oldPopover) oldPopover.remove();
     }
     
-    function loadCalendarData(url) {
+    // --- ОПТИМИЗАЦИЯ 1 И 2: УМНАЯ ФУНКЦИЯ ЗАГРУЗКИ ---
+    function loadCalendarData(codeToFetch, forceRefresh = false) {
+        const cacheKey = codeToFetch + "_" + currentMonth;
+        
+        // Используем кэш, если данные для этого месяца и кода уже загружены
+        if (!forceRefresh && appCache[cacheKey]) {
+            pendingShifts = appCache[cacheKey].pendingShifts;
+            globalGeneralData = appCache[cacheKey].globalGeneralData;
+            renderGrid();
+            calendarSection.style.display = 'block';
+            calendarSection.scrollIntoView({ behavior: 'smooth' });
+            return;
+        }
+
         loader.style.display = 'block';
         calendarSection.style.display = 'none';
-        fetch(url)
+        
+        // Один запрос action=getFullData заменяет два параллельных!
+        fetch(`${WEB_APP_URL}?action=getFullData&code=${encodeURIComponent(codeToFetch)}&month=${currentMonth}`)
             .then(res => res.json())
             .then(data => {
                 loader.style.display = 'none';
@@ -485,8 +459,19 @@
                     showToast('Ошибка сервера: ' + data.error, 'error');
                     return;
                 }
+                
                 pendingShifts = data.schedule || {};
                 globalGeneralData = data.generalData || {};
+                if (data.userBookings) {
+                    globalGeneralData.bookings = data.userBookings;
+                }
+
+                // Сохраняем в кэш (глубокое копирование для безопасности)
+                appCache[cacheKey] = {
+                    pendingShifts: JSON.parse(JSON.stringify(pendingShifts)),
+                    globalGeneralData: JSON.parse(JSON.stringify(globalGeneralData))
+                };
+
                 renderGrid();
                 calendarSection.style.display = 'block';
                 calendarSection.scrollIntoView({ behavior: 'smooth' });
@@ -505,10 +490,13 @@
         else cellElement.classList.add('shift-custom');
     }
     
+    // --- ОПТИМИЗАЦИЯ 3: ИСПОЛЬЗОВАНИЕ DocumentFragment ---
     function renderGrid() {
         calendarGrid.innerHTML = '';
         allGridElements = [];
         document.body.appendChild(expandedPanel);
+        
+        const fragment = document.createDocumentFragment();
         
         let totalDays = 31;
         let firstDayIndex = 3;
@@ -518,11 +506,12 @@
         } else if (currentMonth === "september") {
             totalDays = 30; firstDayIndex = 2; monthPrefix = ".09";
         }
+        
         const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
         for (let i = 0; i < startOffset; i++) {
             const emptyCell = document.createElement('div');
             emptyCell.className = 'calendar-day empty';
-            calendarGrid.appendChild(emptyCell);
+            fragment.appendChild(emptyCell);
             allGridElements.push(emptyCell);
         }
         
@@ -532,13 +521,13 @@
             const cell = document.createElement('div');
             cell.className = 'calendar-day';
             cell.id = `cell-${dayStr}`;
+            
             const userShift = pendingShifts[dayStr] || "";
             const info = globalGeneralData[dayStr] || { dayPsychologists: [], eveningPsychologists: [], vDayCount: 0, vEveningCount: 0 };
             const dayBookings = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
             const dayCount = info.dayPsychologists ? info.dayPsychologists.length : 0;
             const eveningCount = info.eveningPsychologists ? info.eveningPsychologists.length : 0;
             
-            // Вкладка График (волонтеры) ИЛИ Вкладка Абоненты (а)
             if ((currentViewMode === "personal" && (p === 'к' || p === 'в')) || currentViewMode === "booking") {
                 let shiftText = userShift ? `<div class="cell-shift-time">${userShift}</div>` : '';
                 cell.innerHTML = `<div class="day-number-tl">${day}</div>${shiftText}`;
@@ -565,15 +554,17 @@
                 updateCellVisuals(cell, userShift);
             }
             
-            // Красные рамки
             if (p === 'в' && (dayCount === 0 || eveningCount === 0)) cell.classList.add('critical-border');
             else if (p === 'а' && currentViewMode === "general" && (info.vDayCount === 0 || info.vEveningCount === 0)) cell.classList.add('critical-border');
             else if (p === 'к' && (dayCount !== 2 || eveningCount !== 2)) cell.classList.add('critical-border');
-
+            
             cell.addEventListener('click', () => handleDayClick(cell, dayStr));
-            calendarGrid.appendChild(cell);
+            fragment.appendChild(cell);
             allGridElements.push(cell);
         }
+        
+        // Вставляем все ячейки в DOM разом
+        calendarGrid.appendChild(fragment);
     }
     
     function handleDayClick(clickedCell, dayStr) {
@@ -591,7 +582,6 @@
         if (oldPopover) oldPopover.remove();
         clickedCell.classList.add('selected');
         
-        // Принудительно открываем встроенную панель вместо popover'а, если это вкладка записи (где много полей)
         const forceExpanded = isMobile || currentViewMode === "general" || currentViewMode === "booking" || (currentViewMode === "personal" && (p === 'к' || p === 'в'));
         
         if (forceExpanded) {
@@ -605,9 +595,9 @@
             
             if (currentViewMode === "personal") {
                 if (p === 'а') renderPersonalPanel(dayStr, panelContent);
-                else renderCombinedPanel(dayStr, panelContent); // Для волонтеров — объединенный
+                else renderCombinedPanel(dayStr, panelContent);
             }
-            else if (currentViewMode === "booking") renderCombinedPanel(dayStr, panelContent); // Аналитики редактируют всё в объединенном
+            else if (currentViewMode === "booking") renderCombinedPanel(dayStr, panelContent);
             else renderGeneralPanel(dayStr, panelContent);
             
             expandedPanel.classList.add('active');
@@ -617,7 +607,6 @@
         }
     }
     
-    // --- ПАНЕЛЬ "МОИ СМЕНЫ" (Оставлена только для "а") ---
     function getPersonalHtml(dayStr, savedValue) {
         const isDayPreset = savedValue === "14:00 — 18:00";
         const isEveningPreset = savedValue === "18:00 — 22:00" || savedValue === "18:00 -- 22:00";
@@ -693,8 +682,7 @@
         cell.appendChild(popover);
         setupPersonalListeners(popover, dayStr);
     }
-
-    // --- ОБЪЕДИНЕННАЯ ПАНЕЛЬ ЗАПИСИ "ГРАФИК" ---
+    
     function renderCombinedPanel(dayStr, container) {
         const isK = prefixSelect.value.toLowerCase() === 'к';
         const isA = prefixSelect.value.toLowerCase() === 'а';
@@ -712,19 +700,15 @@
                 if (t2.length === 2) { h2 = t2[0]; m2 = t2[1]; }
             }
         }
-
         let defaultHours = ["", "", "", ""];
         let defaultMinutes = "00";
-
         if (isDayPreset) defaultHours = ["14", "15", "16", "17"];
         else if (isEveningPreset) defaultHours = ["18", "19", "20", "21"];
         else if (isCustom) {
             const startHour = parseInt(h1);
             if (!isNaN(startHour)) defaultHours = [startHour, startHour+1, startHour+2, startHour+3].map(h => h.toString());
         }
-
         const savedClients = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
-
         let html = `
             <div class="panel-title">${isA ? 'Запись и смена' : 'График'} на ${dayStr}</div>
             ${isK ? `<div class="admin-warning" style="display:block; padding: 6px; font-size:13px; margin-bottom:10px;">Для внесения изменений в смены обратитесь к администратору.</div>` : ''}
@@ -750,7 +734,6 @@
             
             <div class="booking-rows-container" style="margin-top: 15px;">
         `;
-
         for (let i = 0; i < 4; i++) {
             let hh = defaultHours[i] || ""; let mm = hh ? defaultMinutes : "";
             let n = "", a = "";
@@ -779,7 +762,6 @@
         }
         html += `</div>`;
         container.innerHTML = html;
-
         const selectEl = container.querySelector('.sub-select');
         const customBox = container.querySelector('.sub-custom-box');
         
@@ -791,27 +773,17 @@
                 saveCombinedData(dayStr, container, true);
             });
         }
-
         container.querySelector('.btn-save-combined').addEventListener('click', () => {
             saveCombinedData(dayStr, container, false);
         });
         
-        // Быстрый перенос на возраст
-        container.querySelectorAll('.b-name').forEach(input => {
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const row = e.target.closest('.booking-row');
-                    if (row) { const ageInput = row.querySelector('.b-age'); if (ageInput) ageInput.focus(); }
-                }
-            });
-        });
+        // ВНИМАНИЕ: Обработчик enter на инпутах удален отсюда, 
+        // теперь он живет глобально на объекте panelContent в начале скрипта.
     }
-
+    
     function saveCombinedData(dayStr, container, isDeleteShift) {
         const isK = prefixSelect.value.toLowerCase() === 'к';
         
-        // Вычисляем значение смены для сохранения
         let shiftVal = isK ? (pendingShifts[dayStr] || "") : (isDeleteShift ? "" : (() => {
             const selectEl = container.querySelector('.sub-select');
             if (selectEl.value === 'custom') {
@@ -823,11 +795,11 @@
             }
             return selectEl.value;
         })());
-
+        
         const rows = container.querySelectorAll('.booking-row');
         const clientsToSend = [];
         let validationPassed = true;
-
+        
         rows.forEach(row => {
             const hh = row.querySelector('.b-hh').value.trim(); const mm = row.querySelector('.b-mm').value.trim();
             const name = row.querySelector('.b-name').value.trim(); const age = row.querySelector('.b-age').value.trim();
@@ -848,21 +820,19 @@
                 row.querySelector('.b-name').style.borderColor = '#cbd5e1'; row.querySelector('.b-age').style.borderColor = '#cbd5e1';
             }
         });
-
+        
         if(!validationPassed) { showToast('Заполните Время, Ник и Возраст для добавленных абонентов!', 'error'); return; }
-
+        
         loader.style.display = 'block';
         const btnSavePanel = container.querySelector('.btn-save-combined');
         btnSavePanel.disabled = true;
-
+        
         let saveTargetCode = currentFullCode;
         if (prefixSelect.value.toLowerCase() === 'а' && window.currentSelectedExpertCode && currentViewMode === 'booking') {
             saveTargetCode = window.currentSelectedExpertCode;
         }
-
+        
         const promises = [];
-
-        // 1. Сохранение смены (если это не "к")
         if (!isK) {
             pendingShifts[dayStr] = shiftVal;
             promises.push(fetch(WEB_APP_URL, {
@@ -870,13 +840,11 @@
                 body: JSON.stringify({ code: saveTargetCode, shifts: pendingShifts, month: currentMonth })
             }).then(r => r.json()));
         }
-
-        // 2. Сохранение абонентов
         promises.push(fetch(WEB_APP_URL, {
             method: 'POST', headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify({ action: "saveBookingData", code: saveTargetCode, date: dayStr, clients: clientsToSend, month: currentMonth })
         }).then(r => r.json()));
-
+        
         Promise.all(promises).then(results => {
             loader.style.display = 'none'; btnSavePanel.disabled = false;
             const hasError = results.some(r => !r.success);
@@ -887,7 +855,13 @@
                 if(!globalGeneralData.bookings) globalGeneralData.bookings = {};
                 globalGeneralData.bookings[dayStr] = clientsToSend;
                 
-                // Обновление UI-ячейки
+                // Синхронизация нового состояния с клиентским кэшем
+                const cacheKey = saveTargetCode + "_" + currentMonth;
+                if (appCache[cacheKey]) {
+                    appCache[cacheKey].pendingShifts = JSON.parse(JSON.stringify(pendingShifts));
+                    appCache[cacheKey].globalGeneralData = JSON.parse(JSON.stringify(globalGeneralData));
+                }
+                
                 const cell = document.getElementById(`cell-${dayStr}`);
                 if (cell) {
                     let timeDiv = cell.querySelector('.cell-shift-time');
@@ -896,7 +870,6 @@
                         timeDiv.innerText = shiftVal;
                     } else if (timeDiv) { timeDiv.remove(); }
                     updateCellVisuals(cell, shiftVal);
-
                     let bCount = cell.querySelector('.booking-counter');
                     if (clientsToSend.length > 0) {
                         if (!bCount) { bCount = document.createElement('div'); bCount.className = 'booking-counter'; cell.appendChild(bCount); }
@@ -910,8 +883,7 @@
             showToast('Ошибка сети!', 'error');
         });
     }
-
-    // --- ОБЩЕЕ РАСПИСАНИЕ И ЛОГИКА БЛОКИРОВКИ ПЛАШЕК ---
+    
     function parseShiftTime(timeStr) {
         if (!timeStr || timeStr === "Свой вариант") return null;
         const parts = timeStr.split(/[-—–]/);
@@ -920,13 +892,12 @@
         if (t1.length < 2 || t2.length < 2) return null;
         return { start: parseInt(t1[0]) + parseInt(t1[1])/60, end: parseInt(t2[0]) + parseInt(t2[1])/60 };
     }
-
+    
     function renderGeneralPanel(dayStr, container) {
         const info = globalGeneralData[dayStr] || { dayAdmins: [], eveningAdmins: [], dayPsychologists: [], eveningPsychologists: [] };
         const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
         const buildAdminList = (arr) => arr.length ? arr.map(p => `<li class="psy-list-item"><div class="psy-main-info">${p.name} <span class="role-time">(${p.time})</span></div></li>`).join('') : `<li class="psy-list-item">—</li>`;
         
-        // Умное разбиение на дневную и вечернюю смену, если часы пересекаются
         let allPsyMap = new Map();
         [...(info.dayPsychologists||[]), ...(info.eveningPsychologists||[])].forEach(p => {
             const id = p.code || p.name;
@@ -942,11 +913,11 @@
                 if ((info.dayPsychologists||[]).some(dp => (dp.code||dp.name) === (p.code||p.name))) customDayPsy.push(p);
                 if ((info.eveningPsychologists||[]).some(ep => (ep.code||ep.name) === (p.code||p.name))) customEveningPsy.push(p);
             } else {
-                if (time.start < 18) customDayPsy.push(p); // Входит в день
-                if (time.end > 18 || (time.end === 18 && parseInt(p.time.split(/[-—–]/)[1].split(':')[1]) > 0)) customEveningPsy.push(p); // Входит в вечер
+                if (time.start < 18) customDayPsy.push(p); 
+                if (time.end > 18 || (time.end === 18 && parseInt(p.time.split(/[-—–]/)[1].split(':')[1]) > 0)) customEveningPsy.push(p); 
             }
         });
-
+        
         const buildPsyList = (arr, isDayShift) => {
             if (!arr.length) return `<li class="psy-list-item">—</li>`;
             
@@ -976,63 +947,52 @@
                         });
                     }
                     
-      let slotsHtml = "";
-      for (let i = 0; i < 4; i++) { // Цикл теперь до 4
-        let hh = defaultHours[i] || "";
-        let mm = "00";
-        let n = "", a = "";
-
-        // Восстанавливаем логику блокировки неактивных часов из Calendar 3
-        let isBlocked = false;
-        if (parsedTime && hh) {
-          let slotHour = parseInt(hh);
-          if (slotHour + 1 <= parsedTime.start || slotHour >= parsedTime.end) {
-            isBlocked = true;
-          }
-        }
-
-        let currentBooking = mappedBookings[i];
-        if (currentBooking) {
-          const parts = currentBooking.split(/[—]/);
-          if (parts.length >= 2) {
-            const timeSplit = parts[0].trim().split(':');
-            if (timeSplit.length === 2) {
-              hh = timeSplit[0].trim();
-              mm = timeSplit[1].trim();
-            }
-            const clientPart = parts.slice(1).join('-');
-            const subParts = clientPart.split('|');
-            n = subParts[0] ? subParts[0].trim() : clientPart.trim();
-            a = subParts[1] ? subParts[1].trim() : "";
-          } else {
-            n = currentBooking;
-          }
-        }
-
-        // Определяем заполненность слота
-        let isFilled = (n !== "" || a !== "");
-        
-        // Связываем логику цвета из Calendar 3 с классами Calendar 1
-        let bgClass = isBlocked ? "blocked-slot" : (isFilled ? "filled-slot" : "empty-slot");
-
-        // Добавляем стрелочку после каждой записи, кроме последней
-        let arrowHtml = (i < 3) ? '<span class="b-arrow">→</span>' : "";
-
-        slotsHtml += `
-          <div class="booking-row general-b-row ${bgClass}" data-code="${p.code}" data-name="${p.name}">
-            <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}" ${isBlocked ? 'disabled' : ""}>
-            <span>:</span>
-            <input type="text" class="booking-input b-mm" placeholder="MM" maxlength="2" inputmode="numeric" value="${mm}" ${isBlocked ? 'disabled' : ""}>
-            <span>-</span>
-            <input type="text" class="booking-input b-name" placeholder="Ник" value="${n}" ${isBlocked ? 'disabled' : ""}>
-            <span></span>
-            <input type="text" class="booking-input b-age" placeholder="Лет" maxlength="3" type="number" inputmode="numeric" pattern="[0-9]*" value="${a}" ${isBlocked ? 'disabled' : ""}>
-          </div>${arrowHtml}
-        `;
-      }
-      
-      // Возвращаем контейнер со строковым режимом row-mode из Calendar 1
-      bookingsHtml = `<div class="editable-bookings-container row-mode">${slotsHtml}</div>`;
+                    let slotsHtml = "";
+                    for (let i = 0; i < 4; i++) { 
+                        let hh = defaultHours[i] || "";
+                        let mm = "00";
+                        let n = "", a = "";
+                        let isBlocked = false;
+                        if (parsedTime && hh) {
+                            let slotHour = parseInt(hh);
+                            if (slotHour + 1 <= parsedTime.start || slotHour >= parsedTime.end) {
+                                isBlocked = true;
+                            }
+                        }
+                        let currentBooking = mappedBookings[i];
+                        if (currentBooking) {
+                            const parts = currentBooking.split(/[—]/);
+                            if (parts.length >= 2) {
+                                const timeSplit = parts[0].trim().split(':');
+                                if (timeSplit.length === 2) {
+                                    hh = timeSplit[0].trim();
+                                    mm = timeSplit[1].trim();
+                                }
+                                const clientPart = parts.slice(1).join('-');
+                                const subParts = clientPart.split('|');
+                                n = subParts[0] ? subParts[0].trim() : clientPart.trim();
+                                a = subParts[1] ? subParts[1].trim() : "";
+                            } else {
+                                n = currentBooking;
+                            }
+                        }
+                        
+                        let isFilled = (n !== "" || a !== "");
+                        let bgClass = isBlocked ? "blocked-slot" : (isFilled ? "filled-slot" : "empty-slot");
+                        let arrowHtml = (i < 3) ? '<span class="b-arrow">→</span>' : "";
+                        slotsHtml += `
+                        <div class="booking-row general-b-row ${bgClass}" data-code="${p.code}" data-name="${p.name}">
+                            <input type="text" class="booking-input b-hh" placeholder="ЧЧ" maxlength="2" inputmode="numeric" value="${hh}" ${isBlocked ? 'disabled' : ""}>
+                            <span>:</span>
+                            <input type="text" class="booking-input b-mm" placeholder="MM" maxlength="2" inputmode="numeric" value="${mm}" ${isBlocked ? 'disabled' : ""}>
+                            <span>-</span>
+                            <input type="text" class="booking-input b-name" placeholder="Ник" value="${n}" ${isBlocked ? 'disabled' : ""}>
+                            <span></span>
+                            <input type="text" class="booking-input b-age" placeholder="Лет" maxlength="3" type="number" inputmode="numeric" pattern="[0-9]*" value="${a}" ${isBlocked ? 'disabled' : ""}>
+                        </div>${arrowHtml}
+                        `;
+                    }
+                    bookingsHtml = `<div class="editable-bookings-container row-mode">${slotsHtml}</div>`;
                 } else {
                     if (p.bookings && p.bookings.length > 0) {
                         let itemsHtml = p.bookings.map((b, idx) => {
@@ -1068,32 +1028,10 @@
             </div>
         `;
         
-        if (isAnalyst) {
-            const allInputs = container.querySelectorAll('.booking-input');
-            allInputs.forEach(input => {
-                input.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && input.classList.contains('b-name')) {
-                        e.preventDefault();
-                        const row = e.target.closest('.booking-row');
-                        if (row) { const ageInput = row.querySelector('.b-age'); if (ageInput) ageInput.focus(); }
-                    }
-                });
-                
-                input.addEventListener('input', (e) => {
-                    const row = e.target.closest('.booking-row');
-                    if (row && !row.classList.contains('blocked-slot')) {
-                        const n = row.querySelector('.b-name').value.trim();
-                        const a = row.querySelector('.b-age').value.trim();
-                        if (n !== "" || a !== "") { row.classList.remove('empty-slot'); row.classList.add('filled-slot'); } 
-                        else { row.classList.remove('filled-slot'); row.classList.add('empty-slot'); }
-                    }
-                });
-            });
-        }
+        // ВНИМАНИЕ: Обработчики для инпутов здесь удалены, они теперь глобальные
     }
     
     btnSave.addEventListener('click', () => {
-        // МАССОВОЕ СОХРАНЕНИЕ ДЛЯ АНАЛИТИКА (В ОБЩЕМ РАСПИСАНИИ) ИЛИ ЛИЧНОЕ РАСПИСАНИЕ ДЛЯ "а"
         if (currentViewMode === "general") {
             loader.style.display = 'block';
             btnSave.disabled = true;
@@ -1103,7 +1041,7 @@
                 showToast('Данные сохранены!', 'success'); return;
             }
             const dayStr = activeCell.id.replace('cell-', '');
-            const rows = document.querySelectorAll('.general-b-row:not(.blocked-slot)'); // Игнорируем заблокированные
+            const rows = document.querySelectorAll('.general-b-row:not(.blocked-slot)'); 
             const psychMap = {};
             let validationPassed = true;
             
@@ -1134,11 +1072,13 @@
                     }
                 }
             });
+            
             if (!validationPassed) {
                 loader.style.display = 'none'; btnSave.disabled = false;
                 showToast('Поля Время, Ник и Возраст обязательны для заполнения!', 'error');
                 return;
             }
+            
             const bulkData = Object.values(psychMap);
             fetch(WEB_APP_URL, {
                 method: 'POST', headers: { 'Content-Type': 'text/plain' },
@@ -1148,6 +1088,7 @@
                 if (data.success) {
                     showToast('Массовое расписание обновлено!', 'success');
                     expandedPanel.classList.remove('active');
+                    appCache = {}; // Очищаем кэш после массового обновления, так как данные могли измениться глобально
                 } else showToast('Ошибка при сохранении: ' + data.error, 'error');
             }).catch(err => {
                 loader.style.display = 'none'; btnSave.disabled = false;
@@ -1162,15 +1103,17 @@
                 body: JSON.stringify({ code: currentFullCode, shifts: pendingShifts, month: currentMonth })
             }).then(res => res.json()).then(data => {
                 loader.style.display = 'none'; btnSave.disabled = false;
-                if (data.success) { showToast('Данные успешно сохранены!', 'success'); reloadCurrentView(); }
-                else { showToast('Ошибка: Сотрудник не найден.', 'error'); }
+                if (data.success) { 
+                    showToast('Данные успешно сохранены!', 'success'); 
+                    appCache = {}; // Очищаем кэш, чтобы загрузить свежие данные
+                    reloadCurrentView(); 
+                } else { showToast('Ошибка: Сотрудник не найден.', 'error'); }
             }).catch(err => {
                 loader.style.display = 'none'; btnSave.disabled = false;
                 showToast('Сбой при сохранении данных', 'error');
             });
         }
     });
-
 </script>
 </body>
 </html>
