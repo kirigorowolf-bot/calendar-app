@@ -175,8 +175,8 @@
 <div id="toast" class="toast"></div>
 <div class="container">
     <div class="month-tabs" id="month-tabs">
-        <div class="month-tab" data-month="august">Август 2026</div>
         <div class="month-tab" data-month="september">Сентябрь 2026</div>
+        <div class="month-tab" data-month="october">Октябрь 2026</div>
     </div>
     
     <div class="form-group">
@@ -287,7 +287,7 @@
 
     function initMonthFromHash() {
         const hash = window.location.hash.replace('#', '').toLowerCase();
-        if (['july', 'august', 'september'].includes(hash)) currentMonth = hash;
+        if (['july', 'august', 'september','october'].includes(hash)) currentMonth = hash;
         updateActiveMonthTab();
     }
     
@@ -505,8 +505,8 @@
         let totalDays = 31;
         let firstDayIndex = 3;
         let monthPrefix = ".07";
-        if (currentMonth === "august") {
-            totalDays = 31; firstDayIndex = 6; monthPrefix = ".08";
+        if (currentMonth === "october") {
+            totalDays = 31; firstDayIndex = 4; monthPrefix = ".10";
         } else if (currentMonth === "september") {
             totalDays = 30; firstDayIndex = 2; monthPrefix = ".09";
         }
