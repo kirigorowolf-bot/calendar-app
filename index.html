@@ -177,6 +177,8 @@
     <div class="month-tabs" id="month-tabs">
         <div class="month-tab active" data-month="september">Сентябрь 2026</div>
         <div class="month-tab" data-month="october">Октябрь 2026</div>
+        <div class="month-tab" data-month="november">Ноябрь 2026</div>
+        <div class="month-tab" data-month="december">Декабрь 2026</div>
     </div>
     
     <div class="form-group">
@@ -252,7 +254,7 @@
     let globalGeneralData = {};
     let globalTgMap = {};
     let allGridElements = [];
-    let currentMonth = "august";
+    let currentMonth = "september";
 
     // --- ОПТИМИЗАЦИЯ 4: ДЕЛЕГИРОВАНИЕ СОБЫТИЙ ---
     // Единые обработчики для всех инпутов панели (существенно экономит память)
@@ -287,7 +289,7 @@
 
     function initMonthFromHash() {
         const hash = window.location.hash.replace('#', '').toLowerCase();
-        if (['july', 'august', 'september','october'].includes(hash)) currentMonth = hash;
+        if (['september', 'october', 'november', 'december'].includes(hash)) currentMonth = hash;
         updateActiveMonthTab();
     }
     
@@ -505,10 +507,14 @@
         let totalDays = 31;
         let firstDayIndex = 3;
         let monthPrefix = ".07";
-        if (currentMonth === "october") {
-            totalDays = 31; firstDayIndex = 4; monthPrefix = ".10";
-        } else if (currentMonth === "september") {
+        if (currentMonth === "september") {
             totalDays = 30; firstDayIndex = 2; monthPrefix = ".09";
+        } else if (currentMonth === "october") {
+            totalDays = 31; firstDayIndex = 4; monthPrefix = ".10";
+        } else if (currentMonth === "november") {
+            totalDays = 30; firstDayIndex = 6; monthPrefix = ".11";
+        } else if (currentMonth === "december") {
+            totalDays = 31; firstDayIndex = 1; monthPrefix = ".12";
         }
         
         const startOffset = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
