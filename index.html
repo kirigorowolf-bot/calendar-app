@@ -535,8 +535,28 @@
             const userShift = pendingShifts[dayStr] || "";
             const info = globalGeneralData[dayStr] || { dayPsychologists: [], eveningPsychologists: [], vDayCount: 0, vEveningCount: 0 };
             const dayBookings = globalGeneralData.bookings ? (globalGeneralData.bookings[dayStr] || []) : [];
-            const dayCount = info.dayPsychologists ? info.dayPsychologists.length : 0;
-            const eveningCount = info.eveningPsychologists ? info.eveningPsychologists.length : 0;
+            let dayCount = 0;
+let eveningCount = 0;
+let gridPsyMap = new Map();
+
+// Собираем всех уникальных психологов за день
+[...(info.dayPsychologists || []), ...(info.eveningPsychologists || [])].forEach(p => {
+    gridPsyMap.set(p.code || p.name, p);
+});
+
+// Распределяем их по сменам с помощью уже существующей функции parseShiftTime
+gridPsyMap.forEach(p => {
+    const time = parseShiftTime(p.time);
+    if (!time) {
+        // Если время не распознано (например, "Свой вариант"), оставляем распределение от сервера
+        if ((info.dayPsychologists || []).some(dp => (dp.code || dp.name) === (p.code || p.name))) dayCount++;
+        if ((info.eveningPsychologists || []).some(ep => (ep.code || ep.name) === (p.code || p.name))) eveningCount++;
+    } else {
+        // Считаем по часам: хотя бы час до 18:00 - день, после 18:00 - вечер
+        if (time.start < 18) dayCount++;
+        if (time.end > 18 || (time.end === 18 && parseInt(p.time.split(/[-—–]/)[1].split(':')[1]) > 0)) eveningCount++;
+    }
+});
             
             if ((currentViewMode === "personal" && (p === 'к' || p === 'в')) || currentViewMode === "booking") {
                 let shiftText = userShift ? `<div class="cell-shift-time">${userShift}</div>` : '';
