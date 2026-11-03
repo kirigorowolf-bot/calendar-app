@@ -175,7 +175,6 @@
 <div id="toast" class="toast"></div>
 <div class="container">
     <div class="month-tabs" id="month-tabs">
-        <div class="month-tab" data-month="october">Октябрь 2026</div>
         <div class="month-tab" data-month="november">Ноябрь 2026</div>
         <div class="month-tab" data-month="december">Декабрь 2026</div>
     </div>
@@ -253,7 +252,7 @@
     let globalGeneralData = {};
     let globalTgMap = {};
     let allGridElements = [];
-    let currentMonth = "october";
+    let currentMonth = "november";
 
     // --- ОПТИМИЗАЦИЯ 4: ДЕЛЕГИРОВАНИЕ СОБЫТИЙ ---
     // Единые обработчики для всех инпутов панели (существенно экономит память)
@@ -288,7 +287,7 @@
 
     function initMonthFromHash() {
         const hash = window.location.hash.replace('#', '').toLowerCase();
-        if (['october', 'november', 'december'].includes(hash)) currentMonth = hash;
+        if (['november', 'december'].includes(hash)) currentMonth = hash;
         updateActiveMonthTab();
     }
     
@@ -506,9 +505,7 @@
         let totalDays = 31;
         let firstDayIndex = 3;
         let monthPrefix = ".07";
-        if (currentMonth === "october") {
-            totalDays = 31; firstDayIndex = 4; monthPrefix = ".10";
-        } else if (currentMonth === "november") {
+        if (currentMonth === "november") {
             totalDays = 30; firstDayIndex = 7; monthPrefix = ".11";
         } else if (currentMonth === "december") {
             totalDays = 31; firstDayIndex = 2; monthPrefix = ".12";
