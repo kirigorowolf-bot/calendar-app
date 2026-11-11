@@ -4,9 +4,9 @@
     <link rel="manifest" href="./manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: #007bff;
@@ -191,10 +191,10 @@
         </div>
         <div id="error-message" class="error-message">Введите код, состоящий из трёх цифр, вуф 🐺</div>
     </div>
-    <div id="password-group" class="form-group" style="display: none;">
-        <span class="input-title">Нужен пароль. What do u think about wolfs?</span>
-        <input type="password" id="password-input" class="digits-input" placeholder="Пароль" style="width: 100%; max-width: 340px;">
-    </div>
+    <div id="password-group" class="form-group">
+    <span class="input-title">Пароль:</span>
+    <input type="password" id="password-input" class="digits-input" placeholder="Пароль" autocomplete="current-password" style="width: 100%; max-width: 340px;">
+</div>
     
     <div class="main-buttons">
         <button id="btn-july" class="btn-primary" disabled>График</button>
@@ -253,6 +253,32 @@
     let globalTgMap = {};
     let allGridElements = [];
     let currentMonth = "november";
+    let authToken = "";
+    let authFingerprint = "";
+
+    function isAuthError(x) { return x && x.error && String(x.error).includes('AUTH'); }
+
+async function ensureAuth() {
+    updateFullCode();
+    const fp = currentFullCode + "|" + passwordInput.value;
+    if (authToken && authFingerprint === fp) return true;
+    loader.style.display = 'block';
+    try {
+        const res = await fetch(WEB_APP_URL, {
+            method: 'POST', headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ action: "login", code: currentFullCode, password: passwordInput.value })
+        });
+        const data = await res.json();
+        loader.style.display = 'none';
+        if (!data.success) { authToken = ""; showToast(data.error || 'Неверный код или пароль', 'error'); return false; }
+        authToken = data.token; authFingerprint = fp;
+        return true;
+    } catch (err) {
+        loader.style.display = 'none';
+        showToast('Не удалось связаться с сервером', 'error');
+        return false;
+    }
+}
 
     // --- ОПТИМИЗАЦИЯ 4: ДЕЛЕГИРОВАНИЕ СОБЫТИЙ ---
     // Единые обработчики для всех инпутов панели (существенно экономит память)
@@ -303,56 +329,43 @@
         else if (currentViewMode === "booking") btnBooking.click();
     }
     
-    function updateUIForRole() {
-        const val = prefixSelect.value.toLowerCase();
-        const validCode = /^\d{3}$/.test(digitsInput.value.trim());
-        let validPassword = true;
-        if (val === 'а') {
-            passwordGroup.style.display = 'block';
-            validPassword = (passwordInput.value.trim() === 'wolfsarecute');
-            btnJuly.innerText = "Мои смены";
-            btnGeneral.innerText = "Общее расписание";
-            btnBooking.innerText = "Смены психологов";
-            btnBooking.style.display = 'inline-block';
-        } else {
-            passwordGroup.style.display = 'none';
-            btnJuly.innerText = "График";
-            btnGeneral.innerText = "Общее расписание";
-            btnBooking.innerText = "Мои абоненты";
-        }
-        if (validCode && validPassword) {
-            btnJuly.disabled = false;
-            btnGeneral.disabled = false;
-            btnBooking.disabled = (val !== 'а');
-        } else {
-            btnJuly.disabled = true;
-            btnGeneral.disabled = true;
-            btnBooking.disabled = true;
-        }
+function updateUIForRole() {
+    const val = prefixSelect.value.toLowerCase();
+    const validCode = /^\d{3}$/.test(digitsInput.value.trim());
+    const validPassword = passwordInput.value.length > 0;
+    passwordGroup.style.display = 'block';
+    if (val === 'а') {
+        btnJuly.innerText = "Мои смены";
+        btnBooking.innerText = "Смены психологов";
+    } else {
+        btnJuly.innerText = "График";
+        btnBooking.innerText = "Мои абоненты";
     }
-    
-    window.addEventListener('load', () => {
-        initMonthFromHash();
-        updateUIForRole();
-        
-        document.querySelectorAll('.month-tab').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                const selectedMonth = e.target.getAttribute('data-month');
-                if (currentMonth === selectedMonth) return; 
-                
-                currentMonth = selectedMonth;
-                window.location.hash = currentMonth;
-                updateActiveMonthTab();
-                
-                if (currentFullCode && /^\d{3}$/.test(digitsInput.value.trim())) {
-                    const isAnalyst = prefixSelect.value.toLowerCase() === 'а';
-                    if (!isAnalyst || (isAnalyst && passwordInput.value.trim() === 'wolfsarecute')) {
-                        reloadCurrentView();
-                    }
-                }
-            });
+    btnGeneral.innerText = "Общее расписание";
+    const ok = validCode && validPassword;
+    btnJuly.disabled = !ok;
+    btnGeneral.disabled = !ok;
+    btnBooking.disabled = !(ok && val === 'а');
+window.addEventListener('load', () => {
+    initMonthFromHash();
+    updateUIForRole();
+
+    document.querySelectorAll('.month-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+            const selectedMonth = e.target.getAttribute('data-month');
+            if (currentMonth === selectedMonth) return;
+
+            currentMonth = selectedMonth;
+            window.location.hash = currentMonth;
+            updateActiveMonthTab();
+
+            if (currentFullCode && /^\d{3}$/.test(digitsInput.value.trim()) && passwordInput.value) {
+                reloadCurrentView();
+            }
         });
     });
+});
+}
     
     function showToast(message, type = 'success') {
         clearTimeout(toastTimeout);
@@ -379,8 +392,9 @@
     
     function updateFullCode() { currentFullCode = prefixSelect.value + "-" + digitsInput.value.trim(); }
     
-    btnJuly.addEventListener('click', () => {
-        currentViewMode = "personal";
+    btnJuly.addEventListener('click', async () => {
+    if (!(await ensureAuth())) return;
+    currentViewMode = "personal";
         const p = prefixSelect.value.toLowerCase();
         document.getElementById('analyst-search-bar').style.display = 'none';
         btnSave.style.display = (p === 'а') ? 'block' : 'none'; 
@@ -390,8 +404,9 @@
         loadCalendarData(currentFullCode);
     });
 
-    btnGeneral.addEventListener('click', () => {
-        currentViewMode = "general";
+    btnGeneral.addEventListener('click', async () => {
+    if (!(await ensureAuth())) return;
+    currentViewMode = "general";
         const p = prefixSelect.value.toLowerCase();
         btnSave.style.display = (p === 'а') ? 'block' : 'none';
         document.getElementById('analyst-search-bar').style.display = 'none';
@@ -401,8 +416,9 @@
         loadCalendarData(currentFullCode);
     });
 
-    btnBooking.addEventListener('click', () => {
-        currentViewMode = "booking";
+    btnBooking.addEventListener('click', async () => {
+    if (!(await ensureAuth())) return;
+    currentViewMode = "booking";
         btnSave.style.display = 'none';
         expandedPanel.classList.remove('active');
         removeDesktopPopover();
@@ -453,11 +469,16 @@
         calendarSection.style.display = 'none';
         
         // Один запрос action=getFullData заменяет два параллельных!
-        fetch(`${WEB_APP_URL}?action=getFullData&code=${encodeURIComponent(codeToFetch)}&month=${currentMonth}`)
+        fetch(`${WEB_APP_URL}?action=getFullData&code=${encodeURIComponent(codeToFetch)}&month=${currentMonth}&token=${encodeURIComponent(authToken)}`)
             .then(res => res.json())
             .then(data => {
                 loader.style.display = 'none';
-                if(data.error) {
+                if (data.error) {
+                    if (isAuthError(data)) {
+                        authToken = "";
+                        showToast('Сессия истекла — нажмите кнопку ещё раз', 'error');
+                        return;
+                    }
                     showToast('Ошибка сервера: ' + data.error, 'error');
                     return;
                 }
@@ -861,16 +882,21 @@ gridPsyMap.forEach(p => {
             pendingShifts[dayStr] = shiftVal;
             promises.push(fetch(WEB_APP_URL, {
                 method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ code: saveTargetCode, shifts: pendingShifts, month: currentMonth })
+                body: JSON.stringify({ token: authToken, code: saveTargetCode, shifts: pendingShifts, month: currentMonth })
             }).then(r => r.json()));
         }
         promises.push(fetch(WEB_APP_URL, {
             method: 'POST', headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify({ action: "saveBookingData", code: saveTargetCode, date: dayStr, clients: clientsToSend, month: currentMonth })
+            body: JSON.stringify({ token: authToken, action: "saveBookingData", code: saveTargetCode, date: dayStr, clients: clientsToSend, month: currentMonth })
         }).then(r => r.json()));
         
         Promise.all(promises).then(results => {
             loader.style.display = 'none'; btnSavePanel.disabled = false;
+            if (results.some(isAuthError)) {
+                authToken = "";
+                showToast('Сессия истекла. Нажмите любую кнопку сверху и сохраните ещё раз', 'error');
+                return;
+            }
             const hasError = results.some(r => !r.success);
             if (hasError) {
                 showToast('Ошибка при сохранении!', 'error');
@@ -1112,7 +1138,7 @@ gridPsyMap.forEach(p => {
             const bulkData = Object.values(psychMap);
             fetch(WEB_APP_URL, {
                 method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ action: "saveBulkBookingData", date: dayStr, bulkData: bulkData, month: currentMonth })
+                body: JSON.stringify({ token: authToken, action: "saveBulkBookingData", date: dayStr, bulkData: bulkData, month: currentMonth })
             }).then(res => res.json()).then(data => {
                 loader.style.display = 'none'; btnSave.disabled = false;
                 if (data.success) {
@@ -1130,7 +1156,7 @@ gridPsyMap.forEach(p => {
             btnSave.disabled = true;
             fetch(WEB_APP_URL, {
                 method: 'POST', headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ code: currentFullCode, shifts: pendingShifts, month: currentMonth })
+                body: JSON.stringify({ token: authToken, code: currentFullCode, shifts: pendingShifts, month: currentMonth })
             }).then(res => res.json()).then(data => {
                 loader.style.display = 'none'; btnSave.disabled = false;
                 if (data.success) { 
