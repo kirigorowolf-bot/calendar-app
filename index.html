@@ -346,7 +346,8 @@ function updateUIForRole() {
     btnJuly.disabled = !ok;
     btnGeneral.disabled = !ok;
     btnBooking.disabled = !(ok && val === 'а');
-window.addEventListener('load', () => {
+}
+    window.addEventListener('load', () => {
     initMonthFromHash();
     updateUIForRole();
 
@@ -365,7 +366,6 @@ window.addEventListener('load', () => {
         });
     });
 });
-}
     
     function showToast(message, type = 'success') {
         clearTimeout(toastTimeout);
